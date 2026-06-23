@@ -1,98 +1,165 @@
-# 🚤 Goa Yacht World
+# 🚤 Goa Yacht World - Premium Platform
 
-A modern, responsive website for yacht rentals in Goa, India.
+A complete Next.js 14 platform for luxury yacht rentals in Goa, India.
 
-## 🌟 Features
+## Features
 
-- **Beautiful Yacht Fleet** - Showcase your yachts with images, descriptions, and pricing
-- **WhatsApp Integration** - Instant booking via WhatsApp Chat Now & Book Now buttons
-- **Admin Panel** - Manage yachts, prices, and settings (access via `?admin=true`)
-- **Image Upload** - Up to 10 photos per yacht
-- **Fully Responsive** - Works on all devices
-- **No Database Needed** - Uses localStorage for data persistence
+- **Premium UI/UX** - Luxury design inspired by Yacht Club India
+- **Dynamic Yacht Management** - Admin panel to manage all yachts
+- **Booking Engine** - Complete booking flow with addons, time slots, extras
+- **Razorpay Integration** - Payment gateway ready
+- **Mobile Responsive** - Works on all devices
+- **SEO Optimized** - Schema markup, meta tags, sitemap
 
-## 🔧 Admin Panel
+## Tech Stack
 
-Access the admin panel by:
-1. Adding `?admin=true` to the URL (e.g., `https://codeitinfotech.github.io/goayachtworld/?admin=true`)
-2. Or pressing `Ctrl+Shift+A` on the page
+- **Frontend**: Next.js 14, React 18, TypeScript, Tailwind CSS
+- **Backend**: Next.js API Routes, Prisma ORM
+- **Database**: PostgreSQL
+- **Payments**: Razorpay (integration ready)
+- **Storage**: AWS S3 (integration ready)
 
-### Admin Features:
-- **Yacht Management**: Add, edit, delete yachts
-- **Settings**: Configure WhatsApp number and booking URL
-- **Image Upload**: Drag & drop up to 10 images per yacht
-- **Reset to Defaults**: Restore original sample yachts
+## Getting Started
 
-## 🚀 Quick Start
+### Prerequisites
 
-Simply open `index.html` in a web browser. No build process required!
+- Node.js 18+
+- PostgreSQL database
+- npm or yarn
 
-## 📁 Project Structure
+### Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Setup environment variables
+cp .env.example .env
+# Edit .env with your database URL and secrets
+
+# Generate Prisma client
+npx prisma generate
+
+# Push schema to database
+npx prisma db push
+
+# Seed database
+npm run db:seed
+
+# Start development server
+npm run dev
+```
+
+Visit http://localhost:3000
+
+## Project Structure
 
 ```
-/
-├── index.html          # Main website
-├── assets/
-│   ├── css/
-│   │   └── style.css  # Styles
-│   └── js/
-│       └── app.js     # Application logic
-├── 404.html            # Custom 404 page
-├── CNAME               # Custom domain
-└── README.md          # This file
+goayachtworld-platform/
+├── prisma/
+│   └── schema.prisma      # Database schema
+├── src/
+│   ├── app/              # Next.js App Router
+│   │   ├── admin/        # Admin panel pages
+│   │   ├── api/          # API routes
+│   │   ├── book/         # Booking flow
+│   │   └── yachts/       # Public yacht pages
+│   ├── components/       # React components
+│   ├── lib/             # Utilities & data
+│   ├── store/           # Zustand stores
+│   └── types/           # TypeScript types
+├── public/              # Static files
+└── package.json
 ```
 
-## 🌐 GitHub Pages Deployment
+## Admin Panel
 
-### One-Time Setup Required:
+Access at `/admin/dashboard`:
+- Dashboard with stats
+- Yacht management (CRUD)
+- Booking management
+- Customer management
+- Coupon management
+- Review management
+- Settings (website config, homepage CMS)
 
-1. Go to repository **Settings** → **Pages**
-2. Under "Build and deployment":
-   - Source: **Deploy from a branch**
-   - Branch: **main** / (root)
-3. Click **Save**
-4. Wait 2-3 minutes for deployment
+## Environment Variables
 
-### Your site will be available at:
-**https://codeitinfotech.github.io/goayachtworld/**
+```env
+DATABASE_URL="postgresql://..."
+JWT_SECRET="your-secret-key"
+RAZORPAY_KEY_ID="rzp_..."
+RAZORPAY_KEY_SECRET="..."
+AWS_ACCESS_KEY_ID="..."
+AWS_SECRET_ACCESS_KEY="..."
+AWS_BUCKET_NAME="..."
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+```
 
-## ⚙️ Configuration
+## Deployment
 
-### WhatsApp Number
-The default WhatsApp number is `918446275985`. To change it:
+### Vercel (Recommended)
 
-1. Open admin panel (`?admin=true`)
-2. Go to Settings tab
-3. Update WhatsApp number (with country code, no + sign)
+```bash
+npm i -g vercel
+vercel
+```
 
-### Adding Your Own Images
-1. Open admin panel
-2. Edit any yacht
-3. Upload images (max 10, 5MB each)
-4. Save - images are stored in browser localStorage
+### Docker
 
-## 🎨 Customization
+```bash
+docker build -t goayachtworld .
+docker run -p 3000:3000 --env-file .env goayachtworld
+```
 
-### Colors (in style.css)
-```css
-:root {
-    --primary: #1a365d;
-    --secondary: #38b2ac;
-    --accent: #ed8936;
-    --whatsapp: #25D366;
+## Database Schema
+
+### Core Tables
+- **User** - Admin & customer accounts
+- **Yacht** - Yacht details & booking config
+- **YachtCategory** - Categories (Luxury, Party, etc.)
+- **YachtImage** - Yacht photos
+- **TimeSlot** - Available time slots per yacht
+- **ExtraHour** - Extra hour pricing
+- **YachtAddon** - Add-on services (DJ, Cake, etc.)
+- **Booking** - All bookings
+- **Coupon** - Discount codes
+- **Review** - Customer reviews
+- **WebsiteSetting** - CMS settings
+- **HomepageSetting** - Homepage content
+- **CMSPage** - Static pages
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /api/yachts | List all yachts |
+| GET | /api/yachts?slug=xxx | Get yacht by slug |
+| GET | /api/yachts?category=xxx | Filter by category |
+| POST | /api/bookings | Create booking |
+| GET | /api/bookings | List bookings (admin) |
+| PUT | /api/bookings/[id] | Update booking |
+| POST | /api/upload | Upload image |
+| POST | /api/auth/login | Admin login |
+
+## Customization
+
+### Colors (tailwind.config.ts)
+```ts
+colors: {
+  primary: { /* Blues */ },
+  luxury: {
+    gold: '#D4AF37',
+    dark: '#1a1a2e',
+    // ...
+  },
 }
 ```
 
-### Default Yacht Data
-Edit the `DEFAULT_YACHTS` array in `app.js` to change default content.
+### Fonts
+- Display: Playfair Display (headings)
+- Body: Inter (content)
 
-## 📱 Tech Stack
-
-- HTML5
-- CSS3 (CSS Variables)
-- Vanilla JavaScript
-- localStorage API
-
-## 📄 License
+## License
 
 © 2024 Goa Yacht World. All rights reserved.
