@@ -1,0 +1,145 @@
+{
+  "internal_linking_strategy": {
+    "overview": "Strategic internal linking to distribute page authority and guide users through the conversion funnel",
+    "updated": "2024-06-23"
+  },
+  "navigation_structure": {
+    "main_menu": [
+      {"url": "/", "text": "Home"},
+      {"url": "/services/", "text": "Our Fleet"},
+      {"url": "/yacht-booking-goa/", "text": "Book Now"},
+      {"url": "/about-us/", "text": "About"},
+      {"url": "/gallery/", "text": "Gallery"},
+      {"url": "/faq/", "text": "FAQ"},
+      {"url": "/contacts/", "text": "Contact"}
+    ],
+    "footer_primary": [
+      {"url": "/services/", "text": "Yacht Fleet"},
+      {"url": "/yacht-booking-goa/", "text": "Book Yacht"},
+      {"url": "/contacts/", "text": "Contact Us"}
+    ],
+    "footer_services": [
+      {"url": "/couple-yacht-goa/", "text": "Couples Cruise"},
+      {"url": "/birthday-yacht-goa/", "text": "Birthday Party"},
+      {"url": "/sunset-yacht-goa/", "text": "Sunset Cruise"},
+      {"url": "/private-yacht-goa/", "text": "Private Charter"},
+      {"url": "/corporate-yacht-goa/", "text": "Corporate Events"},
+      {"url": "/boat-party-goa/", "text": "Boat Party"}
+    ],
+    "footer_info": [
+      {"url": "/about-us/", "text": "About Us"},
+      {"url": "/faq/", "text": "FAQ"},
+      {"url": "/gallery/", "text": "Gallery"}
+    ]
+  },
+  "homepage_links": {
+    "hero_cta": [
+      {"url": "/yacht-booking-goa/", "text": "Book Your Yacht Now", "anchor": "Book Your Yacht Now"}
+    ],
+    "section_links": [
+      {"url": "/couple-yacht-goa/", "text": "Couples Cruise", "section": "featured_experiences"},
+      {"url": "/family-yacht-goa/", "text": "Family Yacht", "section": "featured_experiences"},
+      {"url": "/sunset-yacht-goa/", "text": "Sunset Cruise", "section": "featured_experiences"},
+      {"url": "/boat-party-goa/", "text": "Party Yacht", "section": "featured_experiences"},
+      {"url": "/corporate-yacht-goa/", "text": "Corporate Events", "section": "featured_experiences"},
+      {"url": "/luxury-yacht-goa/", "text": "Luxury Yacht", "section": "featured_experiences"}
+    ],
+    "trust_signals": [
+      {"url": "/about-us/", "text": "Learn about our company"}
+    ]
+  },
+  "service_page_links": {
+    "from_services_page": [
+      {"url": "/yacht-booking-goa/", "text": "Book this yacht"},
+      {"url": "/private-yacht-goa/", "text": "Private charters available"},
+      {"url": "/couple-yacht-goa/", "text": "Perfect for couples"},
+      {"url": "/corporate-yacht-goa/", "text": "Corporate bookings"},
+      {"url": "/boat-party-goa/", "text": "Party packages"}
+    ]
+  },
+  "content_page_links": {
+    "yacht_booking_goa": [
+      {"url": "/services/", "text": "View our fleet", "placement": "packages_section"},
+      {"url": "/couple-yacht-goa/", "text": "Couples cruises", "placement": "packages_section"},
+      {"url": "/boat-party-goa/", "text": "Party yachts", "placement": "packages_section"},
+      {"url": "/sunset-yacht-goa/", "text": "Sunset cruises", "placement": "packages_section"},
+      {"url": "/contacts/", "text": "Contact form", "placement": "cta_section"}
+    ],
+    "couple_yacht_goa": [
+      {"url": "/proposal-yacht-goa/", "text": "Proposal packages", "placement": "experiences"},
+      {"url": "/sunset-yacht-goa/", "text": "Sunset cruises", "placement": "experiences"},
+      {"url": "/private-yacht-goa/", "text": "Private charters", "placement": "experiences"},
+      {"url": "/yacht-booking-goa/", "text": "Book now", "placement": "cta"}
+    ],
+    "birthday_yacht_goa": [
+      {"url": "/boat-party-goa/", "text": "Boat parties", "placement": "packages"},
+      {"url": "/corporate-yacht-goa/", "text": "Corporate events", "placement": "packages"},
+      {"url": "/family-yacht-goa/", "text": "Family celebrations", "placement": "packages"},
+      {"url": "/yacht-booking-goa/", "text": "Book now", "placement": "cta"}
+    ],
+    "sunset_yacht_goa": [
+      {"url": "/couple-yacht-goa/", "text": "Romantic sunset cruises", "placement": "packages"},
+      {"url": "/proposal-yacht-goa/", "text": "Sunset proposals", "placement": "packages"},
+      {"url": "/boat-party-goa/", "text": "Sunset party cruises", "placement": "packages"},
+      {"url": "/yacht-booking-goa/", "text": "Book now", "placement": "cta"}
+    ],
+    "corporate_yacht_goa": [
+      {"url": "/private-yacht-goa/", "text": "Private charters", "placement": "packages"},
+      {"url": "/luxury-yacht-goa/", "text": "Luxury options", "placement": "packages"},
+      {"url": "/boat-party-goa/", "text": "Team celebrations", "placement": "activities"},
+      {"url": "/yacht-booking-goa/", "text": "Book now", "placement": "cta"}
+    ],
+    "family_yacht_goa": [
+      {"url": "/yacht-booking-goa/", "text": "Book now", "placement": "packages"},
+      {"url": "/sunset-yacht-goa/", "text": "Family sunset cruise", "placement": "packages"},
+      {"url": "/private-yacht-goa/", "text": "Private family yacht", "placement": "packages"}
+    ],
+    "private_yacht_goa": [
+      {"url": "/couple-yacht-goa/", "text": "Intimate cruises", "placement": "experiences"},
+      {"url": "/family-yacht-goa/", "text": "Family yachts", "placement": "experiences"},
+      {"url": "/corporate-yacht-goa/", "text": "Corporate retreats", "placement": "experiences"},
+      {"url": "/yacht-booking-goa/", "text": "Book now", "placement": "cta"}
+    ],
+    "luxury_yacht_goa": [
+      {"url": "/private-yacht-goa/", "text": "Private luxury", "placement": "fleet"},
+      {"url": "/couple-yacht-goa/", "text": "Romantic luxury", "placement": "fleet"},
+      {"url": "/corporate-yacht-goa/", "text": "VIP corporate", "placement": "fleet"},
+      {"url": "/yacht-booking-goa/", "text": "Book now", "placement": "cta"}
+    ],
+    "boat_party_goa": [
+      {"url": "/birthday-yacht-goa/", "text": "Birthday parties", "placement": "packages"},
+      {"url": "/corporate-yacht-goa/", "text": "Corporate parties", "placement": "packages"},
+      {"url": "/sunset-yacht-goa/", "text": "Sunset parties", "placement": "packages"},
+      {"url": "/yacht-booking-goa/", "text": "Book now", "placement": "cta"}
+    ],
+    "proposal_yacht_goa": [
+      {"url": "/couple-yacht-goa/", "text": "Romantic cruises", "placement": "packages"},
+      {"url": "/sunset-yacht-goa/", "text": "Sunset cruises", "placement": "packages"},
+      {"url": "/yacht-booking-goa/", "text": "Book now", "placement": "cta"}
+    ]
+  },
+  "cross_linking_opportunities": {
+    "from_about_us": [
+      {"url": "/yacht-booking-goa/", "text": "book a yacht"},
+      {"url": "/services/", "text": "view our fleet"}
+    ],
+    "from_faq": [
+      {"url": "/yacht-booking-goa/", "text": "booking process", "context": "answer about booking"},
+      {"url": "/couple-yacht-goa/", "text": "romantic cruises", "context": "answer about couples"},
+      {"url": "/boat-party-goa/", "text": "party packages", "context": "answer about parties"}
+    ],
+    "from_gallery": [
+      {"url": "/yacht-booking-goa/", "text": "book your experience"},
+      {"url": "/sunset-yacht-goa/", "text": "sunset cruises"},
+      {"url": "/boat-party-goa/", "text": "party yachts"}
+    ]
+  },
+  "anchor_text_guidelines": {
+    "homepage": "Goa Yacht World",
+    "brand_name": "Goa Yacht World",
+    "services": "yacht rentals in Goa",
+    "booking": "book your yacht",
+    "contact": "contact us",
+    "avoid": ["click here", "read more", "learn more", "here"]
+  }
+}

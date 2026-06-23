@@ -1,0 +1,41 @@
+# Robots.txt for goayachtworld.com
+# Generated: June 2024
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://goayachtworld.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Block access to WordPress specific files
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /wp-content/plugins/
+Disallow: /wp-content/themes/
+Disallow: /wp-json/
+Disallow: /feed/
+Disallow: /comments/feed/
+
+# Block duplicate content
+Disallow: /services-2/
+Disallow: /services-3/
+Disallow: /feed/
+Disallow: /tag/
+Disallow: /category/
+
+# Block test pages
+Disallow: /test/
+
+# Block archives and dates
+Disallow: /2023/
+Disallow: /?amp
+Disallow: /?s=
+Disallow: /?p=
+
+# Allow search engines to see CSS and JS
+Allow: /wp-content/uploads/
+Allow: /wp-includes/css/
+Allow: /wp-includes/js/

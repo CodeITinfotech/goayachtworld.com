@@ -1,0 +1,169 @@
+{
+  "meta_templates": {
+    "homepage": {
+      "title": "Luxury Yacht Rentals in Goa | Private Yacht Charters & Party Boats | Goa Yacht World",
+      "meta_description": "Book the best luxury yachts in Goa for parties, events & celebrations. Private yacht charters, sunset cruises & corporate events. Prices starting ₹15,000. WhatsApp: 8446275985",
+      "h1": "Goa's Premier Yacht Booking Experience",
+      "canonical": "https://goayachtworld.com/"
+    },
+    "services": {
+      "title": "Yacht Fleet Goa | Luxury Boats for Charter | Goa Yacht World",
+      "meta_description": "Explore our premium fleet of 50+ yachts & boats in Goa. From intimate couples cruises to grand party yachts. Best prices guaranteed. Book online or call 8446275985",
+      "h1": "Our Yacht Fleet",
+      "canonical": "https://goayachtworld.com/services/"
+    },
+    "about": {
+      "title": "About Goa Yacht World | Leading Yacht Charter Company in Goa",
+      "meta_description": "Goa Yacht World is Goa's trusted yacht charter company since 2018. 50+ yachts, professional crew, safety certified. Rated 4.8/5 by 2000+ customers.",
+      "h1": "About Us",
+      "canonical": "https://goayachtworld.com/about-us/"
+    },
+    "gallery": {
+      "title": "Yacht Gallery Goa | Photos & Videos of Our Yachts & Events",
+      "meta_description": "Browse stunning photos & videos of our luxury yachts, sunset cruises, and memorable events in Goa. See what awaits you on your perfect yacht experience.",
+      "h1": "Yacht Gallery",
+      "canonical": "https://goayachtworld.com/gallery/"
+    },
+    "faq": {
+      "title": "Yacht Booking FAQs Goa | Everything You Need to Know",
+      "meta_description": "Answers to common questions about yacht rentals in Goa. Pricing, safety, booking process, cancellation policy & more. Contact us for personalized assistance.",
+      "h1": "Frequently Asked Questions",
+      "canonical": "https://goayachtworld.com/faq/"
+    },
+    "contact": {
+      "title": "Contact Goa Yacht World | Book Your Yacht Today",
+      "meta_description": "Contact Goa Yacht World for yacht bookings in Goa. WhatsApp: 8446275985. Email: info@goayachtworld.com. We're here 24/7 to help plan your perfect yacht experience.",
+      "h1": "Contact Us",
+      "canonical": "https://goayachtworld.com/contacts/"
+    }
+  },
+  "new_pages": {
+    "yacht-booking-goa": {
+      "title": "Yacht Booking Goa | Best Prices on Luxury Yacht Rentals",
+      "meta_description": "Easy online yacht booking in Goa! Choose from 50+ yachts for parties, events & celebrations. Best price guarantee. Call 8446275985 or book online now.",
+      "h1": "Book Your Dream Yacht in Goa",
+      "h2_structure": [
+        "Why Book With Goa Yacht World?",
+        "Popular Yacht Packages",
+        "How to Book Your Yacht",
+        "Customer Reviews"
+      ],
+      "canonical": "https://goayachtworld.com/yacht-booking-goa/"
+    },
+    "private-yacht-goa": {
+      "title": "Private Yacht Charter Goa | Exclusive Yacht Experiences",
+      "meta_description": "Experience ultimate privacy with our private yacht charters in Goa. Perfect for couples, families & small groups. Custom itineraries available. Book now!",
+      "h1": "Private Yacht Charters in Goa",
+      "h2_structure": [
+        "Private Yacht Experiences",
+        "What's Included",
+        "Popular Routes",
+        "Special Occasions"
+      ],
+      "canonical": "https://goayachtworld.com/private-yacht-goa/"
+    },
+    "birthday-yacht-goa": {
+      "title": "Birthday Party Yacht Goa | Celebrate in Style on the Water",
+      "meta_description": "Make your birthday unforgettable with a yacht party in Goa! Stunning views, DJ, catering & decorations included. Packages from ₹25,000. WhatsApp 8446275985",
+      "h1": "Birthday Yacht Party in Goa",
+      "h2_structure": [
+        "Birthday Yacht Packages",
+        "Custom Birthday Themes",
+        "What's Included",
+        "Book Your Birthday Yacht"
+      ],
+      "canonical": "https://goayachtworld.com/birthday-yacht-goa/"
+    },
+    "couple-yacht-goa": {
+      "title": "Couples Yacht Cruise Goa | Romantic Sunset & Private Cruises",
+      "meta_description": "Romantic yacht cruises for couples in Goa. Private decks, candlelight dinners, sunset views. Perfect for anniversaries & proposals. Book your romantic escape!",
+      "h1": "Romantic Couples Yacht Cruises",
+      "h2_structure": [
+        "Romantic Cruise Packages",
+        "Sunset Cruises for Two",
+        "Anniversary Celebrations",
+        "Proposal Packages"
+      ],
+      "canonical": "https://goayachtworld.com/couple-yacht-goa/"
+    },
+    "family-yacht-goa": {
+      "title": "Family Yacht Rentals Goa | Fun Boat Trips for All Ages",
+      "meta_description": "Family-friendly yacht rentals in Goa! Safe, spacious boats perfect for families with kids. Water sports, swimming & sightseeing included. Kids under 5 FREE!",
+      "h1": "Family Yacht Adventures in Goa",
+      "h2_structure": [
+        "Family Yacht Packages",
+        "Kid-Friendly Activities",
+        "Safety Features",
+        "Multi-Generational Trips"
+      ],
+      "canonical": "https://goayachtworld.com/family-yacht-goa/"
+    },
+    "sunset-yacht-goa": {
+      "title": "Sunset Yacht Cruise Goa | Best Sunset Views from the Arabian Sea",
+      "meta_description": "Witness breathtaking Goan sunsets from our luxury yachts! Perfect sunset cruise packages with champagne, photography & live music. Book your sunset escape!",
+      "h1": "Sunset Yacht Cruises in Goa",
+      "h2_structure": [
+        "Sunset Cruise Experiences",
+        "Photography Packages",
+        "Premium Sunset Packages",
+        "Group Sunset Tours"
+      ],
+      "canonical": "https://goayachtworld.com/sunset-yacht-goa/"
+    },
+    "corporate-yacht-goa": {
+      "title": "Corporate Yacht Events Goa | Team Building & Business Cruises",
+      "meta_description": "Elevate your corporate events with yacht charters in Goa. Team building, client entertainment, offshore meetings. Custom packages for businesses. Get a quote!",
+      "h1": "Corporate Yacht Events in Goa",
+      "h2_structure": [
+        "Corporate Packages",
+        "Team Building Activities",
+        "Client Entertainment",
+        "MICE & Offshore Meetings"
+      ],
+      "canonical": "https://goayachtworld.com/corporate-yacht-goa/"
+    },
+    "luxury-yacht-goa": {
+      "title": "Luxury Yacht Charter Goa | Premium Yachts with 5-Star Service",
+      "meta_description": "Experience the finest luxury yachts in Goa. Premium vessels with professional crew, gourmet catering & VIP service. For those who demand only the best.",
+      "h1": "Luxury Yacht Experiences",
+      "h2_structure": [
+        "Premium Yacht Fleet",
+        "VIP Services",
+        "Luxury Packages",
+        "Exclusive Membership"
+      ],
+      "canonical": "https://goayachtworld.com/luxury-yacht-goa/"
+    },
+    "boat-party-goa": {
+      "title": "Boat Party Goa | Best Party Boats & Yacht Parties",
+      "meta_description": "Goa's hottest boat parties! Dance on the water with DJ, open bar & stunning views. Group packages available. Book now for the ultimate party experience!",
+      "h1": "Boat Parties in Goa",
+      "h2_structure": [
+        "Party Boat Packages",
+        "DJ & Entertainment",
+        "Group Bookings",
+        "Stag & Hen Parties"
+      ],
+      "canonical": "https://goayachtworld.com/boat-party-goa/"
+    },
+    "proposal-yacht-goa": {
+      "title": "Romantic Proposal on Yacht in Goa | Once-in-a-Lifetime Moments",
+      "meta_description": "Plan the perfect proposal on a private yacht in Goa! Romantic decorations, champagne, photographer & custom packages. Make your proposal unforgettable!",
+      "h1": "Yacht Proposal Packages in Goa",
+      "h2_structure": [
+        "Proposal Packages",
+        "Romantic Decorations",
+        "Professional Photography",
+        "Ring Ceremony Setup"
+      ],
+      "canonical": "https://goayachtworld.com/proposal-yacht-goa/"
+    }
+  },
+  "canonical_strategy": {
+    "primary_domain": "https://www.goayachtworld.com",
+    "non_www_redirect": true,
+    "http_to_https": true,
+    "trailing_slash": false,
+    "index_redirect": true
+  }
+}

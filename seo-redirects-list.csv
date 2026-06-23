@@ -1,0 +1,41 @@
+# SEO Redirects List for goayachtworld.com
+# Format: old-url,new-url,type,notes
+# Generated: June 2024
+
+# ========================
+# DUPLICATE PAGES
+# ========================
+services-2/,services/,301,Duplicate yacht services page
+services-3/,services/,301,Duplicate sailboat page
+
+# ========================
+# FEED URLs
+# ========================
+feed/,/,301,Old RSS feed URL
+comments/feed/,/,301,Comments feed redirected to homepage
+
+# ========================
+# LOW-VALUE PAGES
+# ========================
+tag/,/,301,Tag pages have no SEO value
+2023/,/,301,Date-based archive, content moved to main pages
+test/,/,301,Test page, not needed in production
+
+# ========================
+# URL NORMALIZATION
+# ========================
+/index.htm,/,301,Remove index.htm from URLs
+index.html,/,301,Remove index.html from URLs
+
+# ========================
+# CATEGORY PAGES (if needed)
+# ========================
+category/adventures/,services/,301,Consolidate to main services page
+category/travel/,services/,301,Consolidate to main services page
+category/uncategorized/,services/,301,Consolidate to main services page
+
+# ========================
+# FUTURE REDIRECTS (when new pages are created)
+# ========================
+# yacht-booking/,yacht-booking-goa/,301,Consolidate naming
+# private-yacht/,private-yacht-goa/,301,Consolidate naming
