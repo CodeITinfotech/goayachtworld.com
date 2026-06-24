@@ -137,14 +137,14 @@ function renderYachts() {
     
     grid.innerHTML = yachts.map(yacht => {
         const urlName = encodeURIComponent(yacht.name.toLowerCase().replace(/\s+/g, '-'));
-        const hasVideo = yacht.video ? `<a href="${yacht.video}" target="_blank" class="btn btn-secondary btn-sm" title="View Video"><i class="fas fa-video"></i> View</a>` : '';
+        const videoBadge = yacht.video ? `<span class="video-badge" onclick="event.preventDefault(); window.open('${yacht.video}', '_blank')"><i class="fas fa-play-circle"></i></span>` : '';
         return `
         <div class="yacht-card">
+            ${yacht.featured ? '<span class="yacht-card-badge">Featured</span>' : ''}
+            ${videoBadge}
             <a href="yacht-detail.html?yacht=${urlName}" class="yacht-card-link">
                 <div class="yacht-card-img">
                     <img src="${yacht.images[0]}" alt="${yacht.name}" loading="lazy">
-                    ${yacht.featured ? '<span class="yacht-card-badge">Featured</span>' : ''}
-                    ${hasVideo ? `<span class="video-badge" onclick="event.preventDefault(); window.open('${yacht.video}', '_blank')"><i class="fas fa-play-circle"></i></span>` : ''}
                 </div>
                 <div class="yacht-card-body">
                     <span class="yacht-card-type">${yacht.type}</span>

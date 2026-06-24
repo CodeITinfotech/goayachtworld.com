@@ -647,6 +647,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="#" onclick="showSection('extras')">
+                            <i class="fas fa-plus-circle"></i> Extras
+                        </a>
+                    </li>
+                    <li>
                         <a href="#" onclick="showSection('yachts')">
                             <i class="fas fa-ship"></i> Yachts
                         </a>
@@ -744,6 +749,43 @@
                     </div>
                 </section>
 
+                <!-- Extras Section -->
+                <section id="section-extras" class="admin-section" style="display: none;">
+                    <h2><i class="fas fa-plus-circle"></i> Extra Services Management</h2>
+                    <p style="color: var(--text-light); margin-bottom: 20px;">
+                        Manage extra services that can be added to yacht bookings. These extras will be available for selection when booking.
+                    </p>
+                    
+                    <div class="alert" id="extrasAlert"></div>
+                    
+                    <div style="background: var(--bg-light); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                        <h3 style="margin-top: 0;"><i class="fas fa-list"></i> Available Extras</h3>
+                        
+                        <div class="form-group">
+                            <label>Add New Extra Service</label>
+                            <div style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 10px; align-items: end;">
+                                <input type="text" id="extraNameInput" placeholder="Service Name (e.g., Decorations)" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                <input type="number" id="extraPriceInput" placeholder="Price (₹)" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                <button class="btn btn-primary" onclick="addExtraService()" style="padding: 10px 20px;">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="extrasList" style="margin-top: 20px;"></div>
+                    </div>
+                    
+                    <div style="background: var(--bg-light); padding: 20px; border-radius: 12px;">
+                        <h3 style="margin-top: 0;"><i class="fas fa-info-circle"></i> How It Works</h3>
+                        <ul style="color: var(--text-light); line-height: 1.8;">
+                            <li>Add extra services here (e.g., Decorations, Photographer, etc.)</li>
+                            <li>When creating/editing a yacht, select which extras to include</li>
+                            <li>Guests can select extras when booking via WhatsApp</li>
+                            <li>Price 0 or leave empty = "As per requirement"</li>
+                        </ul>
+                    </div>
+                </section>
+
                 <!-- Yachts Section -->
                 <section id="section-yachts" class="admin-section" style="display: none;">
                     <h2><i class="fas fa-ship"></i> Yacht Management</h2>
@@ -804,8 +846,11 @@
                         </div>
                         
                         <div class="form-group">
-                            <label>Extras (format: Name:Price, Name:Price)</label>
-                            <input type="text" id="yachtExtras" placeholder="Decorations:4000, DSLR Photographer:6000, Drone Videographer:5000" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                            <label>Select Extras for this Yacht</label>
+                            <div id="yachtExtrasCheckboxes" style="display: flex; flex-wrap: wrap; gap: 10px; padding: 10px 0;"></div>
+                            <p style="font-size: 12px; color: #666; margin-top: 5px;">
+                                <i class="fas fa-info-circle"></i> Select extras from the list. Manage extras in the "Extras" menu.
+                            </p>
                         </div>
                         
                         <!-- Banner Photos (up to 5) -->
@@ -1221,13 +1266,115 @@ Value|Best value for your investment..."></textarea>
                 toggle.checked = heroAutoScroll !== 'false';
             }
             
+            // Initialize default data if not exists
+            if (!localStorage.getItem('yacht_items')) {
+                localStorage.setItem('yacht_items', JSON.stringify(DEFAULT_YACHTS));
+            }
+            if (!localStorage.getItem('yacht_categories')) {
+                localStorage.setItem('yacht_categories', JSON.stringify(DEFAULT_CATEGORIES));
+            }
+            if (!localStorage.getItem('yacht_extras')) {
+                localStorage.setItem('yacht_extras', JSON.stringify(DEFAULT_EXTRAS));
+            }
+            
             // Load editors
             if (typeof loadPoliciesIntoEditor === 'function') loadPoliciesIntoEditor();
             if (typeof loadReviewsEditor === 'function') loadReviewsEditor();
             if (typeof loadGalleryEditor === 'function') loadGalleryEditor();
             if (typeof loadCategoriesEditor === 'function') loadCategoriesEditor();
+            if (typeof loadExtrasEditor === 'function') loadExtrasEditor();
             if (typeof loadYachtsEditor === 'function') loadYachtsEditor();
             if (typeof loadAboutUsEditor === 'function') loadAboutUsEditor();
+        }
+
+        // Extras Management
+        const DEFAULT_EXTRAS = [
+            { name: 'Decorations', price: 4000 },
+            { name: 'Snacks & Beverages', price: 0 },
+            { name: 'DSLR Photographer', price: 6000 },
+            { name: 'Drone Videographer', price: 5000 }
+        ];
+
+        function loadExtrasEditor() {
+            const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
+            const extrasList = document.getElementById('extrasList');
+            if (!extrasList) return;
+            
+            if (extras.length === 0) {
+                extrasList.innerHTML = '<p style="color: var(--text-light); text-align: center; padding: 20px;">No extra services added yet. Use the form above to add one.</p>';
+                return;
+            }
+            
+            extrasList.innerHTML = extras.map((extra, index) => `
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #fff; border-radius: 8px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-gift" style="color: var(--primary); font-size: 18px;"></i>
+                        <div>
+                            <strong>${extra.name}</strong>
+                            <p style="margin: 0; font-size: 0.85rem; color: #666;">
+                                ${extra.price === 0 ? 'As per requirement' : 'upto ₹' + extra.price.toLocaleString('en-IN') + '/-'}
+                            </p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-sm btn-outline" onclick="editExtraService(${index})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteExtraService(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addExtraService() {
+            const name = document.getElementById('extraNameInput').value.trim();
+            const price = parseInt(document.getElementById('extraPriceInput').value) || 0;
+            
+            if (!name) {
+                showAlert('Please enter service name', 'error');
+                return;
+            }
+            
+            const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
+            extras.push({ name, price });
+            localStorage.setItem('yacht_extras', JSON.stringify(extras));
+            
+            document.getElementById('extraNameInput').value = '';
+            document.getElementById('extraPriceInput').value = '';
+            
+            loadExtrasEditor();
+            showAlert('Extra service added!', 'success');
+        }
+
+        function editExtraService(index) {
+            const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
+            const extra = extras[index];
+            
+            const name = prompt('Edit service name:', extra.name);
+            if (!name) return;
+            
+            const priceStr = prompt('Edit price (₹) - Enter 0 for "As per requirement":', extra.price);
+            const price = parseInt(priceStr) || 0;
+            
+            extras[index] = { name, price };
+            localStorage.setItem('yacht_extras', JSON.stringify(extras));
+            loadExtrasEditor();
+            showAlert('Extra service updated!', 'success');
+        }
+
+        function deleteExtraService(index) {
+            if (!confirm('Delete this extra service?')) return;
+            const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
+            extras.splice(index, 1);
+            localStorage.setItem('yacht_extras', JSON.stringify(extras));
+            loadExtrasEditor();
+            showAlert('Extra service deleted!', 'success');
+        }
+
+        function getAvailableExtras() {
+            return JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
         }
 
         // About Us Management
@@ -1752,6 +1899,7 @@ Value|Best value for your investment..."></textarea>
         // Yacht Form Functions
         let currentBannerPhotos = [];
         let currentGalleryPhotos = [];
+        let selectedExtras = [];
 
         function showYachtForm(yachtId = null) {
             const form = document.getElementById('yachtFormSection');
@@ -1782,8 +1930,8 @@ Value|Best value for your investment..."></textarea>
                     document.getElementById('yachtVideo').value = yacht.video || '';
                     document.getElementById('yachtFeatured').checked = yacht.featured || false;
                     document.getElementById('yachtAmenities').value = yacht.amenities || '';
-                    document.getElementById('yachtExtras').value = (yacht.extras || []).map(e => `${e.name}:${e.price}`).join(', ');
                     
+                    selectedExtras = yacht.extras || [];
                     currentBannerPhotos = yacht.banner || [yacht.images[0]].filter(Boolean);
                     currentGalleryPhotos = yacht.gallery || [];
                 }
@@ -1799,14 +1947,46 @@ Value|Best value for your investment..."></textarea>
                 document.getElementById('yachtVideo').value = '';
                 document.getElementById('yachtFeatured').checked = false;
                 document.getElementById('yachtAmenities').value = 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck';
-                document.getElementById('yachtExtras').value = 'Decorations:4000, DSLR Photographer:6000, Drone Videographer:5000';
                 
+                selectedExtras = [];
                 currentBannerPhotos = [];
                 currentGalleryPhotos = [];
             }
             
+            renderExtrasCheckboxes();
             renderBannerPhotos();
             renderYachtGalleryPhotos();
+        }
+
+        function renderExtrasCheckboxes() {
+            const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
+            const container = document.getElementById('yachtExtrasCheckboxes');
+            if (!container) return;
+            
+            container.innerHTML = extras.map(extra => {
+                const isChecked = selectedExtras.some(e => e.name === extra.name);
+                const priceDisplay = extra.price === 0 ? 'As per requirement' : '₹' + extra.price.toLocaleString('en-IN');
+                return `
+                <label style="display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #fff; border: 1px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="checkbox" value="${extra.name}" ${isChecked ? 'checked' : ''} onchange="toggleExtraCheckbox(this)">
+                    <span>${extra.name}</span>
+                    <span style="color: var(--primary); font-weight: 600; font-size: 12px;">${priceDisplay}</span>
+                </label>
+            `}).join('');
+        }
+
+        function toggleExtraCheckbox(checkbox) {
+            const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
+            const extra = extras.find(e => e.name === checkbox.value);
+            if (!extra) return;
+            
+            if (checkbox.checked) {
+                if (!selectedExtras.some(e => e.name === extra.name)) {
+                    selectedExtras.push({ name: extra.name, price: extra.price });
+                }
+            } else {
+                selectedExtras = selectedExtras.filter(e => e.name !== extra.name);
+            }
         }
 
         function addBannerPhoto() {
@@ -1902,7 +2082,6 @@ Value|Best value for your investment..."></textarea>
             const video = document.getElementById('yachtVideo').value.trim();
             const featured = document.getElementById('yachtFeatured').checked;
             const amenities = document.getElementById('yachtAmenities').value.trim();
-            const extrasStr = document.getElementById('yachtExtras').value.trim();
             
             if (!name) {
                 showAlert('Yacht name is required', 'error');
@@ -1913,20 +2092,15 @@ Value|Best value for your investment..."></textarea>
                 return;
             }
             
-            const extras = extrasStr ? extrasStr.split(',').map(e => {
-                const [n, p] = e.split(':').map(s => s.trim());
-                return { name: n, price: parseInt(p) || 0 };
-            }) : [];
-            
             const yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
             const editId = document.getElementById('editYachtId').value;
             
             const yachtData = {
                 name, type, description, capacity, price, video, featured, amenities,
-                extras,
-                banner: currentBannerPhotos.length > 0 ? currentBannerPhotos : ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'],
-                gallery: currentGalleryPhotos,
-                images: currentBannerPhotos.length > 0 ? currentBannerPhotos : ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'],
+                extras: [...selectedExtras],
+                banner: currentBannerPhotos.length > 0 ? [...currentBannerPhotos] : ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'],
+                gallery: [...currentGalleryPhotos],
+                images: currentBannerPhotos.length > 0 ? [...currentBannerPhotos] : ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'],
                 location: 'Goa, India'
             };
             
