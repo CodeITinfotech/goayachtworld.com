@@ -329,16 +329,43 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Default categories
+const DEFAULT_CATEGORIES_JS = [
+    { id: 'yacht', name: 'Yacht Booking', icon: 'fa-ship', order: 1 },
+    { id: 'cruise', name: 'Cruise Booking', icon: 'fa-anchor', order: 2 },
+    { id: 'sailboat', name: 'Sailboat Booking', icon: 'fa-wind', order: 3 },
+    { id: 'speedboat', name: 'Speed Boat Booking', icon: 'fa-bolt', order: 4 }
+];
+
 // Load services menu from admin categories
 function loadServicesMenu() {
     const menu = document.getElementById('servicesMenu');
+    const servicesLink = document.querySelector('.nav-item-has-children > a');
     if (!menu) return;
     
-    const categories = JSON.parse(localStorage.getItem('yacht_categories') || 'null');
+    // Get categories from localStorage or use defaults
+    const storedCategories = localStorage.getItem('yacht_categories');
+    const categories = storedCategories ? JSON.parse(storedCategories) : DEFAULT_CATEGORIES_JS;
+    
     if (categories && categories.length > 0) {
-        menu.innerHTML = categories.sort((a, b) => a.order - b.order).map(cat => 
-            `<li><a href="index.html#yachts?type=${cat.id}"><i class="fas ${cat.icon || 'fa-ship'}"></i> ${cat.name}</a></li>`
-        ).join('');
+        const sortedCategories = categories.sort((a, b) => a.order - b.order);
+        
+        if (sortedCategories.length === 1) {
+            // Only one category - replace "Our Services" with the category name
+            if (servicesLink) {
+                servicesLink.innerHTML = `<i class="fas ${sortedCategories[0].icon || 'fa-ship'}"></i> ${sortedCategories[0].name}`;
+                servicesLink.href = 'index.html#yachts';
+            }
+            menu.innerHTML = ''; // No dropdown needed
+        } else {
+            // Multiple categories - show dropdown
+            if (servicesLink) {
+                servicesLink.innerHTML = '<i class="fas fa-concierge-bell"></i> Our Services <i class="fas fa-chevron-down"></i>';
+            }
+            menu.innerHTML = sortedCategories.map(cat => 
+                `<li><a href="index.html#yachts?type=${cat.id}"><i class="fas ${cat.icon || 'fa-ship'}"></i> ${cat.name}</a></li>`
+            ).join('');
+        }
     }
 }
 
