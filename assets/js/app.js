@@ -476,7 +476,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         loadReviews()
     ]);
     
-    // Render initial content
+    // Now render after data is loaded
     renderYachts();
     renderReviews();
     initHeroSlider();

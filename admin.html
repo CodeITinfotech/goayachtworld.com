@@ -3003,78 +3003,95 @@ Value|Best value for your investment..."></textarea>
             showAlert('All contacts cleared', 'success');
         }
 
+    </script>
+    
+    <!-- Firebase SDK - Load BEFORE sync functions are used -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+    
+    <script>
         // Firebase Sync - Save to Firebase when data changes
-        async function saveToFirebase(collection, data) {
+        function saveToFirebase(collection, data) {
             try {
-                await firebase.database().ref(collection).set(data);
+                if (typeof firebase !== 'undefined' && firebase.database) {
+                    firebase.database().ref(collection).set(data);
+                }
                 localStorage.setItem(collection, JSON.stringify(data)); // Backup to localStorage
                 return true;
             } catch (error) {
                 console.error('Firebase sync error:', error);
-                // Fallback to localStorage
                 localStorage.setItem(collection, JSON.stringify(data));
                 return false;
             }
         }
 
         // Update saveCategoryInline to sync with Firebase
-        const originalSaveCategoryInline = saveCategoryInline;
-        saveCategoryInline = async function(id) {
-            originalSaveCategoryInline(id);
-            // Sync to Firebase
-            const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
-            await saveToFirebase('categories', categories);
-        };
+        if (typeof saveCategoryInline === 'function') {
+            const originalSaveCategoryInline = saveCategoryInline;
+            window.saveCategoryInline = function(id) {
+                originalSaveCategoryInline(id);
+                const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
+                saveToFirebase('categories', categories);
+            };
+        }
 
         // Update saveExtraInline to sync with Firebase
-        const originalSaveExtraInline = saveExtraInline;
-        saveExtraInline = async function(index) {
-            originalSaveExtraInline(index);
-            const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
-            await saveToFirebase('extras', extras);
-        };
+        if (typeof saveExtraInline === 'function') {
+            const originalSaveExtraInline = saveExtraInline;
+            window.saveExtraInline = function(index) {
+                originalSaveExtraInline(index);
+                const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
+                saveToFirebase('extras', extras);
+            };
+        }
 
         // Update toggle functions to sync with Firebase
-        const originalToggleCategoryStatus = toggleCategoryStatus;
-        toggleCategoryStatus = async function(id) {
-            originalToggleCategoryStatus(id);
-            const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
-            await saveToFirebase('categories', categories);
-        };
+        if (typeof toggleCategoryStatus === 'function') {
+            const originalToggleCategoryStatus = toggleCategoryStatus;
+            window.toggleCategoryStatus = function(id) {
+                originalToggleCategoryStatus(id);
+                const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
+                saveToFirebase('categories', categories);
+            };
+        }
 
-        const originalToggleExtraStatus = toggleExtraStatus;
-        toggleExtraStatus = async function(index) {
-            originalToggleExtraStatus(index);
-            const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
-            await saveToFirebase('extras', extras);
-        };
+        if (typeof toggleExtraStatus === 'function') {
+            const originalToggleExtraStatus = toggleExtraStatus;
+            window.toggleExtraStatus = function(index) {
+                originalToggleExtraStatus(index);
+                const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
+                saveToFirebase('extras', extras);
+            };
+        }
 
-        const originalToggleReviewStatus = toggleReviewStatus;
-        toggleReviewStatus = async function(index) {
-            originalToggleReviewStatus(index);
-            const reviews = JSON.parse(localStorage.getItem('google_reviews') || JSON.stringify(getDefaultReviews()));
-            await saveToFirebase('reviews', reviews);
-        };
+        if (typeof toggleReviewStatus === 'function') {
+            const originalToggleReviewStatus = toggleReviewStatus;
+            window.toggleReviewStatus = function(index) {
+                originalToggleReviewStatus(index);
+                const reviews = JSON.parse(localStorage.getItem('google_reviews') || JSON.stringify(getDefaultReviews()));
+                saveToFirebase('reviews', reviews);
+            };
+        }
 
         // Yacht save and toggle
-        const originalSaveYacht = saveYacht;
-        saveYacht = async function() {
-            originalSaveYacht();
-            const yachts = JSON.parse(localStorage.getItem('yachts') || JSON.stringify(DEFAULT_YACHTS));
-            await saveToFirebase('yachts', yachts);
-        };
+        if (typeof saveYacht === 'function') {
+            const originalSaveYacht = saveYacht;
+            window.saveYacht = function() {
+                originalSaveYacht();
+                const yachts = JSON.parse(localStorage.getItem('yachts') || JSON.stringify(DEFAULT_YACHTS));
+                saveToFirebase('yachts', yachts);
+            };
+        }
 
-        const originalToggleYachtStatus = toggleYachtStatus;
-        toggleYachtStatus = async function(id, disable) {
-            originalToggleYachtStatus(id, disable);
-            const yachts = JSON.parse(localStorage.getItem('yachts') || JSON.stringify(DEFAULT_YACHTS));
-            await saveToFirebase('yachts', yachts);
-        };
+        if (typeof toggleYachtStatus === 'function') {
+            const originalToggleYachtStatus = toggleYachtStatus;
+            window.toggleYachtStatus = function(id, disable) {
+                originalToggleYachtStatus(id, disable);
+                const yachts = JSON.parse(localStorage.getItem('yachts') || JSON.stringify(DEFAULT_YACHTS));
+                saveToFirebase('yachts', yachts);
+            };
+        }
     </script>
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    <script src="assets/js/firebase-config.js"></script>
 </body>
 </html>
