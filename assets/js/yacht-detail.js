@@ -9,7 +9,7 @@ function getYachtFromURL() {
     return yachtId;
 }
 
-// Yacht data with full details
+// Yacht data with full details - All 35 yachts
 const YACHT_DETAILS = {
     'yacht-001': {
         name: 'Aqua Queen',
@@ -18,170 +18,364 @@ const YACHT_DETAILS = {
         capacity: 8,
         price: 15000,
         featured: true,
-        description: 'The Aqua Queen Yacht offers an unparalleled luxury experience on the waters of Goa. Perfect for intimate gatherings and celebrations, this yacht combines elegance with comfort. Experience breathtaking views and create unforgettable memories with your loved ones.',
+        description: 'The Aqua Queen Yacht offers an unparalleled luxury experience on the waters of Goa. Perfect for intimate gatherings and celebrations.',
         amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
-        images: [
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-1.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-3.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-4.jpg'
-        ],
-        extras: [
-            { name: 'Decorations', price: 'upto ₹4,000/-' },
-            { name: 'Snacks & Beverages', price: 'As per requirement' },
-            { name: 'DSLR Photographer', price: 'upto ₹6,000/-' },
-            { name: 'Drone Videographer', price: 'upto ₹5,000/-' }
-        ]
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg']
     },
     'yacht-002': {
-        name: 'Sea Princess',
+        name: 'White Sea',
         type: 'Yacht',
         location: 'Goa, India',
         capacity: 12,
         price: 18000,
-        description: 'The Sea Princess Yacht is a magnificent vessel perfect for larger groups seeking luxury. With spacious decks and premium amenities, it offers the ultimate sailing experience in Goa.',
+        featured: true,
+        description: 'The White Sea Yacht is a magnificent vessel perfect for larger groups seeking luxury.',
         amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck, Cockpit Area',
-        images: [
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-5.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-6.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-7.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-8.jpg'
-        ],
-        extras: [
-            { name: 'Decorations', price: 'upto ₹4,000/-' },
-            { name: 'Snacks & Beverages', price: 'As per requirement' },
-            { name: 'DSLR Photographer', price: 'upto ₹6,000/-' },
-            { name: 'Drone Videographer', price: 'upto ₹5,000/-' }
-        ]
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-6.jpg']
     },
     'yacht-003': {
-        name: 'Blue Horizon',
+        name: 'Amaze',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 13,
+        price: 20000,
+        featured: true,
+        description: 'Experience the thrill of sailing on the Amaze yacht. Perfect for adventure seekers.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-1.jpg']
+    },
+    'yacht-004': {
+        name: 'Sea Heiress',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 8,
+        price: 22000,
+        featured: true,
+        description: 'The Sea Heiress offers a regal experience on the waters of Goa.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-18.jpg']
+    },
+    'yacht-005': {
+        name: 'MV Star',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 8,
+        price: 16000,
+        featured: true,
+        description: 'MV Star provides an exceptional yachting experience with modern amenities.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-17.jpg']
+    },
+    'yacht-006': {
+        name: 'SeaRay R',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 10,
+        price: 17000,
+        featured: true,
+        description: 'The SeaRay R offers comfort and style for your Goan adventure.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-33.jpg']
+    },
+    'yacht-007': {
+        name: 'Rinker',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 6,
+        price: 12000,
+        description: 'Perfect for small groups seeking an intimate yacht experience.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-25.jpg']
+    },
+    'yacht-008': {
+        name: 'Prawn',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 6,
+        price: 11000,
+        description: 'Compact and comfortable yacht ideal for small gatherings.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-24.jpg']
+    },
+    'yacht-009': {
+        name: 'Bluefin',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 5,
+        price: 10000,
+        description: 'Elegant and efficient yacht for small group outings.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-23.jpg']
+    },
+    'yacht-010': {
+        name: 'Manta Bay',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 8,
+        price: 14000,
+        description: 'Experience luxury on the Manta Bay yacht.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-4.jpg']
+    },
+    'yacht-011': {
+        name: 'Priestess',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 8,
+        price: 13000,
+        description: 'The Priestess yacht offers a divine sailing experience.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-5.jpg']
+    },
+    'yacht-012': {
+        name: 'Fantasea',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 12,
+        price: 19000,
+        description: 'Fantasea brings your dreams to life on the water.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck, Cockpit Area',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-3.jpg']
+    },
+    'yacht-013': {
+        name: 'Sea Whale',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 10,
+        price: 15000,
+        description: 'Majestic Sea Whale for memorable voyages.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-7.jpg']
+    },
+    'yacht-014': {
+        name: 'Desire',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 8,
+        price: 14000,
+        description: 'Follow your desire for adventure on the sea.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-16.jpg']
+    },
+    'yacht-015': {
+        name: 'Sea Eagle',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 14,
+        price: 22000,
+        description: 'Soar like an eagle on the Sea Eagle yacht.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck, Cockpit Area',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-10.jpg']
+    },
+    'yacht-016': {
+        name: 'Bay Elite',
         type: 'Yacht',
         location: 'Goa, India',
         capacity: 10,
         price: 16000,
-        description: 'The Blue Horizon Yacht offers a perfect blend of comfort and elegance. Ideal for sunset cruises and romantic evenings, this yacht provides stunning views of the Goan coastline.',
+        description: 'The Bay Elite offers premium yachting experience.',
         amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
-        images: [
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-9.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-10.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-11.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-12.jpg'
-        ],
-        extras: [
-            { name: 'Decorations', price: 'upto ₹4,000/-' },
-            { name: 'Snacks & Beverages', price: 'As per requirement' },
-            { name: 'DSLR Photographer', price: 'upto ₹6,000/-' },
-            { name: 'Drone Videographer', price: 'upto ₹5,000/-' }
-        ]
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-31.jpg']
     },
-    'yacht-004': {
-        name: 'Ocean Star',
-        type: 'Yacht',
-        location: 'Goa, India',
-        capacity: 14,
-        price: 20000,
-        description: 'The Ocean Star Yacht is designed for those who seek the finest things in life. With premium interiors and excellent service, it guarantees an exceptional yachting experience.',
-        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck, Kitchenette',
-        images: [
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-13.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-14.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-15.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-16.jpg'
-        ],
-        extras: [
-            { name: 'Decorations', price: 'upto ₹4,000/-' },
-            { name: 'Snacks & Beverages', price: 'As per requirement' },
-            { name: 'DSLR Photographer', price: 'upto ₹6,000/-' },
-            { name: 'Drone Videographer', price: 'upto ₹5,000/-' }
-        ]
-    },
-    'yacht-005': {
-        name: 'Ciao Bella',
-        type: 'Yacht',
-        location: 'Goa, India',
-        capacity: 16,
-        price: 25000,
-        description: 'The Ciao Bella Yacht has maximum capacity of 16 passengers, it caters to small groups, making it the perfect choice for intimate occasions or celebratory events. Whether it\'s a special gathering or a leisurely cruise with close friends, the Ciao Bella Yacht ensures an atmosphere of unparalleled luxury.',
-        amenities: 'Welcome Drink, Water-bottle, Ice, Music System',
-        images: [
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-19.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-19a.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-19b.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-19c.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-19d.jpg'
-        ],
-        extras: [
-            { name: 'Decorations', price: 'upto ₹4,000/-' },
-            { name: 'Snacks & Beverages', price: 'As per requirement' },
-            { name: 'DSLR Photographer', price: 'upto ₹6,000/-' },
-            { name: 'Drone Videographer', price: 'upto ₹5,000/-' }
-        ]
-    },
-    'yacht-006': {
-        name: 'Mandovi Queen',
-        type: 'Cruise',
-        location: 'Goa, India',
-        capacity: 20,
-        price: 30000,
-        description: 'The Mandovi Queen is a premium cruise yacht perfect for larger events and celebrations. With ample deck space and elegant interiors, it\'s ideal for corporate events, birthday parties, and grand celebrations.',
-        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Multiple Decks, Air Conditioning',
-        images: [
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-20.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-21.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-22.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-23.jpg'
-        ],
-        extras: [
-            { name: 'Decorations', price: 'upto ₹6,000/-' },
-            { name: 'Snacks & Beverages', price: 'As per requirement' },
-            { name: 'DSLR Photographer', price: 'upto ₹8,000/-' },
-            { name: 'Drone Videographer', price: 'upto ₹7,000/-' }
-        ]
-    },
-    'yacht-007': {
-        name: 'Sunset Dreams',
+    'yacht-017': {
+        name: 'Torpedo',
         type: 'Yacht',
         location: 'Goa, India',
         capacity: 10,
         price: 18000,
-        description: 'Experience the magical Goan sunsets aboard Sunset Dreams. This yacht is specifically designed for romantic cruises and provides the perfect setting for memorable evenings on the water.',
-        amenities: 'Welcome Drink, Champagne, Ice, Premium Music System, Sun Deck, Bean Bags',
-        images: [
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-24.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-25.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-26.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-27.jpg'
-        ],
-        extras: [
-            { name: 'Decorations', price: 'upto ₹5,000/-' },
-            { name: 'Candlelight Dinner', price: 'upto ₹10,000/-' },
-            { name: 'DSLR Photographer', price: 'upto ₹6,000/-' },
-            { name: 'Drone Videographer', price: 'upto ₹5,000/-' }
-        ]
+        description: 'Fast and furious Torpedo for thrill seekers.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-36.jpg']
     },
-    'yacht-008': {
-        name: 'Royal Voyager',
-        type: 'Luxury Yacht',
+    'yacht-018': {
+        name: 'Solaris',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 8,
+        price: 13000,
+        description: 'Let Solaris illuminate your Goan adventure.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-9.jpg']
+    },
+    'yacht-019': {
+        name: 'White Dolphin',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 16,
+        price: 25000,
+        description: 'Graceful White Dolphin for medium-sized groups.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck, Cockpit Area',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-34.jpg']
+    },
+    'yacht-020': {
+        name: 'Ralston II',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 16,
+        price: 24000,
+        description: 'The Ralston II offers reliability and comfort.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck, Cockpit Area',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-35.jpg']
+    },
+    'yacht-021': {
+        name: 'Pegasus',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 20,
+        price: 30000,
+        description: 'Fly high with Pegasus - perfect for larger celebrations.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Multiple Decks',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-12.jpg']
+    },
+    'yacht-022': {
+        name: 'Sailing Yacht 39',
+        type: 'Sailing Yacht',
         location: 'Goa, India',
         capacity: 15,
+        price: 28000,
+        description: 'Classic sailing experience on this beautiful yacht.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-19.jpg']
+    },
+    'yacht-023': {
+        name: 'Ciao Bella',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 16,
+        price: 26000,
+        description: 'Italian elegance meets Goan beauty on Ciao Bella.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-13.jpg']
+    },
+    'yacht-024': {
+        name: 'Majesty 56',
+        type: 'Luxury Yacht',
+        location: 'Goa, India',
+        capacity: 20,
         price: 35000,
-        description: 'The Royal Voyager represents the pinnacle of luxury yachting in Goa. With state-of-the-art amenities, elegant furnishings, and a dedicated crew, it offers an unforgettable experience for the most discerning guests.',
-        amenities: 'Welcome Drink, Premium Bar, Music System, Multiple Decks, Sun Loungers, Air Conditioning',
-        images: [
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-28.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-29.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-30.jpg',
-            'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-31.jpg'
-        ],
-        extras: [
-            { name: 'Decorations', price: 'upto ₹8,000/-' },
-            { name: 'Catering Service', price: 'As per requirement' },
-            { name: 'DSLR Photographer', price: 'upto ₹10,000/-' },
-            { name: 'Drone Videographer', price: 'upto ₹8,000/-' }
-        ]
+        description: 'True majesty on water - the Majesty 56 experience.',
+        amenities: 'Welcome Drink, Premium Bar, Music System, Multiple Decks, Air Conditioning',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-15.jpg']
+    },
+    'yacht-025': {
+        name: 'Squadron BD',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 20,
+        price: 32000,
+        description: 'Command your voyage on the Squadron BD.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Multiple Decks',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-29.jpg']
+    },
+    'yacht-026': {
+        name: 'Ferretti 460',
+        type: 'Luxury Yacht',
+        location: 'Goa, India',
+        capacity: 16,
+        price: 28000,
+        description: 'Italian craftsmanship meets luxury on Ferretti 460.',
+        amenities: 'Welcome Drink, Premium Bar, Music System, Sun Deck, Air Conditioning',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-22.jpg']
+    },
+    'yacht-027': {
+        name: 'Ferretti 550',
+        type: 'Luxury Yacht',
+        location: 'Goa, India',
+        capacity: 22,
+        price: 45000,
+        description: 'Premium Ferretti 550 for the discerning yacht enthusiast.',
+        amenities: 'Welcome Drink, Premium Bar, Music System, Multiple Decks, Air Conditioning',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-14.jpg']
+    },
+    'yacht-028': {
+        name: 'Ferretti FL',
+        type: 'Luxury Yacht',
+        location: 'Goa, India',
+        capacity: 25,
+        price: 50000,
+        description: 'The flagship Ferretti FL for ultimate luxury.',
+        amenities: 'Welcome Drink, Premium Bar, Music System, Multiple Decks, Air Conditioning',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-27.jpg']
+    },
+    'yacht-029': {
+        name: 'Calypso',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 16,
+        price: 24000,
+        description: 'Let Calypso enchant you with Goan waters.',
+        amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-28.jpg']
+    },
+    'yacht-030': {
+        name: 'Ahilo',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 25,
+        price: 48000,
+        description: 'Spacious Ahilo for grand celebrations.',
+        amenities: 'Welcome Drink, Premium Bar, Music System, Multiple Decks, Air Conditioning',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-30.jpg']
+    },
+    'yacht-031': {
+        name: 'Zia Bella',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 30,
+        price: 55000,
+        description: 'The beautiful Zia Bella for large gatherings.',
+        amenities: 'Welcome Drink, Premium Bar, Music System, Multiple Decks, Air Conditioning',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-11.jpg']
+    },
+    'yacht-032': {
+        name: 'Sea Comfort',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 25,
+        price: 45000,
+        description: 'Comfort meets style on Sea Comfort.',
+        amenities: 'Welcome Drink, Premium Bar, Music System, Multiple Decks, Air Conditioning',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-32.jpg']
+    },
+    'yacht-033': {
+        name: 'Ripples Chique',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 50,
+        price: 75000,
+        description: 'Premium yacht for large events and celebrations.',
+        amenities: 'Welcome Drink, Premium Bar, Music System, Multiple Decks, Air Conditioning',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-20.jpg']
+    },
+    'yacht-034': {
+        name: 'Mi Amor',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 50,
+        price: 80000,
+        description: 'My love - the ultimate yacht experience.',
+        amenities: 'Welcome Drink, Premium Bar, Music System, Multiple Decks, Air Conditioning',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-21.jpg']
+    },
+    'yacht-035': {
+        name: 'Lady M',
+        type: 'Yacht',
+        location: 'Goa, India',
+        capacity: 22,
+        price: 40000,
+        description: 'Lady M - elegance personified on water.',
+        amenities: 'Welcome Drink, Premium Bar, Music System, Sun Deck, Air Conditioning',
+        images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-35.jpg']
     }
 };
+
+// Default extras for all yachts
+const DEFAULT_EXTRAS = [
+    { name: 'Decorations', price: 'upto ₹4,000/-' },
+    { name: 'Snacks & Beverages', price: 'As per requirement' },
+    { name: 'DSLR Photographer', price: 'upto ₹6,000/-' },
+    { name: 'Drone Videographer', price: 'upto ₹5,000/-' }
+];
 
 // Format price
 function formatPrice(price) {
