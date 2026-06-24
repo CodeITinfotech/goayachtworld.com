@@ -1828,24 +1828,46 @@ Value|Best value for your investment..."></textarea>
             const filteredYachts = selectedCategory ? yachts.filter(y => y.type === selectedCategory) : yachts;
             
             if (yachtsList) {
+                if (filteredYachts.length === 0) {
+                    yachtsList.innerHTML = '<p style="color: var(--text-light); text-align: center; padding: 40px;">No yachts found. Click "Add Yacht" to create one.</p>';
+                    return;
+                }
                 yachtsList.innerHTML = filteredYachts.map(yacht => {
                     const cat = categories.find(c => c.id === yacht.type) || { name: 'Unknown' };
-                    const videoIcon = yacht.video ? '<i class="fas fa-video" style="color: var(--primary);"></i>' : '';
+                    const videoIcon = yacht.video ? '<i class="fas fa-video" style="color: var(--primary); margin-left: 5px;"></i>' : '';
+                    const featuredBadge = yacht.featured ? '<span style="background: #ffd700; color: #000; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; margin-left: 8px;">Featured</span>' : '';
                     return `
-                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #fff; border-radius: 8px; margin-bottom: 10px;">
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <img src="${yacht.images[0]}" alt="${yacht.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
-                            <div>
-                                <strong>${yacht.name} ${videoIcon}</strong>
-                                <p style="margin: 0; font-size: 0.85rem; color: #666;">${cat.name} • ${yacht.capacity} guests • ₹${yacht.price.toLocaleString('en-IN')}/hr</p>
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 15px; background: #fff; border-radius: 8px; margin-bottom: 10px; border: 1px solid #eee;">
+                        <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
+                            <img src="${yacht.images[0]}" alt="${yacht.name}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 8px;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center;">
+                                    <strong style="font-size: 16px;">${yacht.name}${videoIcon}${featuredBadge}</strong>
+                                </div>
+                                <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #666;">${cat.name} • ${yacht.capacity} guests • ₹${yacht.price.toLocaleString('en-IN')}/hr</p>
+                                <p style="margin: 3px 0 0 0; font-size: 0.75rem; color: #999;">${(yacht.extras || []).length} extras • ${(yacht.gallery || []).length} gallery photos</p>
                             </div>
                         </div>
-                        <div>
-                            <button class="btn btn-sm btn-outline" onclick="showYachtForm('${yacht.id}')"><i class="fas fa-edit"></i> Edit</button>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <label style="display: flex; align-items: center; gap: 5px; cursor: pointer; white-space: nowrap;">
+                                <input type="checkbox" ${yacht.featured ? 'checked' : ''} onchange="toggleFeatured('${yacht.id}', this.checked)">
+                                <span style="font-size: 12px;">Featured</span>
+                            </label>
+                            <button class="btn btn-sm btn-outline" onclick="showYachtForm('${yacht.id}')"><i class="fas fa-edit"></i></button>
                             <button class="btn btn-sm btn-danger" onclick="deleteYacht('${yacht.id}')"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
                 `}).join('');
+            }
+        }
+
+        function toggleFeatured(yachtId, isFeatured) {
+            const yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
+            const yacht = yachts.find(y => y.id === yachtId);
+            if (yacht) {
+                yacht.featured = isFeatured;
+                localStorage.setItem('yacht_items', JSON.stringify(yachts));
+                showAlert(`Yacht ${isFeatured ? 'marked as featured' : 'removed from featured'}`, 'success');
             }
         }
 
