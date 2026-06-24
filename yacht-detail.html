@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Yacht Details | Goa Yacht World</title>
+    <meta name="description" id="pageDesc" content="Book luxury yacht experiences in Goa. Premium yachts for parties, events, and cruising.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/yacht-detail.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚤</text></svg>">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.svg" alt="Goa Yacht World" class="logo-img">
+            </a>
+            <nav class="nav" id="mainNav">
+                <ul class="nav-list">
+                    <li class="nav-item-has-children">
+                        <a href="index.html#yachts">Our Services <i class="fas fa-chevron-down"></i></a>
+                        <ul class="sub-menu">
+                            <li><a href="index.html#yachts">Yacht Booking</a></li>
+                            <li><a href="index.html#yachts">Cruise Booking</a></li>
+                            <li><a href="index.html#yachts">Sailboat Booking</a></li>
+                            <li><a href="index.html#yachts">Speed Boat Booking</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                </ul>
+            </nav>
+            <div class="header-right">
+                <a href="tel:+918446275985" class="phone-link">
+                    <i class="fas fa-phone"></i> +918446275985
+                </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Yacht Detail Section -->
+    <section class="yacht-detail-section">
+        <div class="container">
+            <!-- Gallery -->
+            <div class="yacht-gallery">
+                <div class="yacht-main-image">
+                    <img id="mainImage" src="" alt="">
+                </div>
+                <div class="yacht-thumbnails" id="thumbnails">
+                    <!-- Thumbnails loaded via JS -->
+                </div>
+            </div>
+
+            <!-- Info -->
+            <div class="yacht-info-grid">
+                <div class="yacht-main-info">
+                    <h1 id="yachtName">Yacht Name</h1>
+                    <div class="yacht-location">
+                        <i class="fas fa-map-marker-alt"></i> <span id="yachtLocation">Goa, India</span>
+                    </div>
+                    <div class="yacht-description">
+                        <h2>Description</h2>
+                        <p id="yachtDescription"></p>
+                    </div>
+                </div>
+
+                <div class="yacht-booking-card">
+                    <div class="booking-card-header">
+                        <span class="yacht-type-badge" id="yachtType">Yacht</span>
+                        <div class="yacht-price" id="yachtPrice">₹0</div>
+                    </div>
+                    <div class="booking-card-specs">
+                        <div class="spec-item">
+                            <i class="fas fa-users"></i>
+                            <span>Max Guests: <strong id="yachtCapacity">0</strong></span>
+                        </div>
+                    </div>
+                    <div class="booking-card-amenities">
+                        <h4>Amenities</h4>
+                        <p id="yachtAmenities"></p>
+                    </div>
+                    <div class="booking-card-extras">
+                        <h4>Extra Services (Chargable)</h4>
+                        <ul id="yachtExtras">
+                            <li>Decorations: upto ₹4,000/-</li>
+                            <li>Snacks & Beverages: As per requirement</li>
+                            <li>DSLR Photographer: upto ₹6,000/-</li>
+                            <li>Drone Videographer: upto ₹5,000/-</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn btn-whatsapp btn-block" id="bookNowBtn">
+                        <i class="fab fa-whatsapp"></i> Book Now
+                    </a>
+                    <a href="tel:+918446275985" class="btn btn-outline btn-block">
+                        <i class="fas fa-phone"></i> Call Us
+                    </a>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="yacht-faq">
+                <h2>Popular Questions</h2>
+                <div class="faq-item">
+                    <h3><i class="fas fa-chevron-down"></i> Are fuel costs included in the rental price?</h3>
+                    <div class="faq-answer">
+                        <p>Yes, fuel costs are included in the booking price. The yacht or boat will be provided to you with a full tank.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3><i class="fas fa-chevron-down"></i> Can I cancel or modify my reservation?</h3>
+                    <div class="faq-answer">
+                        <p>Yes, you can cancel or modify your reservation, subject to our cancellation and modification policy. The ability to do so and any associated fees will depend on the timing and terms of cancellation or modification.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3><i class="fas fa-chevron-down"></i> What happens if there is inclement weather?</h3>
+                    <div class="faq-answer">
+                        <p>If there is inclement weather that makes it unsafe or impossible to go out on the water, we will work with you to reschedule your rental or provide a refund, depending on the circumstances. Your safety is our top priority.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How It Works -->
+            <div class="how-it-works">
+                <h2>Renting Online is Easy</h2>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3>Browse</h3>
+                        <p>Browse the rental boat listings in your area</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3>Reserve</h3>
+                        <p>Reserve with GYW secure online checkout</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3>Adventure</h3>
+                        <p>Embark on your adventure with our rental boats!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="cta-section" style="background-image: url('https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/book-bg.jpg')">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Set sail with us</h2>
+                <p>Exploring cities, one ride at a time</p>
+                <a href="index.html#yachts" class="btn btn-whatsapp btn-lg">
+                    <i class="fas fa-ship"></i> View All Yachts
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Information</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html#yachts">Our Yachts</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="cancellation-policy.html">Cancellation Policy</a></li>
+                        <li><a href="refund-policy.html">Refund Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> R-2, 4th Floor, Satt Adhar Champers, Panaji, Goa</li>
+                        <li><i class="fas fa-envelope"></i> support@goayachtworld.com</li>
+                        <li><i class="fas fa-phone"></i> +918446275985 | +918446205985</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>All Rights Reserved - 2024 © Goa Yacht World</p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/918446275985?text=Hi,%20I%20want%20to%20book%20a%20yacht" target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/yacht-detail.js"></script>
+</body>
+</html>

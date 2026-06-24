@@ -128,28 +128,31 @@ function renderYachts() {
     
     grid.innerHTML = yachts.map(yacht => `
         <div class="yacht-card">
-            <div class="yacht-card-img">
-                <img src="${yacht.images[0]}" alt="${yacht.name}" loading="lazy">
-                ${yacht.featured ? '<span class="yacht-card-badge">Featured</span>' : ''}
-            </div>
-            <div class="yacht-card-body">
-                <span class="yacht-card-type">${yacht.type}</span>
-                <h3>${yacht.name}</h3>
-                <div class="yacht-card-meta">
-                    <span><i class="fas fa-users"></i> Max Capacity: ${yacht.capacity}</span>
-                    <span><i class="fas fa-map-marker-alt"></i> ${yacht.location}</span>
+            <a href="yacht-detail.html?yacht=${yacht.id}" class="yacht-card-link">
+                <div class="yacht-card-img">
+                    <img src="${yacht.images[0]}" alt="${yacht.name}" loading="lazy">
+                    ${yacht.featured ? '<span class="yacht-card-badge">Featured</span>' : ''}
+                    <span class="yacht-view-details">View Details</span>
                 </div>
-                <div class="yacht-card-price">
-                    ${formatPrice(yacht.price)} <small>/hour</small>
+                <div class="yacht-card-body">
+                    <span class="yacht-card-type">${yacht.type}</span>
+                    <h3>${yacht.name}</h3>
+                    <div class="yacht-card-meta">
+                        <span><i class="fas fa-users"></i> Max Capacity: ${yacht.capacity}</span>
+                        <span><i class="fas fa-map-marker-alt"></i> ${yacht.location}</span>
+                    </div>
+                    <div class="yacht-card-price">
+                        ${formatPrice(yacht.price)} <small>/hour</small>
+                    </div>
                 </div>
-                <div class="yacht-card-actions">
-                    <a href="https://wa.me/91${CONFIG.whatsappNumber}?text=Hi,%20I%20want%20to%20book%20${encodeURIComponent(yacht.name)}" target="_blank" class="btn btn-whatsapp">
-                        <i class="fab fa-whatsapp"></i> Book
-                    </a>
-                    <a href="tel:+91${CONFIG.whatsappNumber}" class="btn btn-primary">
-                        <i class="fas fa-phone"></i>
-                    </a>
-                </div>
+            </a>
+            <div class="yacht-card-actions">
+                <a href="https://wa.me/91${CONFIG.whatsappNumber}?text=Hi,%20I%20want%20to%20book%20${encodeURIComponent(yacht.name)}" target="_blank" class="btn btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i> Book
+                </a>
+                <a href="tel:+91${CONFIG.whatsappNumber}" class="btn btn-primary">
+                    <i class="fas fa-phone"></i>
+                </a>
             </div>
         </div>
     `).join('');

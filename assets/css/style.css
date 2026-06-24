@@ -439,6 +439,31 @@ ul {
     text-transform: uppercase;
 }
 
+.yacht-view-details {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary);
+    color: var(--white);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: bottom 0.3s ease;
+}
+
+.yacht-card:hover .yacht-view-details {
+    bottom: 15px;
+}
+
+.yacht-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
 .yacht-card-body {
     padding: 24px;
 }
