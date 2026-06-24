@@ -226,12 +226,62 @@ function formatPrice(price) {
     return '₹' + price.toLocaleString('en-IN');
 }
 
-// Render yachts
+// Render featured yachts
+function renderFeaturedYachts() {
+    const grid = document.getElementById('featuredGrid');
+    if (!grid) return;
+    
+    const featuredYachts = db.getFeaturedYachts();
+    
+    if (featuredYachts.length === 0) {
+        grid.innerHTML = '<p style="text-align:center;color:#888;padding:40px;">No featured yachts yet. Mark yachts as featured in Admin.</p>';
+        return;
+    }
+    
+    grid.innerHTML = featuredYachts.map(yacht => {
+        const urlName = encodeURIComponent(yacht.name.toLowerCase().replace(/\s+/g, '-'));
+        const videoBadge = yacht.video ? `<span class="video-badge" onclick="event.preventDefault(); window.open('${yacht.video}', '_blank')"><i class="fas fa-play-circle"></i></span>` : '';
+        return `
+        <div class="yacht-card">
+            <a href="yacht-detail.html?yacht=${urlName}" class="yacht-card-link">
+                <div class="yacht-card-img">
+                    <img src="${yacht.images[0]}" alt="${yacht.name}" loading="lazy">
+                    <span class="yacht-card-badge">Featured</span>
+                    ${videoBadge}
+                </div>
+                <div class="yacht-card-body">
+                    <span class="yacht-card-type">${yacht.type}</span>
+                    <h3>${yacht.name}</h3>
+                    <div class="yacht-card-meta">
+                        <span><i class="fas fa-users"></i> Max Capacity: ${yacht.capacity}</span>
+                        <span><i class="fas fa-map-marker-alt"></i> ${yacht.location}</span>
+                    </div>
+                    <div class="yacht-card-price">
+                        ${formatPrice(yacht.price)} <small>/hour</small>
+                    </div>
+                </div>
+            </a>
+            <div class="yacht-card-actions">
+                <a href="https://wa.me/91${CONFIG.whatsappNumber}?text=Hello%20Goa%20Yacht%20World!%20%F0%9F%9F%A2%0A%0AI%27m%20interested%20in%20booking%3A%0A%0A*Yacht%3A*%20${encodeURIComponent(yacht.name)}%0A*Location%3A*%20${encodeURIComponent(yacht.location)}%0A*Capacity%3A*%20${yacht.capacity}%20guests%0A*Price%3A*%20%E2%82%B9${yacht.price.toLocaleString('en-IN')}%2Fhour%0A%0APlease%20confirm%20availability." target="_blank" class="btn btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i> Book Now
+                </a>
+            </div>
+        </div>
+        `;
+    }).join('');
+}
+
+// Render all yachts
 function renderYachts() {
     const grid = document.getElementById('yachtsGrid');
     if (!grid) return;
     
     const yachts = db.getAllYachts();
+    
+    if (yachts.length === 0) {
+        grid.innerHTML = '<p style="text-align:center;color:#888;padding:40px;">No yachts available. Check back soon!</p>';
+        return;
+    }
     
     grid.innerHTML = yachts.map(yacht => {
         const urlName = encodeURIComponent(yacht.name.toLowerCase().replace(/\s+/g, '-'));
@@ -488,6 +538,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     ]);
     
     // Now render after data is loaded
+    renderFeaturedYachts();
     renderYachts();
     renderReviews();
     initHeroSlider();
@@ -497,7 +548,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Listen for real-time updates from Firebase
     db.listenToYachts((yachts) => {
-        if (document.getElementById('yachtsGrid')) {
+        if (document.getElementById('yachtsGrid') || document.getElementById('featuredGrid')) {
+            renderFeaturedYachts();
             renderYachts();
         }
     });
