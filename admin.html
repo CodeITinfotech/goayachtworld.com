@@ -758,8 +758,23 @@
     <script>
         const DEFAULT_PASSWORD = 'admin123';
         
+        // Check URL for admin parameter
+        function checkAdminAccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isAdmin = urlParams.get('admin');
+            
+            if (isAdmin !== 'true') {
+                // Redirect to homepage if no admin parameter
+                window.location.href = 'index.html';
+                return false;
+            }
+            return true;
+        }
+
         // Check if already logged in
         function checkAuth() {
+            if (!checkAdminAccess()) return;
+            
             const isLoggedIn = sessionStorage.getItem('adminLoggedIn');
             if (isLoggedIn === 'true') {
                 document.body.classList.add('logged-in');
@@ -814,7 +829,7 @@
         // Admin Logout
         function adminLogout() {
             sessionStorage.removeItem('adminLoggedIn');
-            location.reload();
+            window.location.href = 'index.html';
         }
 
         // Show Section
