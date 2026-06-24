@@ -751,7 +751,7 @@
                     <div style="background: var(--bg-light); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                             <h3 style="margin: 0;"><i class="fas fa-list"></i> Available Categories</h3>
-                            <button class="btn btn-sm btn-primary" onclick="addCategory()">
+                            <button class="btn btn-sm btn-primary" onclick="addCategoryInline()">
                                 <i class="fas fa-plus"></i> Add Category
                             </button>
                         </div>
@@ -1462,27 +1462,78 @@ Value|Best value for your investment..."></textarea>
                 return;
             }
             
-            extrasList.innerHTML = extras.map((extra, index) => `
-                <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #fff; border-radius: 8px; margin-bottom: 10px;">
+            extrasList.innerHTML = extras.map((extra, index) => {
+                const isActive = extra.active !== false;
+                return `
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 15px; background: #fff; border-radius: 8px; margin-bottom: 10px; ${!isActive ? 'opacity: 0.6; border-left: 4px solid #e74c3c;' : 'border-left: 4px solid var(--primary);'}">
                     <div style="display: flex; align-items: center; gap: 15px;">
                         <i class="fas fa-gift" style="color: var(--primary); font-size: 18px;"></i>
                         <div>
-                            <strong>${extra.name}</strong>
-                            <p style="margin: 0; font-size: 0.85rem; color: #666;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <strong>${extra.name}</strong>
+                                <span style="font-size: 11px; padding: 2px 8px; border-radius: 10px; background: ${isActive ? '#27ae60' : '#e74c3c'}; color: #fff;">
+                                    ${isActive ? 'Active' : 'Inactive'}
+                                </span>
+                            </div>
+                            <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #666;">
                                 ${extra.price === 0 ? 'As per requirement' : 'upto ₹' + extra.price.toLocaleString('en-IN') + '/-'}
                             </p>
                         </div>
                     </div>
                     <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-sm btn-outline" onclick="editExtraService(${index})">
-                            <i class="fas fa-edit"></i>
+                        <button class="btn btn-sm ${isActive ? 'btn-warning' : 'btn-success'}" onclick="toggleExtraStatus(${index})">
+                            <i class="fas ${isActive ? 'fa-ban' : 'fa-check'}"></i> ${isActive ? 'Deactivate' : 'Activate'}
                         </button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteExtraService(${index})">
-                            <i class="fas fa-trash"></i>
+                        <button class="btn btn-sm btn-primary" onclick="editExtraInline(${index})">
+                            <i class="fas fa-edit"></i> Edit
                         </button>
                     </div>
                 </div>
-            `).join('');
+                <div id="edit-extra-${index}" style="display: none; background: var(--bg-light); padding: 20px; border-radius: 8px; margin-bottom: 10px; border: 2px solid var(--primary);">
+                    <h4 style="margin: 0 0 15px 0;"><i class="fas fa-edit"></i> Edit Extra Service</h4>
+                    <div style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 15px; align-items: end;">
+                        <div class="form-group" style="margin: 0;">
+                            <label>Name</label>
+                            <input type="text" id="extra-name-${index}" value="${extra.name}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+                        <div class="form-group" style="margin: 0;">
+                            <label>Price (₹)</label>
+                            <input type="number" id="extra-price-${index}" value="${extra.price}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-primary" onclick="saveExtraInline(${index})"><i class="fas fa-save"></i> Save</button>
+                            <button class="btn btn-outline" onclick="cancelExtraEdit()"><i class="fas fa-times"></i> Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function editExtraInline(index) {
+            document.querySelectorAll('[id^="edit-extra-"]').forEach(el => el.style.display = 'none');
+            document.getElementById('edit-extra-' + index).style.display = 'block';
+        }
+
+        function cancelExtraEdit() {
+            document.querySelectorAll('[id^="edit-extra-"]').forEach(el => el.style.display = 'none');
+        }
+
+        function saveExtraInline(index) {
+            const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
+            extras[index].name = document.getElementById('extra-name-' + index).value.trim();
+            extras[index].price = parseInt(document.getElementById('extra-price-' + index).value) || 0;
+            localStorage.setItem('yacht_extras', JSON.stringify(extras));
+            cancelExtraEdit();
+            loadExtrasEditor();
+            showAlert('Extra service saved!', 'success');
+        }
+
+        function toggleExtraStatus(index) {
+            const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
+            extras[index].active = extras[index].active === false ? true : false;
+            localStorage.setItem('yacht_extras', JSON.stringify(extras));
+            loadExtrasEditor();
+            showAlert(`Extra ${extras[index].active ? 'activated' : 'deactivated'}!`, 'success');
         }
 
         function addExtraService() {
@@ -1495,7 +1546,7 @@ Value|Best value for your investment..."></textarea>
             }
             
             const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
-            extras.push({ name, price });
+            extras.push({ name, price, active: true });
             localStorage.setItem('yacht_extras', JSON.stringify(extras));
             
             document.getElementById('extraNameInput').value = '';
@@ -1527,23 +1578,15 @@ Value|Best value for your investment..."></textarea>
             }
             
             const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
-            extras[index] = { name, price };
+            extras[index].name = name;
+            extras[index].price = price;
             localStorage.setItem('yacht_extras', JSON.stringify(extras));
-            
-            cancelExtraEdit();
+            document.getElementById('extraEditForm').style.display = 'none';
             loadExtrasEditor();
             showAlert('Extra service updated!', 'success');
         }
 
-        function cancelExtraEdit() {
-            document.getElementById('extraEditForm').style.display = 'none';
-            document.getElementById('editExtraIndex').value = '';
-            document.getElementById('editExtraName').value = '';
-            document.getElementById('editExtraPrice').value = '';
-        }
-
         function deleteExtraService(index) {
-            if (!confirm('Delete this extra service?')) return;
             const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
             extras.splice(index, 1);
             localStorage.setItem('yacht_extras', JSON.stringify(extras));
@@ -1899,6 +1942,7 @@ Value|Best value for your investment..."></textarea>
 
         function renderReviewCard(r, i, totalReviews) {
             const isEditing = editingReviewIndex === i;
+            const isActive = r.active !== false;
             if (isEditing) {
                 return `
                     <div class="review-edit-card" style="background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%); padding: 25px; border-radius: 16px; margin-top: 15px; border: 2px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
@@ -1935,12 +1979,17 @@ Value|Best value for your investment..."></textarea>
                 `;
             }
             return `
-                <div class="review-view-card" style="background: var(--bg-light); padding: 20px; border-radius: 12px; margin-top: 15px; border-left: 4px solid var(--primary); transition: all 0.3s;">
+                <div class="review-view-card" style="background: var(--bg-light); padding: 20px; border-radius: 12px; margin-top: 15px; ${!isActive ? 'opacity: 0.6; border-left: 4px solid #e74c3c;' : 'border-left: 4px solid var(--primary);'} transition: all 0.3s;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
                         <div style="display: flex; align-items: center; gap: 15px;">
                             <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem;">${r.avatar}</div>
                             <div>
-                                <h4 style="margin: 0; color: var(--text);">${r.name}</h4>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <h4 style="margin: 0; color: var(--text);">${r.name}</h4>
+                                    <span style="font-size: 11px; padding: 2px 8px; border-radius: 10px; background: ${isActive ? '#27ae60' : '#e74c3c'}; color: #fff;">
+                                        ${isActive ? 'Active' : 'Inactive'}
+                                    </span>
+                                </div>
                                 <span style="color: #888; font-size: 0.85rem;"><i class="fas fa-clock"></i> ${r.date}</span>
                             </div>
                         </div>
@@ -1950,8 +1999,10 @@ Value|Best value for your investment..."></textarea>
                     </div>
                     <p style="margin: 0 0 15px 0; color: var(--text-light); line-height: 1.6;">${r.text.length > 150 ? r.text.substring(0, 150) + '...' : r.text}</p>
                     <div style="display: flex; justify-content: flex-end; gap: 10px; padding-top: 10px; border-top: 1px solid #eee;">
+                        <button class="btn btn-sm ${isActive ? 'btn-warning' : 'btn-success'}" onclick="toggleReviewStatus(${i})">
+                            <i class="fas ${isActive ? 'fa-ban' : 'fa-check'}"></i> ${isActive ? 'Deactivate' : 'Activate'}
+                        </button>
                         <button class="btn btn-sm btn-primary" onclick="editReview(${i})"><i class="fas fa-edit"></i> Edit</button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteReview(${i})" ${totalReviews <= 3 ? 'disabled style="opacity:0.5;cursor:not-allowed"' : ''}><i class="fas fa-trash"></i> Delete</button>
                     </div>
                 </div>
             `;
@@ -2007,6 +2058,14 @@ Value|Best value for your investment..."></textarea>
             localStorage.setItem('google_reviews', JSON.stringify(reviews));
             loadReviewsEditor();
             showAlert('Review deleted!', 'success');
+        }
+
+        function toggleReviewStatus(index) {
+            const reviews = JSON.parse(localStorage.getItem('google_reviews') || JSON.stringify(getDefaultReviews()));
+            reviews[index].active = reviews[index].active === false ? true : false;
+            localStorage.setItem('google_reviews', JSON.stringify(reviews));
+            loadReviewsEditor();
+            showAlert(`Review ${reviews[index].active ? 'activated' : 'deactivated'}!`, 'success');
         }
 
         function updateReview(index, field, value) {
@@ -2103,19 +2162,105 @@ Value|Best value for your investment..."></textarea>
             
             const categoriesList = document.getElementById('categoriesList');
             if (categoriesList) {
-                categoriesList.innerHTML = categories.sort((a, b) => a.order - b.order).map(cat => `
-                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #fff; border-radius: 8px; margin-bottom: 10px;">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <i class="fas ${cat.icon || 'fa-folder'}" style="color: var(--primary);"></i>
-                            <span>${cat.name}</span>
+                categoriesList.innerHTML = categories.sort((a, b) => a.order - b.order).map((cat, i) => {
+                    const isActive = cat.active !== false;
+                    return `
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 15px; background: #fff; border-radius: 8px; margin-bottom: 10px; ${!isActive ? 'opacity: 0.6; border-left: 4px solid #e74c3c;' : 'border-left: 4px solid var(--primary);'}">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <i class="fas ${cat.icon || 'fa-folder'}" style="color: var(--primary); font-size: 20px;"></i>
+                            <div>
+                                <span style="font-weight: 600; font-size: 15px;">${cat.name}</span>
+                                <span style="margin-left: 10px; font-size: 11px; padding: 2px 8px; border-radius: 10px; background: ${isActive ? '#27ae60' : '#e74c3c'}; color: #fff;">
+                                    ${isActive ? 'Active' : 'Inactive'}
+                                </span>
+                            </div>
                         </div>
-                        <div>
-                            <button class="btn btn-sm btn-outline" onclick="editCategory('${cat.id}')"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteCategory('${cat.id}')"><i class="fas fa-trash"></i></button>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-sm ${isActive ? 'btn-warning' : 'btn-success'}" onclick="toggleCategoryStatus('${cat.id}')">
+                                <i class="fas ${isActive ? 'fa-ban' : 'fa-check'}"></i> ${isActive ? 'Deactivate' : 'Activate'}
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="editCategoryInline('${cat.id}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
                         </div>
                     </div>
-                `).join('');
+                    <div id="edit-category-${cat.id}" style="display: none; background: var(--bg-light); padding: 20px; border-radius: 8px; margin-bottom: 10px; border: 2px solid var(--primary);">
+                        <h4 style="margin: 0 0 15px 0;"><i class="fas fa-edit"></i> Edit Category</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" id="cat-name-${cat.id}" value="${cat.name}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                            </div>
+                            <div class="form-group">
+                                <label>Icon (FontAwesome class)</label>
+                                <input type="text" id="cat-icon-${cat.id}" value="${cat.icon || 'fa-folder'}" placeholder="fa-ship" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                            </div>
+                            <div class="form-group">
+                                <label>Order</label>
+                                <input type="number" id="cat-order-${cat.id}" value="${cat.order || 0}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-primary" onclick="saveCategoryInline('${cat.id}')"><i class="fas fa-save"></i> Save</button>
+                            <button class="btn btn-outline" onclick="cancelCategoryEdit()"><i class="fas fa-times"></i> Cancel</button>
+                        </div>
+                    </div>
+                `}).join('');
             }
+        }
+
+        function editCategoryInline(id) {
+            // Hide all other edit forms first
+            document.querySelectorAll('[id^="edit-category-"]').forEach(el => el.style.display = 'none');
+            document.getElementById('edit-category-' + id).style.display = 'block';
+        }
+
+        function cancelCategoryEdit() {
+            document.querySelectorAll('[id^="edit-category-"]').forEach(el => el.style.display = 'none');
+        }
+
+        function saveCategoryInline(id) {
+            const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
+            const catIndex = categories.findIndex(c => c.id === id);
+            if (catIndex > -1) {
+                categories[catIndex].name = document.getElementById('cat-name-' + id).value;
+                categories[catIndex].icon = document.getElementById('cat-icon-' + id).value;
+                categories[catIndex].order = parseInt(document.getElementById('cat-order-' + id).value) || 0;
+                localStorage.setItem('yacht_categories', JSON.stringify(categories));
+                cancelCategoryEdit();
+                loadCategoriesEditor();
+                showAlert('Category saved!', 'success');
+            }
+        }
+
+        function toggleCategoryStatus(id) {
+            const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
+            const cat = categories.find(c => c.id === id);
+            if (cat) {
+                cat.active = cat.active === false ? true : false;
+                localStorage.setItem('yacht_categories', JSON.stringify(categories));
+                loadCategoriesEditor();
+                showAlert(`Category ${cat.active ? 'activated' : 'deactivated'}!`, 'success');
+            }
+        }
+
+        function addCategoryInline() {
+            const name = prompt('Enter category name:');
+            if (!name) return;
+            const icon = prompt('Enter icon class (e.g., fa-ship):', 'fa-ship') || 'fa-folder';
+            const order = parseInt(prompt('Enter display order (0 = first):', '0')) || 0;
+            
+            const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
+            categories.push({
+                id: 'cat_' + Date.now(),
+                name: name,
+                icon: icon,
+                order: order,
+                active: true
+            });
+            localStorage.setItem('yacht_categories', JSON.stringify(categories));
+            loadCategoriesEditor();
+            showAlert('Category added!', 'success');
         }
 
         function loadYachtsEditor() {
