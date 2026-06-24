@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | Goa Yacht World - Yacht & Boat Photos</title>
+    <meta name="description" content="Browse our gallery of luxury yachts, boats, and unforgettable experiences at Goa Yacht World. See our fleet and memorable moments from past cruises.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/gallery.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚤</text></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.svg" alt="Goa Yacht World" class="logo-img">
+            </a>
+            <nav class="nav" id="mainNav">
+                <ul class="nav-list">
+                    <li class="nav-item-has-children">
+                        <a href="index.html#yachts">Our Services <i class="fas fa-chevron-down"></i></a>
+                        <ul class="sub-menu">
+                            <li><a href="index.html#yachts">Yacht Booking</a></li>
+                            <li><a href="index.html#yachts">Cruise Booking</a></li>
+                            <li><a href="index.html#yachts">Sailboat Booking</a></li>
+                            <li><a href="index.html#yachts">Speed Boat Booking</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                </ul>
+            </nav>
+            <div class="header-right">
+                <a href="tel:+918446275985" class="phone-link">
+                    <i class="fas fa-phone"></i> +918446275985
+                </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero" style="background-image: url('https://goayachtworld.com/wp-content/uploads/sites/58/2023/05/hero-4.jpg')">
+        <div class="page-hero-overlay"></div>
+        <div class="page-hero-content">
+            <h1>Gallery</h1>
+        </div>
+    </section>
+
+    <!-- Gallery Filters -->
+    <section class="section gallery-filters-section">
+        <div class="container">
+            <div class="gallery-filters">
+                <button class="filter-btn active" data-filter="all">See All</button>
+                <button class="filter-btn" data-filter="yachts">Yachts</button>
+                <button class="filter-btn" data-filter="boats">Boats</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Grid -->
+    <section class="gallery-grid-section">
+        <div class="container">
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Gallery items will be loaded via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="cta-section" style="background-image: url('https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/book-bg.jpg')">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Set sail with us</h2>
+                <p>Exploring cities, one ride at a time</p>
+                <a href="index.html#yachts" class="btn btn-whatsapp btn-lg">
+                    <i class="fab fa-whatsapp"></i> Book Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Information</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html#yachts">Our Yachts</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> R-2, 4th Floor, Satt Adhar Champers, Panaji, Goa</li>
+                        <li><i class="fas fa-envelope"></i> support@goayachtworld.com</li>
+                        <li><i class="fas fa-phone"></i> +918446275985 | +918446205985</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>All Rights Reserved - 2024 © Goa Yacht World</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <span class="lightbox-prev" id="lightboxPrev">&#10094;</span>
+        <span class="lightbox-next" id="lightboxNext">&#10095;</span>
+        <img class="lightbox-content" id="lightboxImg" src="" alt="">
+    </div>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/918446275985?text=Hi,%20I%20saw%20your%20gallery%20and%20want%20to%20book" target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="assets/js/gallery.js"></script>
+</body>
+</html>
