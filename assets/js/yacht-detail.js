@@ -454,6 +454,15 @@ function loadYachtDetails() {
     document.getElementById('mainImage').src = yacht.images[0];
     document.getElementById('mainImage').alt = yacht.name;
     
+    // Video button
+    const videoBtn = document.getElementById('viewVideoBtn');
+    if (yacht.video) {
+        videoBtn.href = yacht.video;
+        videoBtn.style.display = 'block';
+    } else {
+        videoBtn.style.display = 'none';
+    }
+    
     // Thumbnails
     const thumbnailsContainer = document.getElementById('thumbnails');
     thumbnailsContainer.innerHTML = yacht.images.map((img, index) => 

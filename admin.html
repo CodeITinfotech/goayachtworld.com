@@ -1411,9 +1411,9 @@
         ];
 
         const DEFAULT_YACHTS = [
-            { id: 'aqua-queen', name: 'Aqua Queen', type: 'yacht', capacity: 8, price: 15000, location: 'Goa, India', featured: true, description: 'The Aqua Queen Yacht offers an unparalleled luxury experience.', amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck', images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'] },
-            { id: 'white-sea', name: 'White Sea', type: 'yacht', capacity: 12, price: 18000, location: 'Goa, India', featured: true, description: 'The White Sea Yacht is a magnificent vessel for larger groups.', amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck, Cockpit Area', images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-6.jpg'] },
-            { id: 'amaze', name: 'Amaze', type: 'yacht', capacity: 13, price: 20000, location: 'Goa, India', featured: true, description: 'Experience the thrill of sailing on the Amaze yacht.', amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck', images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-1.jpg'] }
+            { id: 'aqua-queen', name: 'Aqua Queen', type: 'yacht', capacity: 8, price: 15000, location: 'Goa, India', featured: true, description: 'The Aqua Queen Yacht offers an unparalleled luxury experience.', amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck', images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'], video: '' },
+            { id: 'white-sea', name: 'White Sea', type: 'yacht', capacity: 12, price: 18000, location: 'Goa, India', featured: true, description: 'The White Sea Yacht is a magnificent vessel for larger groups.', amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck, Cockpit Area', images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-6.jpg'], video: '' },
+            { id: 'amaze', name: 'Amaze', type: 'yacht', capacity: 13, price: 20000, location: 'Goa, India', featured: true, description: 'Experience the thrill of sailing on the Amaze yacht.', amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck', images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-1.jpg'], video: '' }
         ];
 
         function loadYachtsEditor() {
@@ -1442,12 +1442,13 @@
             if (yachtsList) {
                 yachtsList.innerHTML = yachts.map(yacht => {
                     const cat = categories.find(c => c.id === yacht.type) || { name: 'Unknown' };
+                    const videoIcon = yacht.video ? '<i class="fas fa-video" style="color: var(--primary);"></i>' : '';
                     return `
                     <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #fff; border-radius: 8px; margin-bottom: 10px;">
                         <div style="display: flex; align-items: center; gap: 15px;">
                             <img src="${yacht.images[0]}" alt="${yacht.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
                             <div>
-                                <strong>${yacht.name}</strong>
+                                <strong>${yacht.name} ${videoIcon}</strong>
                                 <p style="margin: 0; font-size: 0.85rem; color: #666;">${cat.name} • ${yacht.capacity} guests • ₹${yacht.price.toLocaleString('en-IN')}/hr</p>
                             </div>
                         </div>
@@ -1504,6 +1505,7 @@
             const price = parseInt(prompt('Enter price per hour:', '15000')) || 15000;
             const description = prompt('Enter description:', 'Luxury yacht experience.');
             const image = prompt('Enter image URL:', 'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg');
+            const video = prompt('Enter video URL (optional):', '');
             
             const yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
             const newId = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
@@ -1511,7 +1513,8 @@
                 id: newId, name, type: type.split(':')[0], capacity, price, 
                 location: 'Goa, India', featured: false, 
                 description, amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
-                images: [image || 'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg']
+                images: [image || 'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'],
+                video: video || ''
             });
             localStorage.setItem('yacht_items', JSON.stringify(yachts));
             loadYachtsEditor();
@@ -1529,6 +1532,8 @@
             yacht.capacity = parseInt(prompt('Edit capacity:', yacht.capacity)) || yacht.capacity;
             yacht.price = parseInt(prompt('Edit price:', yacht.price)) || yacht.price;
             yacht.description = prompt('Edit description:', yacht.description) || yacht.description;
+            yacht.video = prompt('Edit video URL (optional):', yacht.video || '') || '';
+            yacht.images = [prompt('Edit image URL:', yacht.images[0]) || yacht.images[0]];
             
             localStorage.setItem('yacht_items', JSON.stringify(yachts));
             loadYachtsEditor();

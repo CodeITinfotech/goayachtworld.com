@@ -439,6 +439,38 @@ ul {
     text-transform: uppercase;
 }
 
+.video-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--primary);
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.3s, background 0.3s;
+    z-index: 2;
+}
+
+.video-badge:hover {
+    background: var(--secondary);
+    transform: scale(1.1);
+}
+
+.view-video-btn {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    z-index: 2;
+}
+
 .yacht-card-link {
     display: block;
     text-decoration: none;
