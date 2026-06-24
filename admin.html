@@ -748,12 +748,101 @@
                 <section id="section-yachts" class="admin-section" style="display: none;">
                     <h2><i class="fas fa-ship"></i> Yacht Management</h2>
                     <p style="color: var(--text-light); margin-bottom: 20px;">
-                        Manage yachts. Add category filter dropdown above yacht list.
+                        Manage yachts with banner photos and gallery images.
                     </p>
                     
                     <div class="alert" id="yachtsAlert"></div>
                     
-                    <!-- Yachts Management -->
+                    <!-- Yacht Form -->
+                    <div id="yachtFormSection" style="background: var(--bg-light); padding: 20px; border-radius: 12px; margin-bottom: 20px; display: none;">
+                        <h3 id="yachtFormTitle" style="margin-top: 0;"><i class="fas fa-plus-circle"></i> Add New Yacht</h3>
+                        <input type="hidden" id="editYachtId" value="">
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="form-group">
+                                <label>Yacht Name *</label>
+                                <input type="text" id="yachtName" placeholder="Enter yacht name" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                            </div>
+                            <div class="form-group">
+                                <label>Category *</label>
+                                <select id="yachtCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                    <option value="">Select Category</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="yachtDescription" rows="3" placeholder="Enter yacht description" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;"></textarea>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px;">
+                            <div class="form-group">
+                                <label>Capacity (guests)</label>
+                                <input type="number" id="yachtCapacity" placeholder="8" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                            </div>
+                            <div class="form-group">
+                                <label>Price (₹/hour)</label>
+                                <input type="number" id="yachtPrice" placeholder="15000" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                            </div>
+                            <div class="form-group">
+                                <label>Video URL</label>
+                                <input type="text" id="yachtVideo" placeholder="YouTube or video URL" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                            </div>
+                            <div class="form-group">
+                                <label>Featured</label>
+                                <label style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                                    <input type="checkbox" id="yachtFeatured">
+                                    <span>Show on featured section</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Amenities</label>
+                            <input type="text" id="yachtAmenities" placeholder="Welcome Drink, Water-bottle, Ice, Music System, Sun Deck" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Extras (format: Name:Price, Name:Price)</label>
+                            <input type="text" id="yachtExtras" placeholder="Decorations:4000, DSLR Photographer:6000, Drone Videographer:5000" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+                        
+                        <!-- Banner Photos (up to 5) -->
+                        <div class="form-group">
+                            <label>Banner Photos (up to 5) <span id="bannerCount">0</span>/5</label>
+                            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                <input type="text" id="bannerUrlInput" placeholder="https://example.com/banner.jpg" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                <button class="btn btn-primary" onclick="addBannerPhoto()">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </div>
+                            <div id="bannerPhotosList" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                        </div>
+                        
+                        <!-- Gallery Photos (up to 15) -->
+                        <div class="form-group">
+                            <label>Gallery Photos (up to 15) <span id="galleryCount">0</span>/15</label>
+                            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                <input type="text" id="galleryUrlInput" placeholder="https://example.com/gallery.jpg" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                <button class="btn btn-primary" onclick="addGalleryPhoto()">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </div>
+                            <div id="galleryPhotosList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;"></div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button class="btn btn-success" onclick="saveYacht()">
+                                <i class="fas fa-save"></i> Save Yacht
+                            </button>
+                            <button class="btn btn-outline" onclick="cancelYachtForm()">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Yachts List -->
                     <div style="background: var(--bg-light); padding: 20px; border-radius: 12px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                             <div>
@@ -762,7 +851,7 @@
                                     <option value="">All Categories</option>
                                 </select>
                             </div>
-                            <button class="btn btn-sm btn-primary" onclick="addYacht()">
+                            <button class="btn btn-sm btn-primary" onclick="showYachtForm()">
                                 <i class="fas fa-plus"></i> Add Yacht
                             </button>
                         </div>
@@ -908,8 +997,10 @@ Value|Best value for your investment..."></textarea>
                 <section id="section-gallery" class="admin-section" style="display: none;">
                     <h2><i class="fas fa-images"></i> Gallery Management</h2>
                     <p style="color: var(--text-light); margin-bottom: 20px;">
-                        Manage Photos, Reels, and Shorts for the gallery page. Add URLs with preview option.
+                        Manage Photos, Reels, and Shorts. Add URLs or upload images (stored in localStorage).
                     </p>
+                    
+                    <div class="alert" id="galleryAlert"></div>
                     
                     <div class="tabs">
                         <button class="tab-btn active" data-tab="photos-mgmt">Photos</button>
@@ -919,78 +1010,66 @@ Value|Best value for your investment..."></textarea>
                     
                     <!-- Photos Tab -->
                     <div class="tab-content active" id="photos-mgmt-tab">
-                        <div class="alert" id="photosAlert"></div>
                         <div class="gallery-mgmt-header">
-                            <p style="color: var(--text-light); margin: 0;">
-                                <i class="fas fa-image"></i> Add photo URLs (one per line). Use the preview option to see how they'll appear.
-                            </p>
+                            <h3><i class="fas fa-image"></i> Photos</h3>
                         </div>
                         <div class="form-group">
-                            <label>Photo URLs</label>
-                            <textarea id="photosContent" style="min-height: 150px;" placeholder="Enter image URLs, one per line:&#10;https://example.com/photo1.jpg&#10;https://example.com/photo2.jpg"></textarea>
+                            <label>Add Photo URL</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="photosUrlInput" placeholder="https://example.com/photo.jpg" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                <button class="btn btn-primary" onclick="addGalleryItem('photos')">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </div>
                         </div>
-                        <button class="btn btn-outline" onclick="previewGalleryItems('photos')" style="margin-bottom: 20px;">
-                            <i class="fas fa-eye"></i> Preview Photos
-                        </button>
-                        <div id="photosPreview" class="gallery-preview-grid"></div>
+                        <div id="photosGallery" class="gallery-grid-admin" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 20px;"></div>
                         <div class="btn-group" style="margin-top: 20px;">
-                            <button class="btn btn-success" onclick="saveGalleryItem('photos')">
-                                <i class="fas fa-save"></i> Save Photos
-                            </button>
-                            <button class="btn btn-danger" onclick="resetGalleryItem('photos')">
-                                <i class="fas fa-undo"></i> Reset
+                            <button class="btn btn-danger" onclick="resetGallery('photos')">
+                                <i class="fas fa-trash"></i> Clear All Photos
                             </button>
                         </div>
                     </div>
                     
                     <!-- Reels Tab -->
                     <div class="tab-content" id="reels-mgmt-tab">
-                        <div class="alert" id="reelsAlert"></div>
                         <div class="gallery-mgmt-header">
-                            <p style="color: var(--text-light); margin: 0;">
-                                <i class="fas fa-video"></i> Add video URLs for Reels (one per line).
-                            </p>
+                            <h3><i class="fas fa-video"></i> Reels (9:16 videos)</h3>
                         </div>
                         <div class="form-group">
-                            <label>Reel Video URLs</label>
-                            <textarea id="reelsContent" style="min-height: 150px;" placeholder="Enter video URLs, one per line:&#10;https://example.com/reel1.mp4&#10;https://example.com/reel2.mp4"></textarea>
+                            <label>Add Reel URL</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="reelsUrlInput" placeholder="https://example.com/reel.mp4 or YouTube URL" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                <button class="btn btn-primary" onclick="addGalleryItem('reels')">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </div>
                         </div>
-                        <button class="btn btn-outline" onclick="previewGalleryItems('reels')" style="margin-bottom: 20px;">
-                            <i class="fas fa-eye"></i> Preview Reels
-                        </button>
-                        <div id="reelsPreview" class="gallery-preview-grid"></div>
+                        <div id="reelsGallery" class="gallery-grid-admin" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 20px;"></div>
                         <div class="btn-group" style="margin-top: 20px;">
-                            <button class="btn btn-success" onclick="saveGalleryItem('reels')">
-                                <i class="fas fa-save"></i> Save Reels
-                            </button>
-                            <button class="btn btn-danger" onclick="resetGalleryItem('reels')">
-                                <i class="fas fa-undo"></i> Reset
+                            <button class="btn btn-danger" onclick="resetGallery('reels')">
+                                <i class="fas fa-trash"></i> Clear All Reels
                             </button>
                         </div>
                     </div>
                     
                     <!-- Shorts Tab -->
                     <div class="tab-content" id="shorts-mgmt-tab">
-                        <div class="alert" id="shortsAlert"></div>
                         <div class="gallery-mgmt-header">
-                            <p style="color: var(--text-light); margin: 0;">
-                                <i class="fab fa-youtube"></i> Add YouTube Shorts URLs (one per line).
-                            </p>
+                            <h3><i class="fas fa-film"></i> YouTube Shorts</h3>
                         </div>
                         <div class="form-group">
-                            <label>YouTube Shorts URLs</label>
-                            <textarea id="shortsContent" style="min-height: 150px;" placeholder="Enter YouTube Shorts URLs, one per line:&#10;https://www.youtube.com/shorts/abc123&#10;https://www.youtube.com/shorts/xyz789"></textarea>
+                            <label>Add YouTube Shorts URL</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="shortsUrlInput" placeholder="https://www.youtube.com/shorts/VIDEO_ID" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                <button class="btn btn-primary" onclick="addGalleryItem('shorts')">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </div>
                         </div>
-                        <button class="btn btn-outline" onclick="previewGalleryItems('shorts')" style="margin-bottom: 20px;">
-                            <i class="fas fa-eye"></i> Preview Shorts
-                        </button>
-                        <div id="shortsPreview" class="gallery-preview-grid"></div>
+                        <div id="shortsGallery" class="gallery-grid-admin" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 20px;"></div>
                         <div class="btn-group" style="margin-top: 20px;">
-                            <button class="btn btn-success" onclick="saveGalleryItem('shorts')">
-                                <i class="fas fa-save"></i> Save Shorts
-                            </button>
-                            <button class="btn btn-danger" onclick="resetGalleryItem('shorts')">
-                                <i class="fas fa-undo"></i> Reset
+                            <button class="btn btn-danger" onclick="resetGallery('shorts')">
+                                <i class="fas fa-trash"></i> Clear All Shorts
                             </button>
                         </div>
                     </div>
@@ -1615,7 +1694,7 @@ Value|Best value for your investment..."></textarea>
                             </div>
                         </div>
                         <div>
-                            <button class="btn btn-sm btn-outline" onclick="editYacht('${yacht.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline" onclick="showYachtForm('${yacht.id}')"><i class="fas fa-edit"></i> Edit</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteYacht('${yacht.id}')"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
@@ -1661,73 +1740,6 @@ Value|Best value for your investment..."></textarea>
             showAlert('Category deleted!', 'success');
         }
 
-        function addYacht() {
-            const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
-            const catOptions = categories.map(c => `${c.id}:${c.name}`).join(', ');
-            const type = prompt(`Select category (${catOptions}):`, 'yacht');
-            const name = prompt('Enter yacht name:');
-            if (!name) return;
-            const capacity = parseInt(prompt('Enter capacity:', '8')) || 8;
-            const price = parseInt(prompt('Enter price per hour:', '15000')) || 15000;
-            const description = prompt('Enter description:', 'Luxury yacht experience.');
-            const image = prompt('Enter image URL:', 'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg');
-            const video = prompt('Enter video URL (optional):', '');
-            const extrasStr = prompt('Enter extras (format: Name:Price, Name:Price)\nExample: Decorations:4000, DSLR Photographer:6000', 'Decorations:4000, DSLR Photographer:6000, Drone Videographer:5000');
-            
-            const extras = extrasStr ? extrasStr.split(',').map(e => {
-                const [name, price] = e.split(':').map(s => s.trim());
-                return { name, price: parseInt(price) || 0 };
-            }) : [];
-            
-            const yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
-            const newId = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
-            yachts.push({
-                id: newId, name, type: type.split(':')[0], capacity, price, 
-                location: 'Goa, India', featured: false, 
-                description, amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
-                images: [image || 'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'],
-                video: video || '',
-                extras: extras
-            });
-            localStorage.setItem('yacht_items', JSON.stringify(yachts));
-            loadYachtsEditor();
-            showAlert('Yacht added!', 'success');
-        }
-
-        function editYacht(id) {
-            const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
-            const yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
-            const yacht = yachts.find(y => y.id === id);
-            if (!yacht) return;
-            
-            const catOptions = categories.map(c => `${c.id}:${c.name}`).join(', ');
-            const currentType = categories.find(c => c.id === yacht.type)?.name || yacht.type;
-            const type = prompt(`Select category (${catOptions}):`, `${yacht.type}:${currentType}`);
-            
-            const name = prompt('Edit yacht name:', yacht.name);
-            if (!name) return;
-            yacht.name = name;
-            yacht.type = type.split(':')[0];
-            yacht.capacity = parseInt(prompt('Edit capacity:', yacht.capacity)) || yacht.capacity;
-            yacht.price = parseInt(prompt('Edit price:', yacht.price)) || yacht.price;
-            yacht.description = prompt('Edit description:', yacht.description) || yacht.description;
-            yacht.video = prompt('Edit video URL (optional):', yacht.video || '') || '';
-            yacht.images = [prompt('Edit image URL:', yacht.images[0]) || yacht.images[0]];
-            
-            const extrasStr = prompt('Edit extras (format: Name:Price, Name:Price)\nExample: Decorations:4000, DSLR Photographer:6000', 
-                (yacht.extras || []).map(e => `${e.name}:${e.price}`).join(', '));
-            if (extrasStr) {
-                yacht.extras = extrasStr.split(',').map(e => {
-                    const [name, price] = e.split(':').map(s => s.trim());
-                    return { name, price: parseInt(price) || 0 };
-                });
-            }
-            
-            localStorage.setItem('yacht_items', JSON.stringify(yachts));
-            loadYachtsEditor();
-            showAlert('Yacht updated!', 'success');
-        }
-
         function deleteYacht(id) {
             if (!confirm('Delete this yacht?')) return;
             let yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
@@ -1737,35 +1749,252 @@ Value|Best value for your investment..."></textarea>
             showAlert('Yacht deleted!', 'success');
         }
 
-        // Gallery Management
-        const DEFAULT_GALLERY = {
-            photos: '',
-            reels: '',
-            shorts: ''
-        };
+        // Yacht Form Functions
+        let currentBannerPhotos = [];
+        let currentGalleryPhotos = [];
 
+        function showYachtForm(yachtId = null) {
+            const form = document.getElementById('yachtFormSection');
+            const title = document.getElementById('yachtFormTitle');
+            form.style.display = 'block';
+            
+            // Populate category dropdown
+            const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
+            const catSelect = document.getElementById('yachtCategory');
+            catSelect.innerHTML = '<option value="">Select Category</option>' + 
+                categories.sort((a, b) => a.order - b.order).map(c => 
+                    `<option value="${c.id}">${c.name}</option>`
+                ).join('');
+            
+            if (yachtId) {
+                // Edit mode
+                title.innerHTML = '<i class="fas fa-edit"></i> Edit Yacht';
+                document.getElementById('editYachtId').value = yachtId;
+                
+                const yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
+                const yacht = yachts.find(y => y.id === yachtId);
+                if (yacht) {
+                    document.getElementById('yachtName').value = yacht.name;
+                    document.getElementById('yachtCategory').value = yacht.type;
+                    document.getElementById('yachtDescription').value = yacht.description || '';
+                    document.getElementById('yachtCapacity').value = yacht.capacity;
+                    document.getElementById('yachtPrice').value = yacht.price;
+                    document.getElementById('yachtVideo').value = yacht.video || '';
+                    document.getElementById('yachtFeatured').checked = yacht.featured || false;
+                    document.getElementById('yachtAmenities').value = yacht.amenities || '';
+                    document.getElementById('yachtExtras').value = (yacht.extras || []).map(e => `${e.name}:${e.price}`).join(', ');
+                    
+                    currentBannerPhotos = yacht.banner || [yacht.images[0]].filter(Boolean);
+                    currentGalleryPhotos = yacht.gallery || [];
+                }
+            } else {
+                // Add mode
+                title.innerHTML = '<i class="fas fa-plus-circle"></i> Add New Yacht';
+                document.getElementById('editYachtId').value = '';
+                document.getElementById('yachtName').value = '';
+                document.getElementById('yachtCategory').value = '';
+                document.getElementById('yachtDescription').value = '';
+                document.getElementById('yachtCapacity').value = '8';
+                document.getElementById('yachtPrice').value = '15000';
+                document.getElementById('yachtVideo').value = '';
+                document.getElementById('yachtFeatured').checked = false;
+                document.getElementById('yachtAmenities').value = 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck';
+                document.getElementById('yachtExtras').value = 'Decorations:4000, DSLR Photographer:6000, Drone Videographer:5000';
+                
+                currentBannerPhotos = [];
+                currentGalleryPhotos = [];
+            }
+            
+            renderBannerPhotos();
+            renderYachtGalleryPhotos();
+        }
+
+        function addBannerPhoto() {
+            const url = document.getElementById('bannerUrlInput').value.trim();
+            if (!url) {
+                showAlert('Please enter a URL', 'error');
+                return;
+            }
+            if (currentBannerPhotos.length >= 5) {
+                showAlert('Maximum 5 banner photos allowed', 'error');
+                return;
+            }
+            currentBannerPhotos.push(url);
+            document.getElementById('bannerUrlInput').value = '';
+            renderBannerPhotos();
+        }
+
+        function renderBannerPhotos() {
+            document.getElementById('bannerCount').textContent = currentBannerPhotos.length;
+            document.getElementById('bannerPhotosList').innerHTML = currentBannerPhotos.map((url, i) => `
+                <div style="position: relative; width: 100px; height: 70px;">
+                    <img src="${url}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px;">
+                    <button onclick="removeBannerPhoto(${i})" style="position: absolute; top: -8px; right: -8px; background: #e74c3c; color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer;">×</button>
+                </div>
+            `).join('');
+        }
+
+        function removeBannerPhoto(index) {
+            currentBannerPhotos.splice(index, 1);
+            renderBannerPhotos();
+        }
+
+        function addGalleryPhoto(type) {
+            let url;
+            if (type === 'photos') {
+                url = document.getElementById('photosUrlInput')?.value?.trim();
+            } else if (type === 'reels') {
+                url = document.getElementById('reelsUrlInput')?.value?.trim();
+            } else if (type === 'shorts') {
+                url = document.getElementById('shortsUrlInput')?.value?.trim();
+            }
+            
+            if (!url) {
+                showAlert('Please enter a URL', 'error');
+                return;
+            }
+            
+            const gallery = JSON.parse(localStorage.getItem('site_gallery') || JSON.stringify({photos: [], reels: [], shorts: []}));
+            
+            if (type === 'photos' && gallery.photos.length >= 50) {
+                showAlert('Maximum 50 photos allowed', 'error');
+                return;
+            }
+            if (type === 'reels' && gallery.reels.length >= 20) {
+                showAlert('Maximum 20 reels allowed', 'error');
+                return;
+            }
+            if (type === 'shorts' && gallery.shorts.length >= 20) {
+                showAlert('Maximum 20 shorts allowed', 'error');
+                return;
+            }
+            
+            gallery[type].push(url);
+            localStorage.setItem('site_gallery', JSON.stringify(gallery));
+            renderGalleryItems(type);
+            
+            // Clear input
+            const input = document.getElementById(type + 'UrlInput');
+            if (input) input.value = '';
+        }
+
+        function renderYachtGalleryPhotos() {
+            document.getElementById('galleryCount').textContent = currentGalleryPhotos.length;
+            document.getElementById('galleryPhotosList').innerHTML = currentGalleryPhotos.map((url, i) => `
+                <div style="position: relative; aspect-ratio: 1;">
+                    <img src="${url}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px;">
+                    <button onclick="removeYachtGalleryPhoto(${i})" style="position: absolute; top: -8px; right: -8px; background: #e74c3c; color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer;">×</button>
+                </div>
+            `).join('');
+        }
+
+        function removeYachtGalleryPhoto(index) {
+            currentGalleryPhotos.splice(index, 1);
+            renderYachtGalleryPhotos();
+        }
+
+        function saveYacht() {
+            const name = document.getElementById('yachtName').value.trim();
+            const type = document.getElementById('yachtCategory').value;
+            const description = document.getElementById('yachtDescription').value.trim();
+            const capacity = parseInt(document.getElementById('yachtCapacity').value) || 8;
+            const price = parseInt(document.getElementById('yachtPrice').value) || 15000;
+            const video = document.getElementById('yachtVideo').value.trim();
+            const featured = document.getElementById('yachtFeatured').checked;
+            const amenities = document.getElementById('yachtAmenities').value.trim();
+            const extrasStr = document.getElementById('yachtExtras').value.trim();
+            
+            if (!name) {
+                showAlert('Yacht name is required', 'error');
+                return;
+            }
+            if (!type) {
+                showAlert('Please select a category', 'error');
+                return;
+            }
+            
+            const extras = extrasStr ? extrasStr.split(',').map(e => {
+                const [n, p] = e.split(':').map(s => s.trim());
+                return { name: n, price: parseInt(p) || 0 };
+            }) : [];
+            
+            const yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
+            const editId = document.getElementById('editYachtId').value;
+            
+            const yachtData = {
+                name, type, description, capacity, price, video, featured, amenities,
+                extras,
+                banner: currentBannerPhotos.length > 0 ? currentBannerPhotos : ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'],
+                gallery: currentGalleryPhotos,
+                images: currentBannerPhotos.length > 0 ? currentBannerPhotos : ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'],
+                location: 'Goa, India'
+            };
+            
+            if (editId) {
+                // Update existing
+                const index = yachts.findIndex(y => y.id === editId);
+                if (index !== -1) {
+                    yachts[index] = { ...yachts[index], ...yachtData, id: editId };
+                }
+            } else {
+                // Add new
+                yachtData.id = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
+                yachts.push(yachtData);
+            }
+            
+            localStorage.setItem('yacht_items', JSON.stringify(yachts));
+            cancelYachtForm();
+            loadYachtsEditor();
+            showAlert('Yacht saved successfully!', 'success');
+        }
+
+        function cancelYachtForm() {
+            document.getElementById('yachtFormSection').style.display = 'none';
+        }
+
+        // Gallery Management - new version
         function loadGalleryEditor() {
-            const gallery = JSON.parse(localStorage.getItem('gallery_items') || JSON.stringify(DEFAULT_GALLERY));
-            if (document.getElementById('photosContent')) {
-                document.getElementById('photosContent').value = gallery.photos;
-                document.getElementById('reelsContent').value = gallery.reels;
-                document.getElementById('shortsContent').value = gallery.shorts;
-            }
+            const gallery = JSON.parse(localStorage.getItem('site_gallery') || JSON.stringify({photos: [], reels: [], shorts: []}));
+            renderGalleryItems('photos');
+            renderGalleryItems('reels');
+            renderGalleryItems('shorts');
         }
 
-        function saveGalleryItem(type) {
-            const content = document.getElementById(type + 'Content').value;
-            const gallery = JSON.parse(localStorage.getItem('gallery_items') || JSON.stringify(DEFAULT_GALLERY));
-            gallery[type] = content;
-            localStorage.setItem('gallery_items', JSON.stringify(gallery));
-            showGalleryAlert(type, 'Saved successfully!', 'success');
+        function renderGalleryItems(type) {
+            const gallery = JSON.parse(localStorage.getItem('site_gallery') || JSON.stringify({photos: [], reels: [], shorts: []}));
+            const container = document.getElementById(type + 'Gallery');
+            if (!container) return;
+            
+            const items = gallery[type] || [];
+            container.innerHTML = items.map((url, i) => `
+                <div style="position: relative; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    ${type === 'shorts' ? 
+                        `<div style="aspect-ratio: 9/16;"><iframe src="${url.replace('shorts/', 'embed/')}" style="width: 100%; height: 100%; border: none;"></iframe></div>` :
+                        (type === 'reels' ? 
+                            `<div style="aspect-ratio: 9/16; background: #000;"><video src="${url}" style="width: 100%; height: 100%; object-fit: cover;" controls></video></div>` :
+                            `<img src="${url}" style="width: 100%; aspect-ratio: 1; object-fit: cover;">`
+                        )
+                    }
+                    <button onclick="removeGalleryItem('${type}', ${i})" style="position: absolute; top: 5px; right: 5px; background: #e74c3c; color: #fff; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 14px;">×</button>
+                </div>
+            `).join('');
         }
 
-        function resetGalleryItem(type) {
-            if (confirm('Reset ' + type + ' to empty?')) {
-                document.getElementById(type + 'Content').value = '';
-                saveGalleryItem(type);
-            }
+        function removeGalleryItem(type, index) {
+            const gallery = JSON.parse(localStorage.getItem('site_gallery') || JSON.stringify({photos: [], reels: [], shorts: []}));
+            gallery[type].splice(index, 1);
+            localStorage.setItem('site_gallery', JSON.stringify(gallery));
+            renderGalleryItems(type);
+            showAlert('Item removed', 'success');
+        }
+
+        function resetGallery(type) {
+            if (!confirm(`Clear all ${type}?`)) return;
+            const gallery = JSON.parse(localStorage.getItem('site_gallery') || JSON.stringify({photos: [], reels: [], shorts: []}));
+            gallery[type] = [];
+            localStorage.setItem('site_gallery', JSON.stringify(gallery));
+            renderGalleryItems(type);
+            showAlert(`${type} cleared`, 'success');
         }
 
         function showGalleryAlert(type, message, type2) {
