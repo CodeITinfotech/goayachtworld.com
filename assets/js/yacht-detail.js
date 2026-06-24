@@ -576,12 +576,35 @@ function updateTotalPrice() {
     
     totalPriceEl.textContent = '₹' + total.toLocaleString('en-IN');
     
-    // Update WhatsApp message with selected extras
-    let message = 'Hi, I want to book ' + (window.currentYachtName || 'a yacht');
+    // Update WhatsApp message with full booking details
+    const yachtName = window.currentYachtName || 'a yacht';
+    const dateValue = document.getElementById('bookingDate')?.value || 'Not specified';
+    const hoursValue = document.getElementById('bookingHours')?.value || 'Not specified';
+    const guestsValue = document.getElementById('guestsInput')?.value || 'Not specified';
+    
+    let message = `Hello Goa Yacht World! 🛥️\n\n`;
+    message += `I'm interested in booking:\n`;
+    message += `━━━━━━━━━━━━━━━━━━\n`;
+    message += `*Yacht:* ${yachtName}\n`;
+    message += `*Date:* ${dateValue}\n`;
+    message += `*Duration:* ${hoursValue} hours\n`;
+    message += `*Guests:* ${guestsValue} pax\n`;
+    
     if (window.selectedExtras.length > 0) {
-        const extrasList = window.selectedExtras.map(e => e.name).join(', ');
-        message += '\nExtra services: ' + extrasList;
+        message += `\n*Add-on Services:*\n`;
+        window.selectedExtras.forEach(e => {
+            const priceDisplay = e.price === 0 ? 'As per requirement' : `₹${e.price.toLocaleString('en-IN')}`;
+            message += `• ${e.name} - ${priceDisplay}\n`;
+        });
     }
+    
+    const extrasTotalDisplay = window.selectedExtras.length > 0 ? `\n*Extras Total:* ₹${extrasSum.toLocaleString('en-IN')}` : '';
+    message += `\n━━━━━━━━━━━━━━━━━━\n`;
+    message += `*Base Price:* ₹${window.basePrice.toLocaleString('en-IN')}/hour${extrasTotalDisplay}\n`;
+    message += `*Estimated Total:* ₹${total.toLocaleString('en-IN')}\n`;
+    message += `━━━━━━━━━━━━━━━━━━\n\n`;
+    message += `Please confirm availability and share booking details.`;
+    
     if (bookNowBtn) {
         bookNowBtn.href = 'https://wa.me/918446275985?text=' + encodeURIComponent(message);
     }

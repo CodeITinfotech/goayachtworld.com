@@ -171,7 +171,7 @@ function renderYachts() {
                 </div>
             </a>
             <div class="yacht-card-actions">
-                <a href="https://wa.me/91${CONFIG.whatsappNumber}?text=Hi,%20I%20want%20to%20book%20${encodeURIComponent(yacht.name)}" target="_blank" class="btn btn-whatsapp">
+                <a href="https://wa.me/91${CONFIG.whatsappNumber}?text=Hello%20Goa%20Yacht%20World!%20%F0%9F%9F%A2%0A%0AI%27m%20interested%20in%20booking%3A%0A%0A*Yacht%3A*%20${encodeURIComponent(yacht.name)}%0A*Location%3A*%20${encodeURIComponent(yacht.location)}%0A*Capacity%3A*%20${yacht.capacity}%20guests%0A*Price%3A*%20%E2%82%B9${yacht.price.toLocaleString('en-IN')}%2Fhour%0A%0APlease%20confirm%20availability." target="_blank" class="btn btn-whatsapp">
                     <i class="fab fa-whatsapp"></i> Book
                 </a>
                 <a href="tel:+91${CONFIG.whatsappNumber}" class="btn btn-primary">
