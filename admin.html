@@ -667,6 +667,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="#" onclick="showSection('questions')">
+                            <i class="fas fa-question-circle"></i> Popular Questions
+                        </a>
+                    </li>
+                    <li>
                         <a href="#" onclick="showSection('policies')">
                             <i class="fas fa-file-alt"></i> Policies
                         </a>
@@ -853,6 +858,14 @@
                             </p>
                         </div>
                         
+                        <div class="form-group">
+                            <label>Select FAQ Questions for this Yacht</label>
+                            <div id="yachtQuestionsCheckboxes" style="display: flex; flex-direction: column; gap: 8px; padding: 10px 0; max-height: 200px; overflow-y: auto;"></div>
+                            <p style="font-size: 12px; color: #666; margin-top: 5px;">
+                                <i class="fas fa-info-circle"></i> Selected questions will appear on the yacht detail page. Manage questions in the "Popular Questions" menu.
+                            </p>
+                        </div>
+                        
                         <!-- Banner Photos (up to 5) -->
                         <div class="form-group">
                             <label>Banner Photos (up to 5) <span id="bannerCount">0</span>/5</label>
@@ -901,6 +914,46 @@
                             </button>
                         </div>
                         <div id="yachtsList"></div>
+                    </div>
+                </section>
+
+                <!-- Popular Questions Section -->
+                <section id="section-questions" class="admin-section" style="display: none;">
+                    <h2><i class="fas fa-question-circle"></i> Popular Questions</h2>
+                    <p style="color: var(--text-light); margin-bottom: 20px;">
+                        Manage FAQ questions. Select which questions to show for each yacht.
+                    </p>
+                    
+                    <div class="alert" id="questionsAlert"></div>
+                    
+                    <div style="background: var(--bg-light); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                        <h3 style="margin-top: 0;"><i class="fas fa-list"></i> Available Questions</h3>
+                        <p style="color: var(--text-light); margin-bottom: 15px;">
+                            Add questions that can be selected for yachts. Each question has a Question and Answer.
+                        </p>
+                        
+                        <div class="form-group">
+                            <label>Add New Question</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end;">
+                                <input type="text" id="questionInput" placeholder="Question (e.g., Are fuel costs included?)" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                <input type="text" id="answerInput" placeholder="Answer" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                <button class="btn btn-primary" onclick="addQuestion()" style="padding: 10px 20px;">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="questionsList" style="margin-top: 20px;"></div>
+                    </div>
+                    
+                    <div style="background: var(--bg-light); padding: 20px; border-radius: 12px;">
+                        <h3 style="margin-top: 0;"><i class="fas fa-info-circle"></i> How It Works</h3>
+                        <ul style="color: var(--text-light); line-height: 1.8;">
+                            <li>Add FAQ questions here with question and answer</li>
+                            <li>When editing a yacht, select which questions to show</li>
+                            <li>Selected questions appear on the yacht detail page</li>
+                            <li>Questions can be reordered by deleting and re-adding</li>
+                        </ul>
                     </div>
                 </section>
 
@@ -1187,6 +1240,24 @@ Value|Best value for your investment..."></textarea>
                             <i class="fas fa-save"></i> Save Password
                         </button>
                     </div>
+                    
+                    <div style="background: var(--bg-light); padding: 20px; border-radius: 12px; margin-top: 20px;">
+                        <h3 style="margin-top: 0;"><i class="fas fa-search"></i> SEO Settings</h3>
+                        <p style="color: var(--text-light); margin-bottom: 15px;">
+                            These settings affect meta tags for search engines.
+                        </p>
+                        <div class="form-group">
+                            <label>Meta Keywords (comma separated)</label>
+                            <textarea id="metaKeywords" rows="3" placeholder="yacht booking goa, luxury yacht, goa cruise, boat rental, party yacht" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Meta Description</label>
+                            <textarea id="metaDescription" rows="2" placeholder="Enter meta description for search engines..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;"></textarea>
+                        </div>
+                        <button class="btn btn-success" onclick="saveSEOSettings()">
+                            <i class="fas fa-save"></i> Save SEO Settings
+                        </button>
+                    </div>
                 </section>
             </main>
         </div>
@@ -1283,8 +1354,10 @@ Value|Best value for your investment..."></textarea>
             if (typeof loadGalleryEditor === 'function') loadGalleryEditor();
             if (typeof loadCategoriesEditor === 'function') loadCategoriesEditor();
             if (typeof loadExtrasEditor === 'function') loadExtrasEditor();
+            if (typeof loadQuestionsEditor === 'function') loadQuestionsEditor();
             if (typeof loadYachtsEditor === 'function') loadYachtsEditor();
             if (typeof loadAboutUsEditor === 'function') loadAboutUsEditor();
+            if (typeof loadSEOSettings === 'function') loadSEOSettings();
         }
 
         // Extras Management
@@ -1375,6 +1448,107 @@ Value|Best value for your investment..."></textarea>
 
         function getAvailableExtras() {
             return JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
+        }
+
+        // Popular Questions Management
+        const DEFAULT_QUESTIONS = [
+            { question: 'Are fuel costs included in the rental price?', answer: 'Yes, fuel costs are included for up to 3 hours of cruising within Goan waters. Additional hours may incur extra fuel charges.' },
+            { question: 'What is your cancellation policy?', answer: 'Free cancellation up to 48 hours before the booking. 50% refund for cancellations within 24-48 hours. No refund for cancellations within 24 hours.' },
+            { question: 'Is there a security deposit required?', answer: 'A refundable security deposit of ₹5,000 to ₹20,000 may be required depending on the yacht selected. It will be returned after the trip minus any damages.' },
+            { question: 'Can we bring our own food and drinks?', answer: 'Yes, you are welcome to bring your own food and beverages. We also offer catering packages at an additional cost.' },
+            { question: 'What happens if it rains on the booking day?', answer: 'In case of light rain, the yacht cruise can continue. For heavy storms, we offer free rescheduling to another convenient date.' }
+        ];
+
+        function loadQuestionsEditor() {
+            const questions = JSON.parse(localStorage.getItem('yacht_questions') || JSON.stringify(DEFAULT_QUESTIONS));
+            const questionsList = document.getElementById('questionsList');
+            if (!questionsList) return;
+            
+            if (questions.length === 0) {
+                questionsList.innerHTML = '<p style="color: var(--text-light); text-align: center; padding: 20px;">No questions added yet. Use the form above to add one.</p>';
+                return;
+            }
+            
+            questionsList.innerHTML = questions.map((q, index) => `
+                <div style="display: flex; flex-direction: column; padding: 15px; background: #fff; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid var(--primary);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                        <strong style="color: var(--primary); font-size: 14px;">Q${index + 1}: ${q.question}</strong>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-sm btn-outline" onclick="editQuestion(${index})"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteQuestion(${index})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <p style="margin: 0; color: #666; font-size: 13px;">${q.answer}</p>
+                </div>
+            `).join('');
+        }
+
+        function addQuestion() {
+            const question = document.getElementById('questionInput').value.trim();
+            const answer = document.getElementById('answerInput').value.trim();
+            
+            if (!question || !answer) {
+                showAlert('Please enter both question and answer', 'error');
+                return;
+            }
+            
+            const questions = JSON.parse(localStorage.getItem('yacht_questions') || JSON.stringify(DEFAULT_QUESTIONS));
+            questions.push({ question, answer });
+            localStorage.setItem('yacht_questions', JSON.stringify(questions));
+            
+            document.getElementById('questionInput').value = '';
+            document.getElementById('answerInput').value = '';
+            
+            loadQuestionsEditor();
+            showAlert('Question added!', 'success');
+        }
+
+        function editQuestion(index) {
+            const questions = JSON.parse(localStorage.getItem('yacht_questions') || JSON.stringify(DEFAULT_QUESTIONS));
+            const q = questions[index];
+            
+            const question = prompt('Edit question:', q.question);
+            if (!question) return;
+            
+            const answer = prompt('Edit answer:', q.answer);
+            if (!answer) return;
+            
+            questions[index] = { question, answer };
+            localStorage.setItem('yacht_questions', JSON.stringify(questions));
+            loadQuestionsEditor();
+            showAlert('Question updated!', 'success');
+        }
+
+        function deleteQuestion(index) {
+            if (!confirm('Delete this question?')) return;
+            const questions = JSON.parse(localStorage.getItem('yacht_questions') || JSON.stringify(DEFAULT_QUESTIONS));
+            questions.splice(index, 1);
+            localStorage.setItem('yacht_questions', JSON.stringify(questions));
+            loadQuestionsEditor();
+            showAlert('Question deleted!', 'success');
+        }
+
+        function getQuestions() {
+            return JSON.parse(localStorage.getItem('yacht_questions') || JSON.stringify(DEFAULT_QUESTIONS));
+        }
+
+        // SEO Settings
+        function loadSEOSettings() {
+            const settings = JSON.parse(localStorage.getItem('seo_settings') || JSON.stringify({
+                keywords: 'yacht booking goa, luxury yacht goa, goa cruise, boat rental goa, party yacht goa, private yacht charter, sunset cruise goa',
+                description: 'Book luxury yachts in Goa for parties, events & cruises. Premium fleet with captain. Best prices guaranteed. Perfect for birthdays, weddings & corporate events.'
+            }));
+            document.getElementById('metaKeywords').value = settings.keywords || '';
+            document.getElementById('metaDescription').value = settings.description || '';
+        }
+
+        function saveSEOSettings() {
+            const settings = {
+                keywords: document.getElementById('metaKeywords').value.trim(),
+                description: document.getElementById('metaDescription').value.trim()
+            };
+            localStorage.setItem('seo_settings', JSON.stringify(settings));
+            showAlert('SEO settings saved!', 'success');
         }
 
         // About Us Management
@@ -1940,6 +2114,7 @@ Value|Best value for your investment..."></textarea>
         let currentBannerPhotos = [];
         let currentGalleryPhotos = [];
         let selectedExtras = [];
+        let selectedQuestions = [];
 
         function showYachtForm(yachtId = null) {
             const form = document.getElementById('yachtFormSection');
@@ -1972,6 +2147,7 @@ Value|Best value for your investment..."></textarea>
                     document.getElementById('yachtAmenities').value = yacht.amenities || '';
                     
                     selectedExtras = yacht.extras || [];
+                    selectedQuestions = yacht.questions || [];
                     currentBannerPhotos = yacht.banner || [yacht.images[0]].filter(Boolean);
                     currentGalleryPhotos = yacht.gallery || [];
                 }
@@ -1989,11 +2165,13 @@ Value|Best value for your investment..."></textarea>
                 document.getElementById('yachtAmenities').value = 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck';
                 
                 selectedExtras = [];
+                selectedQuestions = [];
                 currentBannerPhotos = [];
                 currentGalleryPhotos = [];
             }
             
             renderExtrasCheckboxes();
+            renderQuestionsCheckboxes();
             renderBannerPhotos();
             renderYachtGalleryPhotos();
         }
@@ -2002,6 +2180,11 @@ Value|Best value for your investment..."></textarea>
             const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
             const container = document.getElementById('yachtExtrasCheckboxes');
             if (!container) return;
+            
+            if (extras.length === 0) {
+                container.innerHTML = '<p style="color: #999; font-size: 13px;">No extras available. Add extras in the "Extras" menu.</p>';
+                return;
+            }
             
             container.innerHTML = extras.map(extra => {
                 const isChecked = selectedExtras.some(e => e.name === extra.name);
@@ -2013,6 +2196,39 @@ Value|Best value for your investment..."></textarea>
                     <span style="color: var(--primary); font-weight: 600; font-size: 12px;">${priceDisplay}</span>
                 </label>
             `}).join('');
+        }
+
+        function renderQuestionsCheckboxes() {
+            const questions = JSON.parse(localStorage.getItem('yacht_questions') || JSON.stringify(DEFAULT_QUESTIONS));
+            const container = document.getElementById('yachtQuestionsCheckboxes');
+            if (!container) return;
+            
+            if (questions.length === 0) {
+                container.innerHTML = '<p style="color: #999; font-size: 13px;">No questions available. Add questions in the "Popular Questions" menu.</p>';
+                return;
+            }
+            
+            container.innerHTML = questions.map((q, index) => {
+                const isChecked = selectedQuestions.includes(q.question);
+                return `
+                <label style="display: flex; align-items: flex-start; gap: 8px; padding: 8px 12px; background: #fff; border: 1px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="checkbox" value="${q.question}" ${isChecked ? 'checked' : ''} onchange="toggleQuestionCheckbox(this)" style="margin-top: 3px;">
+                    <div>
+                        <span style="font-size: 13px;">${q.question}</span>
+                        <p style="margin: 3px 0 0 0; font-size: 11px; color: #666;">${q.answer.substring(0, 80)}${q.answer.length > 80 ? '...' : ''}</p>
+                    </div>
+                </label>
+            `}).join('');
+        }
+
+        function toggleQuestionCheckbox(checkbox) {
+            if (checkbox.checked) {
+                if (!selectedQuestions.includes(checkbox.value)) {
+                    selectedQuestions.push(checkbox.value);
+                }
+            } else {
+                selectedQuestions = selectedQuestions.filter(q => q !== checkbox.value);
+            }
         }
 
         function toggleExtraCheckbox(checkbox) {
@@ -2138,6 +2354,7 @@ Value|Best value for your investment..."></textarea>
             const yachtData = {
                 name, type, description, capacity, price, video, featured, amenities,
                 extras: [...selectedExtras],
+                questions: [...selectedQuestions],
                 banner: currentBannerPhotos.length > 0 ? [...currentBannerPhotos] : ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'],
                 gallery: [...currentGalleryPhotos],
                 images: currentBannerPhotos.length > 0 ? [...currentBannerPhotos] : ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'],

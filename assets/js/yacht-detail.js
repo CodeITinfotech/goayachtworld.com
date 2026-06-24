@@ -450,7 +450,10 @@ function loadYachtDetails() {
     window.selectedExtras = [];
     
     // Render extras as checkboxes
-    renderExtras(yacht.extras);
+    renderExtras(getExtrasForYacht(yacht));
+    
+    // Render FAQ questions
+    renderFAQ(getQuestionsForYacht(yacht));
     
     // Update total price display
     updateTotalPrice();
@@ -484,6 +487,37 @@ function loadYachtDetails() {
             thumb.classList.add('active');
         });
     });
+}
+
+// Render FAQ questions
+function renderFAQ(questions) {
+    const faqContainer = document.getElementById('faqContainer');
+    if (!faqContainer) return;
+    
+    if (questions.length === 0) {
+        // Show default questions if none selected
+        const defaultQuestions = getDefaultQuestions();
+        faqContainer.innerHTML = defaultQuestions.map((q, i) => `
+            <div class="faq-item">
+                <h3><i class="fas fa-chevron-down"></i> ${q.question}</h3>
+                <div class="faq-answer">
+                    <p>${q.answer}</p>
+                </div>
+            </div>
+        `).join('');
+    } else {
+        faqContainer.innerHTML = questions.map((q, i) => `
+            <div class="faq-item">
+                <h3><i class="fas fa-chevron-down"></i> ${q.question}</h3>
+                <div class="faq-answer">
+                    <p>${q.answer}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Re-initialize FAQ accordion for new items
+    initFAQ();
 }
 
 // Render extras as checkboxes
@@ -561,6 +595,44 @@ function initFAQ() {
             item.classList.toggle('active');
         });
     });
+}
+
+// Get default extras
+function getDefaultExtras() {
+    return [
+        { name: 'Decorations', price: 4000 },
+        { name: 'Snacks & Beverages', price: 0 },
+        { name: 'DSLR Photographer', price: 6000 },
+        { name: 'Drone Videographer', price: 5000 }
+    ];
+}
+
+// Get default questions
+function getDefaultQuestions() {
+    return [
+        { question: 'Are fuel costs included in the rental price?', answer: 'Yes, fuel costs are included for up to 3 hours of cruising within Goan waters. Additional hours may incur extra fuel charges.' },
+        { question: 'What is your cancellation policy?', answer: 'Free cancellation up to 48 hours before the booking. 50% refund for cancellations within 24-48 hours. No refund for cancellations within 24 hours.' },
+        { question: 'Is there a security deposit required?', answer: 'A refundable security deposit of ₹5,000 to ₹20,000 may be required depending on the yacht selected. It will be returned after the trip minus any damages.' },
+        { question: 'Can we bring our own food and drinks?', answer: 'Yes, you are welcome to bring your own food and beverages. We also offer catering packages at an additional cost.' },
+        { question: 'What happens if it rains on the booking day?', answer: 'In case of light rain, the yacht cruise can continue. For heavy storms, we offer free rescheduling to another convenient date.' }
+    ];
+}
+
+// Get extras from localStorage or yacht data, fallback to defaults
+function getExtrasForYacht(yacht) {
+    if (yacht.extras && yacht.extras.length > 0) {
+        return yacht.extras;
+    }
+    return getDefaultExtras();
+}
+
+// Get FAQ questions for yacht
+function getQuestionsForYacht(yacht) {
+    if (yacht.questions && yacht.questions.length > 0) {
+        const allQuestions = JSON.parse(localStorage.getItem('yacht_questions') || JSON.stringify(getDefaultQuestions()));
+        return allQuestions.filter(q => yacht.questions.includes(q.question));
+    }
+    return [];
 }
 
 // Initialize
