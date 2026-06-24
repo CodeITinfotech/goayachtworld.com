@@ -20,7 +20,7 @@ const DEFAULT_YACHTS = [
         capacity: 10,
         type: 'Luxury Yacht',
         featured: true,
-        images: []
+        images: ['assets/images/service-yacht-1.jpg', 'assets/images/service-yacht-2.jpg', 'assets/images/service-yacht-3.jpg']
     },
     {
         id: 'yacht-002',
@@ -30,7 +30,7 @@ const DEFAULT_YACHTS = [
         capacity: 15,
         type: 'Family Yacht',
         featured: true,
-        images: []
+        images: ['assets/images/service-yacht-4.jpg', 'assets/images/service-yacht-5.jpg', 'assets/images/service-yacht-6.jpg']
     },
     {
         id: 'yacht-003',
@@ -40,7 +40,7 @@ const DEFAULT_YACHTS = [
         capacity: 25,
         type: 'Party Yacht',
         featured: true,
-        images: []
+        images: ['assets/images/service-yacht-7.jpg', 'assets/images/service-yacht-9.jpg', 'assets/images/service-yacht-10.jpg']
     },
     {
         id: 'yacht-004',
@@ -50,7 +50,7 @@ const DEFAULT_YACHTS = [
         capacity: 12,
         type: 'Romantic Yacht',
         featured: false,
-        images: []
+        images: ['assets/images/service-yacht-11.jpg', 'assets/images/service-yacht-12.jpg', 'assets/images/service-yacht-13.jpg']
     },
     {
         id: 'yacht-005',
@@ -60,7 +60,7 @@ const DEFAULT_YACHTS = [
         capacity: 8,
         type: 'Speedboat',
         featured: false,
-        images: []
+        images: ['assets/images/service-yacht-14.jpg', 'assets/images/service-yacht-15.jpg', 'assets/images/service-yacht-16.jpg']
     },
     {
         id: 'yacht-006',
@@ -70,7 +70,7 @@ const DEFAULT_YACHTS = [
         capacity: 10,
         type: 'Luxury Yacht',
         featured: true,
-        images: []
+        images: ['assets/images/service-yacht-17.jpg', 'assets/images/service-yacht-18.jpg', 'assets/images/service-yacht-19.jpg']
     },
     {
         id: 'yacht-007',
@@ -80,7 +80,7 @@ const DEFAULT_YACHTS = [
         capacity: 14,
         type: 'Party Yacht',
         featured: false,
-        images: []
+        images: ['assets/images/service-yacht-20.jpg', 'assets/images/service-yacht-21.jpg', 'assets/images/service-yacht-22.jpg']
     },
     {
         id: 'yacht-008',
@@ -90,7 +90,7 @@ const DEFAULT_YACHTS = [
         capacity: 10,
         type: 'Cruiser',
         featured: false,
-        images: []
+        images: ['assets/images/service-yacht-23.jpg', 'assets/images/service-yacht-24.jpg', 'assets/images/service-yacht-25.jpg']
     },
     {
         id: 'yacht-009',
@@ -100,7 +100,7 @@ const DEFAULT_YACHTS = [
         capacity: 30,
         type: 'Luxury Yacht',
         featured: true,
-        images: []
+        images: ['assets/images/service-yacht-26.jpg', 'assets/images/service-yacht-27.jpg', 'assets/images/service-yacht-28.jpg']
     },
     {
         id: 'yacht-010',
@@ -110,7 +110,7 @@ const DEFAULT_YACHTS = [
         capacity: 4,
         type: 'Couples Yacht',
         featured: false,
-        images: []
+        images: ['assets/images/service-yacht-29.jpg', 'assets/images/service-yacht-30.jpg', 'assets/images/service-yacht-31.jpg']
     },
     {
         id: 'yacht-011',
@@ -120,7 +120,7 @@ const DEFAULT_YACHTS = [
         capacity: 12,
         type: 'Sunset Yacht',
         featured: false,
-        images: []
+        images: ['assets/images/service-yacht-32.jpg', 'assets/images/service-yacht-33.jpg', 'assets/images/service-yacht-34.jpg']
     },
     {
         id: 'yacht-012',
@@ -130,7 +130,7 @@ const DEFAULT_YACHTS = [
         capacity: 18,
         type: 'Party Yacht',
         featured: false,
-        images: []
+        images: ['assets/images/service-yacht-35.jpg', 'assets/images/service-yacht-36.jpg', 'assets/images/hero-slide1.jpg']
     }
 ];
 
