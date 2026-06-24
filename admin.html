@@ -642,6 +642,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="#" onclick="showSection('yachts')">
+                            <i class="fas fa-ship"></i> Yachts
+                        </a>
+                    </li>
+                    <li>
                         <a href="#" onclick="showSection('gallery')">
                             <i class="fas fa-images"></i> Gallery
                         </a>
@@ -706,6 +711,38 @@
                                 <p>Active Policies</p>
                             </div>
                         </div>
+                    </div>
+                </section>
+
+                <!-- Yachts Section -->
+                <section id="section-yachts" class="admin-section" style="display: none;">
+                    <h2><i class="fas fa-ship"></i> Yacht Management</h2>
+                    <p style="color: var(--text-light); margin-bottom: 20px;">
+                        Manage yachts and categories. Each category can contain multiple yachts.
+                    </p>
+                    
+                    <div class="alert" id="yachtsAlert"></div>
+                    
+                    <!-- Categories Management -->
+                    <div style="background: var(--bg-light); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h3 style="margin: 0;"><i class="fas fa-folder"></i> Categories</h3>
+                            <button class="btn btn-sm btn-primary" onclick="addCategory()">
+                                <i class="fas fa-plus"></i> Add Category
+                            </button>
+                        </div>
+                        <div id="categoriesList"></div>
+                    </div>
+                    
+                    <!-- Yachts Management -->
+                    <div style="background: var(--bg-light); padding: 20px; border-radius: 12px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h3 style="margin: 0;"><i class="fas fa-ship"></i> Yachts</h3>
+                            <button class="btn btn-sm btn-primary" onclick="addYacht()">
+                                <i class="fas fa-plus"></i> Add Yacht
+                            </button>
+                        </div>
+                        <div id="yachtsList"></div>
                     </div>
                 </section>
 
@@ -1033,6 +1070,7 @@
             if (typeof loadPoliciesIntoEditor === 'function') loadPoliciesIntoEditor();
             if (typeof loadReviewsEditor === 'function') loadReviewsEditor();
             if (typeof loadGalleryEditor === 'function') loadGalleryEditor();
+            if (typeof loadYachtsEditor === 'function') loadYachtsEditor();
         }
 
         // Save Hero Settings
@@ -1362,6 +1400,148 @@
                 { name: "Amit Kumar", date: "2 months ago", rating: 5, text: "Best yacht rental service in Goa! Professional crew, beautiful yachts, and excellent customer service.", avatar: "AK" },
                 { name: "Sneha Gupta", date: "3 weeks ago", rating: 5, text: "Romantic sunset cruise was absolutely magical! Perfect for couples!", avatar: "SG" }
             ];
+        }
+
+        // Yacht & Category Management
+        const DEFAULT_CATEGORIES = [
+            { id: 'yacht', name: 'Yacht Booking', icon: 'fa-ship', order: 1 },
+            { id: 'cruise', name: 'Cruise Booking', icon: 'fa-anchor', order: 2 },
+            { id: 'sailboat', name: 'Sailboat Booking', icon: 'fa-wind', order: 3 },
+            { id: 'speedboat', name: 'Speed Boat Booking', icon: 'fa-bolt', order: 4 }
+        ];
+
+        const DEFAULT_YACHTS = [
+            { id: 'aqua-queen', name: 'Aqua Queen', type: 'yacht', capacity: 8, price: 15000, location: 'Goa, India', featured: true, description: 'The Aqua Queen Yacht offers an unparalleled luxury experience.', amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck', images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'] },
+            { id: 'white-sea', name: 'White Sea', type: 'yacht', capacity: 12, price: 18000, location: 'Goa, India', featured: true, description: 'The White Sea Yacht is a magnificent vessel for larger groups.', amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck, Cockpit Area', images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-6.jpg'] },
+            { id: 'amaze', name: 'Amaze', type: 'yacht', capacity: 13, price: 20000, location: 'Goa, India', featured: true, description: 'Experience the thrill of sailing on the Amaze yacht.', amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck', images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-1.jpg'] }
+        ];
+
+        function loadYachtsEditor() {
+            const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
+            const yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
+            
+            // Render categories
+            const categoriesList = document.getElementById('categoriesList');
+            if (categoriesList) {
+                categoriesList.innerHTML = categories.sort((a, b) => a.order - b.order).map(cat => `
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #fff; border-radius: 8px; margin-bottom: 10px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas ${cat.icon || 'fa-folder'}" style="color: var(--primary);"></i>
+                            <span>${cat.name}</span>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-outline" onclick="editCategory('${cat.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteCategory('${cat.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Render yachts
+            const yachtsList = document.getElementById('yachtsList');
+            if (yachtsList) {
+                yachtsList.innerHTML = yachts.map(yacht => {
+                    const cat = categories.find(c => c.id === yacht.type) || { name: 'Unknown' };
+                    return `
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #fff; border-radius: 8px; margin-bottom: 10px;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <img src="${yacht.images[0]}" alt="${yacht.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                            <div>
+                                <strong>${yacht.name}</strong>
+                                <p style="margin: 0; font-size: 0.85rem; color: #666;">${cat.name} • ${yacht.capacity} guests • ₹${yacht.price.toLocaleString('en-IN')}/hr</p>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-outline" onclick="editYacht('${yacht.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteYacht('${yacht.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `}).join('');
+            }
+        }
+
+        function addCategory() {
+            const name = prompt('Enter category name:');
+            if (!name) return;
+            const icon = prompt('Enter FontAwesome icon class (e.g., fa-ship):', 'fa-folder') || 'fa-folder';
+            const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
+            const newId = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
+            categories.push({ id: newId, name, icon, order: categories.length + 1 });
+            localStorage.setItem('yacht_categories', JSON.stringify(categories));
+            loadYachtsEditor();
+            showAlert('Category added!', 'success');
+        }
+
+        function editCategory(id) {
+            const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
+            const cat = categories.find(c => c.id === id);
+            if (!cat) return;
+            const name = prompt('Edit category name:', cat.name);
+            if (!name) return;
+            cat.name = name;
+            cat.icon = prompt('Edit icon class:', cat.icon) || cat.icon;
+            localStorage.setItem('yacht_categories', JSON.stringify(categories));
+            loadYachtsEditor();
+            showAlert('Category updated!', 'success');
+        }
+
+        function deleteCategory(id) {
+            if (!confirm('Delete this category?')) return;
+            let categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
+            categories = categories.filter(c => c.id !== id);
+            localStorage.setItem('yacht_categories', JSON.stringify(categories));
+            loadYachtsEditor();
+            showAlert('Category deleted!', 'success');
+        }
+
+        function addYacht() {
+            const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
+            const catOptions = categories.map(c => `${c.id}:${c.name}`).join(', ');
+            const type = prompt(`Select category (${catOptions}):`, 'yacht');
+            const name = prompt('Enter yacht name:');
+            if (!name) return;
+            const capacity = parseInt(prompt('Enter capacity:', '8')) || 8;
+            const price = parseInt(prompt('Enter price per hour:', '15000')) || 15000;
+            const description = prompt('Enter description:', 'Luxury yacht experience.');
+            const image = prompt('Enter image URL:', 'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg');
+            
+            const yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
+            const newId = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
+            yachts.push({
+                id: newId, name, type: type.split(':')[0], capacity, price, 
+                location: 'Goa, India', featured: false, 
+                description, amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
+                images: [image || 'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg']
+            });
+            localStorage.setItem('yacht_items', JSON.stringify(yachts));
+            loadYachtsEditor();
+            showAlert('Yacht added!', 'success');
+        }
+
+        function editYacht(id) {
+            const yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
+            const yacht = yachts.find(y => y.id === id);
+            if (!yacht) return;
+            
+            const name = prompt('Edit yacht name:', yacht.name);
+            if (!name) return;
+            yacht.name = name;
+            yacht.capacity = parseInt(prompt('Edit capacity:', yacht.capacity)) || yacht.capacity;
+            yacht.price = parseInt(prompt('Edit price:', yacht.price)) || yacht.price;
+            yacht.description = prompt('Edit description:', yacht.description) || yacht.description;
+            
+            localStorage.setItem('yacht_items', JSON.stringify(yachts));
+            loadYachtsEditor();
+            showAlert('Yacht updated!', 'success');
+        }
+
+        function deleteYacht(id) {
+            if (!confirm('Delete this yacht?')) return;
+            let yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
+            yachts = yachts.filter(y => y.id !== id);
+            localStorage.setItem('yacht_items', JSON.stringify(yachts));
+            loadYachtsEditor();
+            showAlert('Yacht deleted!', 'success');
         }
 
         // Gallery Management

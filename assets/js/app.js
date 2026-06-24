@@ -135,9 +135,11 @@ function renderYachts() {
     
     const yachts = db.getAllYachts();
     
-    grid.innerHTML = yachts.map(yacht => `
+    grid.innerHTML = yachts.map(yacht => {
+        const urlName = encodeURIComponent(yacht.name.toLowerCase().replace(/\s+/g, '-'));
+        return `
         <div class="yacht-card">
-            <a href="yacht-detail.html?yacht=${yacht.id}" class="yacht-card-link">
+            <a href="yacht-detail.html?yacht=${urlName}" class="yacht-card-link">
                 <div class="yacht-card-img">
                     <img src="${yacht.images[0]}" alt="${yacht.name}" loading="lazy">
                     ${yacht.featured ? '<span class="yacht-card-badge">Featured</span>' : ''}
@@ -162,8 +164,8 @@ function renderYachts() {
                     <i class="fas fa-phone"></i>
                 </a>
             </div>
-        </div>
-    `).join('');
+        </div>`;
+    }).join('');
 }
 
 // Render stars
@@ -325,12 +327,26 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Load services menu from admin categories
+function loadServicesMenu() {
+    const menu = document.getElementById('servicesMenu');
+    if (!menu) return;
+    
+    const categories = JSON.parse(localStorage.getItem('yacht_categories') || 'null');
+    if (categories && categories.length > 0) {
+        menu.innerHTML = categories.sort((a, b) => a.order - b.order).map(cat => 
+            `<li><a href="index.html#yachts?type=${cat.id}"><i class="fas ${cat.icon || 'fa-ship'}"></i> ${cat.name}</a></li>`
+        ).join('');
+    }
+}
+
 // Initialize on DOM load
 document.addEventListener('DOMContentLoaded', function() {
     renderYachts();
     renderReviews();
     initHeroSlider();
     initMobileMenu();
+    loadServicesMenu();
     
     // Load more reviews button
     const loadMoreBtn = document.getElementById('loadMoreReviews');

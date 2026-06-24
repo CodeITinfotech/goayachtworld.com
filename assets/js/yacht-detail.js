@@ -5,8 +5,45 @@
 // Get URL parameters
 function getYachtFromURL() {
     const params = new URLSearchParams(window.location.search);
-    const yachtId = params.get('yacht');
-    return yachtId;
+    const yachtParam = params.get('yacht');
+    
+    if (!yachtParam) return null;
+    
+    // Check if it's a name (contains spaces or letters)
+    if (yachtParam.includes('%20') || yachtParam.includes(' ')) {
+        return decodeURIComponent(yachtParam).toLowerCase().replace(/\s+/g, '-');
+    }
+    
+    // Otherwise it's an ID
+    return yachtParam;
+}
+
+// Get yacht by name from URL
+function getYachtByName(name) {
+    const normalizedName = name.toLowerCase().replace(/%20|\s+/g, '-');
+    const entries = Object.entries(YACHT_DETAILS);
+    
+    // First try exact match with normalized name
+    for (const [id, yacht] of entries) {
+        const normalizedYachtName = yacht.name.toLowerCase().replace(/\s+/g, '-');
+        if (normalizedYachtName === normalizedName) {
+            return { id, ...yacht };
+        }
+    }
+    
+    // Try original ID
+    if (YACHT_DETAILS[normalizedName]) {
+        return { id: normalizedName, ...YACHT_DETAILS[normalizedName] };
+    }
+    
+    // Try partial match
+    for (const [id, yacht] of entries) {
+        if (yacht.name.toLowerCase().replace(/\s+/g, '-').includes(normalizedName)) {
+            return { id, ...yacht };
+        }
+    }
+    
+    return null;
 }
 
 // Yacht data with full details - All 35 yachts
@@ -385,7 +422,12 @@ function formatPrice(price) {
 // Load yacht details
 function loadYachtDetails() {
     const yachtId = getYachtFromURL();
-    const yacht = YACHT_DETAILS[yachtId] || YACHT_DETAILS['yacht-005']; // Default to Ciao Bella
+    let yacht = getYachtByName(yachtId);
+    
+    // Default to MV Star if not found
+    if (!yacht) {
+        yacht = { id: 'yacht-005', ...YACHT_DETAILS['yacht-005'] };
+    }
     
     // Update page title
     document.getElementById('pageTitle').textContent = yacht.name + ' | Goa Yacht World';
