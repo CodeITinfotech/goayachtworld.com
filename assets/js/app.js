@@ -10,23 +10,32 @@ const CONFIG = {
     dbName: 'GoaYachtWorldDB'
 };
 
-// Google Reviews - Replace with actual Google Reviews embed or API
-// Placeholder reviews (replace with live data from Google Reviews API or embed)
-const GOOGLE_REVIEWS = [
-    { name: "Naveen Sharma", date: "2 weeks ago", rating: 5, text: "Absolutely outstanding video shoot experience! The team was incredibly professional, creative, and attentive to detail. From concept to execution, they exceeded all expectations. Highly recommend for any yacht charter needs in Goa!", avatar: "NS" },
-    { name: "Daniel Fernandes", date: "1 month ago", rating: 5, text: "Fantastic yacht experience! Clean, well-maintained vessels, friendly staff, easy booking, and affordable rates. Our day on the water was unforgettable. Will definitely book again!", avatar: "DF" },
-    { name: "Manish Rajput", date: "3 weeks ago", rating: 5, text: "Five-star cruise experience, well-equipped boats, knowledgeable crew, and reasonable prices. Our day on the cruise was pure bliss. Highly recommended for anyone visiting Goa!", avatar: "MR" },
-    { name: "Priya Patel", date: "1 week ago", rating: 5, text: "Amazing birthday celebration on the yacht! The team went above and beyond to make our special day perfect. Everything from decorations to food was top-notch!", avatar: "PP" },
-    { name: "Amit Kumar", date: "2 months ago", rating: 5, text: "Best yacht rental service in Goa! Professional crew, beautiful yachts, and excellent customer service. Perfect for our corporate event!", avatar: "AK" },
-    { name: "Sneha Gupta", date: "3 weeks ago", rating: 5, text: "Romantic sunset cruise was absolutely magical! The yacht was beautiful, champagne was included, and the views were breathtaking. Perfect for couples!", avatar: "SG" },
-    { name: "Rahul Mehta", date: "1 month ago", rating: 5, text: "Great experience for our family outing. Kids loved every moment. The crew was patient with children and very accommodating. Will come back!", avatar: "RM" },
-    { name: "Vikram Singh", date: "5 days ago", rating: 5, text: "Best decision to book with Goa Yacht World! The entire process from booking to the actual cruise was seamless. Highly professional team!", avatar: "VS" },
-    { name: "Ananya Reddy", date: "2 weeks ago", rating: 5, text: "Dream yacht experience! We celebrated our anniversary here and it was perfect. The sunset views from the deck were absolutely stunning!", avatar: "AR" },
-    { name: "Karthik Nair", date: "1 week ago", rating: 4, text: "Great service overall. The yacht was clean and well-maintained. Would have given 5 stars but wish the booking process was slightly faster.", avatar: "KN" }
+// Google Reviews - Load from localStorage or use defaults
+const DEFAULT_REVIEWS = [
+    { name: "Naveen Sharma", date: "2 weeks ago", rating: 5, text: "Absolutely outstanding video shoot experience! The team was incredibly professional, creative, and attentive to detail. Highly recommend!", avatar: "NS" },
+    { name: "Daniel Fernandes", date: "1 month ago", rating: 5, text: "Fantastic yacht experience! Clean, well-maintained vessels, friendly staff, easy booking, and affordable rates.", avatar: "DF" },
+    { name: "Manish Rajput", date: "3 weeks ago", rating: 5, text: "Five-star cruise experience, well-equipped boats, knowledgeable crew, and reasonable prices. Highly recommended!", avatar: "MR" },
+    { name: "Priya Patel", date: "1 week ago", rating: 5, text: "Amazing birthday celebration on the yacht! The team went above and beyond to make our special day perfect.", avatar: "PP" },
+    { name: "Amit Kumar", date: "2 months ago", rating: 5, text: "Best yacht rental service in Goa! Professional crew, beautiful yachts, and excellent customer service.", avatar: "AK" },
+    { name: "Sneha Gupta", date: "3 weeks ago", rating: 5, text: "Romantic sunset cruise was absolutely magical! Perfect for couples!", avatar: "SG" },
+    { name: "Rahul Mehta", date: "1 month ago", rating: 5, text: "Great experience for our family outing. Kids loved every moment.", avatar: "RM" },
+    { name: "Vikram Singh", date: "5 days ago", rating: 5, text: "Best decision to book with Goa Yacht World! Highly professional team!", avatar: "VS" },
+    { name: "Ananya Reddy", date: "2 weeks ago", rating: 5, text: "Dream yacht experience! Perfect for our anniversary celebration.", avatar: "AR" },
+    { name: "Karthik Nair", date: "1 week ago", rating: 4, text: "Great service overall. Would have given 5 stars but wish the booking process was slightly faster.", avatar: "KN" }
 ];
 
+function getReviews() {
+    const stored = localStorage.getItem('google_reviews');
+    return stored ? JSON.parse(stored) : DEFAULT_REVIEWS;
+}
+
+const GOOGLE_REVIEWS = getReviews();
+
 let displayedReviews = 0;
-const REVIEWS_PER_PAGE = 5;
+const REVIEWS_PER_PAGE = 6;
+const REVIEWS_PER_LOAD = 3;
+const MAX_REVIEWS_DISPLAY = 30;
+const GOOGLE_REVIEWS_URL = 'https://www.google.com/maps/place/Goa+Yacht+World';
 
 // Yacht data - Real boats from goayachtworld.com
 const DEFAULT_YACHTS = [
@@ -186,7 +195,13 @@ function renderReviews() {
     if (!grid) return;
     
     const sortedReviews = sortReviews(GOOGLE_REVIEWS);
-    const reviewsToShow = sortedReviews.slice(0, displayedReviews + REVIEWS_PER_PAGE);
+    const totalAvailable = sortedReviews.length;
+    const isFirstLoad = displayedReviews === 0;
+    
+    // First load: show 6 reviews
+    // Subsequent loads: add 3 more
+    const count = isFirstLoad ? REVIEWS_PER_PAGE : REVIEWS_PER_LOAD;
+    const reviewsToShow = sortedReviews.slice(0, displayedReviews + count);
     
     grid.innerHTML = reviewsToShow.map(review => {
         const isLong = review.text.length > 100;
@@ -214,9 +229,23 @@ function renderReviews() {
     
     displayedReviews = reviewsToShow.length;
     
-    // Show/hide load more button
+    // Show/hide load more button or redirect link
     if (footer) {
-        footer.style.display = displayedReviews >= sortedReviews.length ? 'none' : 'block';
+        if (displayedReviews >= MAX_REVIEWS_DISPLAY || displayedReviews >= totalAvailable) {
+            // Show redirect to Google
+            footer.innerHTML = `
+                <a href="${GOOGLE_REVIEWS_URL}" target="_blank" class="btn btn-primary btn-lg">
+                    <i class="fab fa-google"></i> See All Reviews on Google
+                </a>
+            `;
+        } else {
+            // Show Load More button
+            footer.innerHTML = `
+                <button class="btn btn-outline" id="loadMoreReviews" onclick="renderReviews()">
+                    <i class="fas fa-plus"></i> Load More Reviews
+                </button>
+            `;
+        }
     }
 }
 
