@@ -23,9 +23,15 @@ let currentItems = [];
 
 // Get gallery data from localStorage
 function getGalleryData() {
-    const stored = localStorage.getItem('gallery_items');
+    // Check site_gallery first (from admin panel)
+    const stored = localStorage.getItem('site_gallery');
     if (stored) {
         return JSON.parse(stored);
+    }
+    // Fall back to gallery_items
+    const legacy = localStorage.getItem('gallery_items');
+    if (legacy) {
+        return JSON.parse(legacy);
     }
     return DEFAULT_GALLERY;
 }
