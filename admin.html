@@ -331,13 +331,13 @@
 
         .stat-card .stat-link-hint {
             display: none;
-            font-size: 12px;
-            color: var(--primary);
-            margin-top: 8px;
-            font-weight: 500;
         }
-        .stat-card:hover .stat-link-hint {
-            display: block;
+        .stat-card.clickable {
+            cursor: pointer;
+        }
+        .stat-card.clickable:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
         }
 
         /* Content Sections */
@@ -713,7 +713,7 @@
                     <h2><i class="fas fa-chart-pie"></i> Dashboard</h2>
                     
                     <div class="dashboard-stats">
-                        <div class="stat-card" onclick="showSection('yachts')" style="cursor: pointer;">
+                        <div class="stat-card clickable" onclick="showSection('yachts')">
                             <div class="stat-icon blue">
                                 <i class="fas fa-ship"></i>
                             </div>
@@ -721,9 +721,8 @@
                                 <h3>35</h3>
                                 <p>Total Yachts</p>
                             </div>
-                            <span class="stat-link-hint">Click to manage →</span>
                         </div>
-                        <div class="stat-card" onclick="showSection('reviews')" style="cursor: pointer;">
+                        <div class="stat-card clickable" onclick="showSection('reviews')">
                             <div class="stat-icon green">
                                 <i class="fas fa-star"></i>
                             </div>
@@ -731,9 +730,8 @@
                                 <h3>4.9</h3>
                                 <p>Google Rating</p>
                             </div>
-                            <span class="stat-link-hint">Click to manage →</span>
                         </div>
-                        <div class="stat-card editable-stat" onclick="editStatValue('happyClients')" style="cursor: pointer;" title="Click to edit">
+                        <div class="stat-card clickable" onclick="editStatValue('happyClients')">
                             <div class="stat-icon teal">
                                 <i class="fas fa-users"></i>
                             </div>
@@ -741,9 +739,8 @@
                                 <h3 id="happyClientsValue">356+</h3>
                                 <p>Happy Clients</p>
                             </div>
-                            <span class="stat-link-hint">Click to edit →</span>
                         </div>
-                        <div class="stat-card" onclick="showSection('inquiries')" style="cursor: pointer;">
+                        <div class="stat-card clickable" onclick="showSection('inquiries')">
                             <div class="stat-icon orange">
                                 <i class="fas fa-envelope-open-text"></i>
                             </div>
@@ -751,7 +748,15 @@
                                 <h3 id="totalInquiries">0</h3>
                                 <p>Total Inquiries</p>
                             </div>
-                            <span class="stat-link-hint">Click to view →</span>
+                        </div>
+                        <div class="stat-card clickable" onclick="showSection('categories')">
+                            <div class="stat-icon purple">
+                                <i class="fas fa-folder"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalCategories">0</h3>
+                                <p>Categories</p>
+                            </div>
                         </div>
                     </div>
                     
