@@ -141,7 +141,6 @@ function renderYachts() {
                 <div class="yacht-card-img">
                     <img src="${yacht.images[0]}" alt="${yacht.name}" loading="lazy">
                     ${yacht.featured ? '<span class="yacht-card-badge">Featured</span>' : ''}
-                    <span class="yacht-view-details">View Details</span>
                 </div>
                 <div class="yacht-card-body">
                     <span class="yacht-card-type">${yacht.type}</span>
