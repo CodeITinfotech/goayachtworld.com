@@ -146,43 +146,6 @@ ul {
     color: var(--primary);
 }
 
-.nav-item-has-children {
-    position: relative;
-}
-
-.sub-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: var(--white);
-    min-width: 200px;
-    border-radius: 8px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-    padding: 10px 0;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px);
-    transition: all 0.3s ease;
-}
-
-.nav-item-has-children:hover .sub-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.sub-menu li a {
-    display: block;
-    padding: 10px 20px;
-    font-size: 14px;
-    color: var(--text);
-}
-
-.sub-menu li a:hover {
-    background: var(--bg-light);
-    color: var(--primary);
-}
-
 .header-right {
     display: flex;
     align-items: center;
