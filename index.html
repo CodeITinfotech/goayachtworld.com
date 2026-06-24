@@ -3,232 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxury Yacht Rentals in Goa | Private Yacht Charters & Party Boats | Goa Yacht World</title>
-    <meta name="description" content="Book the best luxury yachts in Goa for parties, events & celebrations. Private yacht charters, sunset cruises & corporate events. Prices starting ₹12,000. WhatsApp: 8446275985">
-    <meta name="keywords" content="yacht booking Goa, luxury yacht rental, party boat, sunset cruise, private charter, corporate yacht, birthday party yacht">
-    <meta name="author" content="Goa Yacht World">
+    <title>Yacht Booking Goa | Luxury Yacht Rentals & Party Boats | Goa Yacht World</title>
+    <meta name="description" content="Book premium yachts in Goa for parties, birthdays, corporate events & celebrations. Private charters, sunset cruises. 50+ yachts. Best prices. WhatsApp: 8446275985">
+    <meta name="keywords" content="yacht booking Goa, luxury yacht rental, party boat, sunset cruise, private charter, corporate yacht, birthday party yacht, Goa">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="Luxury Yacht Rentals in Goa | Goa Yacht World">
-    <meta property="og:description" content="Book premium yachts in Goa for parties, events & celebrations. Private charters, sunset cruises & corporate events.">
+    <meta property="og:title" content="Yacht Booking Goa | Luxury Yacht Rentals | Goa Yacht World">
+    <meta property="og:description" content="Book premium yachts in Goa. 50+ yachts for parties, birthdays, corporate events. Best prices guaranteed.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://goayachtworld.com">
-    <meta property="og:image" content="https://codeitinfotech.github.io/gyw-dev/assets/images/hero-slide1.jpg">
+    <meta property="og:image" content="https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/hero-slide1.jpg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Styles -->
     <link rel="stylesheet" href="assets/css/style.css">
     
     <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚤</text></svg>">
-    
-    <!-- Schema.org Markup -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "additionalType": "https://schema.org/TravelAgency",
-        "name": "Goa Yacht World",
-        "image": "https://goayachtworld.com/assets/images/logo.png",
-        "url": "https://goayachtworld.com",
-        "telephone": "+91-8446275985",
-        "email": "info@goayachtworld.com",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Goa",
-            "addressCountry": "IN"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "15.2993",
-            "longitude": "74.1240"
-        },
-        "openingHoursSpecification": {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-            "opens": "06:00",
-            "closes": "22:00"
-        },
-        "priceRange": "₹₹",
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "2000"
-        }
-    }
-    </script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚤</text></svg>">
 </head>
 <body>
     <!-- Header -->
     <header class="header">
-        <div class="container">
-            <a href="/" class="logo">Goa Yacht <span>World</span></a>
-            <nav class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#yachts">Our Fleet</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>
+        <div class="container header-inner">
+            <a href="#" class="logo">
+                <img src="https://goayachtworld.com/wp-content/uploads/sites/58/2023/07/logo.svg" alt="Goa Yacht World" class="logo-img">
+            </a>
+            <nav class="nav" id="mainNav">
+                <ul class="nav-list">
+                    <li class="nav-item-has-children">
+                        <a href="#">Our Services <i class="fas fa-chevron-down"></i></a>
+                        <ul class="sub-menu">
+                            <li><a href="#yachts">Yacht Booking</a></li>
+                            <li><a href="#yachts">Cruise Booking</a></li>
+                            <li><a href="#yachts">Sailboat Booking</a></li>
+                            <li><a href="#yachts">Speed Boat Booking</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                </ul>
             </nav>
-            <button class="mobile-menu-btn" onclick="alert('Menu coming soon!')">☰</button>
+            <div class="header-right">
+                <a href="tel:+918446275985" class="phone-link">
+                    <i class="fas fa-phone"></i> +918446275985
+                </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <video autoplay muted loop playsinline poster="assets/images/hero-slide1.jpg">
-            <source src="assets/videos/hero.mp4" type="video/mp4">
-        </video>
-        <div class="hero-content">
-            <h1>Experience Luxury on the Arabian Sea</h1>
-            <p>Premium yacht rentals in Goa for romantic cruises, birthday parties, corporate events, and unforgettable celebrations</p>
-            <div class="hero-buttons">
-                <a href="#yachts" class="btn btn-primary">Explore Our Fleet</a>
-                <a href="#" class="btn btn-whatsapp" onclick="WhatsApp.openChat(); return false;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    Chat Now
-                </a>
+    <!-- Hero Slider -->
+    <section class="hero-slider" id="home">
+        <div class="hero-slides">
+            <div class="hero-slide active" style="background-image: url('https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/hero-slide1.jpg')">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <span class="hero-tag">Yacht and boat rental</span>
+                    <h1>Adventure Awaits</h1>
+                    <p>Where Every Wave Leads to Creating Timeless Memories</p>
+                    <a href="#yachts" class="btn btn-primary">Book Now</a>
+                </div>
             </div>
+            <div class="hero-slide" style="background-image: url('https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/hero-slide2.jpg')">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <span class="hero-tag">Yacht and boat rental</span>
+                    <h1>Move with us</h1>
+                    <p>Cruise in Comfort, Sail in Style: Your Ultimate Yachting Adventure Awaits</p>
+                    <a href="#yachts" class="btn btn-primary">Explore Fleet</a>
+                </div>
+            </div>
+            <div class="hero-slide" style="background-image: url('https://goayachtworld.com/wp-content/uploads/sites/58/2023/08/hero-slide3.jpg')">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <span class="hero-tag">Yacht and boat rental</span>
+                    <h1>Book your yacht</h1>
+                    <p>Delivering Unforgettable Experiences within Your Budget</p>
+                    <a href="#contact" class="btn btn-whatsapp">
+                        <i class="fab fa-whatsapp"></i> Chat Now
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="slider-nav">
+            <button class="slider-prev"><i class="fas fa-chevron-left"></i> Previous</button>
+            <button class="slider-next">Next <i class="fas fa-chevron-right"></i></button>
         </div>
     </section>
 
-    <!-- Quick Links -->
-    <section class="section" style="background: white;">
-        <div class="container">
-            <div class="quick-links">
-                <a href="#" class="quick-link" onclick="WhatsApp.openChat('Couples Cruise'); return false;">
-                    <h3>💑 Couples</h3>
-                    <p>Romantic sunset cruises</p>
-                </a>
-                <a href="#" class="quick-link" onclick="WhatsApp.openChat('Birthday Yacht'); return false;">
-                    <h3>🎂 Birthdays</h3>
-                    <p>Party on the water</p>
-                </a>
-                <a href="#" class="quick-link" onclick="WhatsApp.openChat('Corporate Yacht'); return false;">
-                    <h3>💼 Corporate</h3>
-                    <p>Business events</p>
-                </a>
-                <a href="#" class="quick-link" onclick="WhatsApp.openChat('Family Yacht'); return false;">
-                    <h3>👨‍👩‍👧‍👦 Family</h3>
-                    <p>Fun for everyone</p>
-                </a>
-                <a href="#" class="quick-link" onclick="WhatsApp.openChat('Luxury Yacht'); return false;">
-                    <h3>✨ Luxury</h3>
-                    <p>Premium experiences</p>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Yacht Fleet -->
-    <section class="section" id="yachts">
+    <!-- Services -->
+    <section class="section services-section">
         <div class="container">
             <div class="section-title">
-                <h2>Our Yacht Fleet</h2>
-                <p>Choose from our collection of premium yachts for every occasion</p>
+                <h2>Services</h2>
             </div>
-            <div class="yacht-grid" id="yacht-grid">
-                <div class="loading"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="section" id="about" style="background: white;">
-        <div class="container">
-            <div class="section-title">
-                <h2>Why Choose Goa Yacht World?</h2>
-                <p>Goa's most trusted yacht charter company since 2018</p>
-            </div>
-            <div class="quick-links">
-                <div class="quick-link">
-                    <h3>🚢 50+ Yachts</h3>
-                    <p>Extensive fleet from intimate cruisers to grand party yachts</p>
-                </div>
-                <div class="quick-link">
-                    <h3>⭐ 4.8★ Rating</h3>
-                    <p>Trusted by 2000+ happy customers</p>
-                </div>
-                <div class="quick-link">
-                    <h3>🔒 Safety First</h3>
-                    <p>Coast Guard certified, life jackets & trained crew</p>
-                </div>
-                <div class="quick-link">
-                    <h3>💰 Best Prices</h3>
-                    <p>Competitive rates with no hidden charges</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="section" id="contact">
-        <div class="container">
-            <div class="section-title">
-                <h2>Book Your Yacht Today</h2>
-                <p>Contact us via WhatsApp for instant booking confirmation</p>
-            </div>
-            <div style="text-align: center;">
-                <a href="#" class="btn btn-whatsapp" onclick="WhatsApp.openChat(); return false;" style="font-size: 1.2rem; padding: 15px 40px;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    Chat on WhatsApp: 8446275985
+            <div class="services-grid">
+                <a href="#yachts" class="service-card">
+                    <i class="fas fa-ship"></i>
+                    <h3>Yacht Booking</h3>
                 </a>
-                <p style="margin-top: 20px; color: var(--text-light);">
-                    Available 24/7 for bookings and inquiries
-                </p>
+                <a href="#yachts" class="service-card">
+                    <i class="fas fa-water"></i>
+                    <h3>Cruise Booking</h3>
+                </a>
+                <a href="#yachts" class="service-card">
+                    <i class="fas fa-wind"></i>
+                    <h3>Sailboat Booking</h3>
+                </a>
+                <a href="#yachts" class="service-card">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Speed Boat Booking</h3>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Yachts -->
+    <section class="section yachts-section" id="yachts">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured boats</h2>
+            </div>
+            <div class="yachts-grid" id="yachtsGrid">
+                <!-- Yachts will be loaded via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" style="background-image: url('https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/book-bg.jpg')">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Set sail with us</h2>
+                <p>Exploring cities, one ride at a time</p>
+                <a href="#contact" class="btn btn-whatsapp btn-lg">
+                    <i class="fab fa-whatsapp"></i> Book Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews -->
+    <section class="section reviews-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our happy customers</h2>
+            </div>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <p>"Absolutely outstanding video shoot experience! The team was incredibly professional, creative, and attentive to detail. From concept to execution, they exceeded all expectations."</p>
+                    <div class="review-author">
+                        <strong>Naveen Sharma</strong>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <p>"Fantastic yacht experience! Clean, well-maintained vessels, friendly staff, easy booking, and affordable rates. Our day on the water was unforgettable."</p>
+                    <div class="review-author">
+                        <strong>Daniel Fernandes</strong>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <p>"Five-star cruise experience, well-equipped boats, knowledgeable crew, and reasonable prices. Our day on the cruise was pure bliss. Highly recommended."</p>
+                    <div class="review-author">
+                        <strong>Manish Rajput</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section features-section" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>Features Goa Yacht World</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/icon-quality-blue.svg" alt="Quality">
+                    </div>
+                    <h3>Quality</h3>
+                    <p>Experience the epitome of luxury on the seas where quality and elegance define every booking.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/icon-safety-blue.svg" alt="Safety">
+                    </div>
+                    <h3>Safety</h3>
+                    <p>Book with confidence at GYW, where unparalleled safety meets luxury on every voyage.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/about-features.png" alt="Features" class="feature-image">
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/icon-team-blue.svg" alt="Team">
+                    </div>
+                    <h3>One team</h3>
+                    <p>Stay updated with regular reminders and booking status notifications to ensure your yacht experience goes seamlessly.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/icon-fire-blue.svg" alt="Passion">
+                    </div>
+                    <h3>Passion</h3>
+                    <p>Set sail with GYW, where our passion for the sea transforms every booking into an extraordinary adventure.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Banner -->
+    <section class="about-banner" style="background-image: url('https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/about-call.jpg')">
+        <div class="about-overlay"></div>
+        <div class="container">
+            <div class="about-content">
+                <h2>Are you Ready?</h2>
+                <a href="#contact" class="btn btn-primary btn-lg">Contact Us</a>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" id="contact">
         <div class="container">
             <div class="footer-grid">
-                <div>
-                    <h4>Goa Yacht World</h4>
-                    <p>Goa's premier yacht charter company offering luxury rentals, party boats, and unforgettable experiences on the Arabian Sea.</p>
-                </div>
-                <div>
-                    <h4>Quick Links</h4>
+                <div class="footer-col">
+                    <h3>Information</h3>
                     <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#yachts">Our Fleet</a></li>
                         <li><a href="#about">About Us</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
                     </ul>
                 </div>
-                <div>
-                    <h4>Services</h4>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#" onclick="WhatsApp.openChat('Party Yacht'); return false;">Party Yachts</a></li>
-                        <li><a href="#" onclick="WhatsApp.openChat('Sunset Cruise'); return false;">Sunset Cruises</a></li>
-                        <li><a href="#" onclick="WhatsApp.openChat('Corporate Event'); return false;">Corporate Events</a></li>
-                        <li><a href="#" onclick="WhatsApp.openChat('Wedding Yacht'); return false;">Wedding Yachts</a></li>
+                        <li><a href="#yachts">Our Yachts</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#faq">FAQ</a></li>
                     </ul>
                 </div>
-                <div>
-                    <h4>Contact</h4>
-                    <ul>
-                        <li>📱 WhatsApp: <a href="#" onclick="WhatsApp.openChat(); return false;">8446275985</a></li>
-                        <li>📧 Email: info@goayachtworld.com</li>
-                        <li>📍 Location: Goa, India</li>
+                <div class="footer-col">
+                    <h3>Contact</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> R-2, 4th Floor, Satt Adhar Champers, Panaji, Goa</li>
+                        <li><i class="fas fa-envelope"></i> support@goayachtworld.com</li>
+                        <li><i class="fas fa-phone"></i> +918446275985 | +918446205985</li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Goa Yacht World. All rights reserved.</p>
-                <p style="margin-top: 10px; font-size: 0.85rem;">
-                    <a href="?admin=true">Admin Panel</a> (Press Ctrl+Shift+A or add ?admin=true to URL)
-                </p>
+                <p>All Rights Reserved - 2024 © Goa Yacht World</p>
             </div>
         </div>
     </footer>
 
-    <!-- WhatsApp Floating Button -->
-    <a href="#" class="whatsapp-float" onclick="WhatsApp.openChat(); return false;" title="Chat on WhatsApp">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/918446275985?text=Hi,%20I%20want%20to%20book%20a%20yacht" target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
     </a>
 
     <!-- Scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="assets/js/app.js"></script>
 </body>
 </html>
