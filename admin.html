@@ -642,6 +642,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="#" onclick="showSection('categories')">
+                            <i class="fas fa-folder"></i> Categories
+                        </a>
+                    </li>
+                    <li>
                         <a href="#" onclick="showSection('yachts')">
                             <i class="fas fa-ship"></i> Yachts
                         </a>
@@ -719,30 +724,44 @@
                     </div>
                 </section>
 
-                <!-- Yachts Section -->
-                <section id="section-yachts" class="admin-section" style="display: none;">
-                    <h2><i class="fas fa-ship"></i> Yacht Management</h2>
+                <!-- Categories Section -->
+                <section id="section-categories" class="admin-section" style="display: none;">
+                    <h2><i class="fas fa-folder"></i> Category Management</h2>
                     <p style="color: var(--text-light); margin-bottom: 20px;">
-                        Manage yachts and categories. Each category can contain multiple yachts.
+                        Manage yacht categories. Categories appear in the header menu and can have icons.
                     </p>
                     
-                    <div class="alert" id="yachtsAlert"></div>
+                    <div class="alert" id="categoriesAlert"></div>
                     
-                    <!-- Categories Management -->
                     <div style="background: var(--bg-light); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <h3 style="margin: 0;"><i class="fas fa-folder"></i> Categories</h3>
+                            <h3 style="margin: 0;"><i class="fas fa-list"></i> Available Categories</h3>
                             <button class="btn btn-sm btn-primary" onclick="addCategory()">
                                 <i class="fas fa-plus"></i> Add Category
                             </button>
                         </div>
                         <div id="categoriesList"></div>
                     </div>
+                </section>
+
+                <!-- Yachts Section -->
+                <section id="section-yachts" class="admin-section" style="display: none;">
+                    <h2><i class="fas fa-ship"></i> Yacht Management</h2>
+                    <p style="color: var(--text-light); margin-bottom: 20px;">
+                        Manage yachts. Add category filter dropdown above yacht list.
+                    </p>
+                    
+                    <div class="alert" id="yachtsAlert"></div>
                     
                     <!-- Yachts Management -->
                     <div style="background: var(--bg-light); padding: 20px; border-radius: 12px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <h3 style="margin: 0;"><i class="fas fa-ship"></i> Yachts</h3>
+                            <div>
+                                <label style="margin-right: 10px;">Filter by Category:</label>
+                                <select id="yachtCategoryFilter" onchange="filterYachtsByCategory()" style="padding: 8px 12px; border-radius: 6px; border: 1px solid #ddd; min-width: 200px;">
+                                    <option value="">All Categories</option>
+                                </select>
+                            </div>
                             <button class="btn btn-sm btn-primary" onclick="addYacht()">
                                 <i class="fas fa-plus"></i> Add Yacht
                             </button>
@@ -1127,6 +1146,7 @@ Value|Best value for your investment..."></textarea>
             if (typeof loadPoliciesIntoEditor === 'function') loadPoliciesIntoEditor();
             if (typeof loadReviewsEditor === 'function') loadReviewsEditor();
             if (typeof loadGalleryEditor === 'function') loadGalleryEditor();
+            if (typeof loadCategoriesEditor === 'function') loadCategoriesEditor();
             if (typeof loadYachtsEditor === 'function') loadYachtsEditor();
             if (typeof loadAboutUsEditor === 'function') loadAboutUsEditor();
         }
@@ -1544,11 +1564,9 @@ Value|Best value for your investment..."></textarea>
             ]}
         ];
 
-        function loadYachtsEditor() {
+        function loadCategoriesEditor() {
             const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
-            const yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
             
-            // Render categories
             const categoriesList = document.getElementById('categoriesList');
             if (categoriesList) {
                 categoriesList.innerHTML = categories.sort((a, b) => a.order - b.order).map(cat => `
@@ -1564,11 +1582,27 @@ Value|Best value for your investment..."></textarea>
                     </div>
                 `).join('');
             }
+        }
+
+        function loadYachtsEditor() {
+            const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
+            const yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
+            
+            // Populate category filter dropdown
+            const filter = document.getElementById('yachtCategoryFilter');
+            if (filter) {
+                filter.innerHTML = '<option value="">All Categories</option>' + categories.sort((a, b) => a.order - b.order).map(cat => 
+                    `<option value="${cat.id}">${cat.name}</option>`
+                ).join('');
+            }
             
             // Render yachts
             const yachtsList = document.getElementById('yachtsList');
+            const selectedCategory = filter ? filter.value : '';
+            const filteredYachts = selectedCategory ? yachts.filter(y => y.type === selectedCategory) : yachts;
+            
             if (yachtsList) {
-                yachtsList.innerHTML = yachts.map(yacht => {
+                yachtsList.innerHTML = filteredYachts.map(yacht => {
                     const cat = categories.find(c => c.id === yacht.type) || { name: 'Unknown' };
                     const videoIcon = yacht.video ? '<i class="fas fa-video" style="color: var(--primary);"></i>' : '';
                     return `
@@ -1589,6 +1623,10 @@ Value|Best value for your investment..."></textarea>
             }
         }
 
+        function filterYachtsByCategory() {
+            loadYachtsEditor();
+        }
+
         function addCategory() {
             const name = prompt('Enter category name:');
             if (!name) return;
@@ -1597,7 +1635,7 @@ Value|Best value for your investment..."></textarea>
             const newId = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
             categories.push({ id: newId, name, icon, order: categories.length + 1 });
             localStorage.setItem('yacht_categories', JSON.stringify(categories));
-            loadYachtsEditor();
+            loadCategoriesEditor();
             showAlert('Category added!', 'success');
         }
 
@@ -1610,7 +1648,7 @@ Value|Best value for your investment..."></textarea>
             cat.name = name;
             cat.icon = prompt('Edit icon class:', cat.icon) || cat.icon;
             localStorage.setItem('yacht_categories', JSON.stringify(categories));
-            loadYachtsEditor();
+            loadCategoriesEditor();
             showAlert('Category updated!', 'success');
         }
 
@@ -1619,7 +1657,7 @@ Value|Best value for your investment..."></textarea>
             let categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
             categories = categories.filter(c => c.id !== id);
             localStorage.setItem('yacht_categories', JSON.stringify(categories));
-            loadYachtsEditor();
+            loadCategoriesEditor();
             showAlert('Category deleted!', 'success');
         }
 
@@ -1657,13 +1695,19 @@ Value|Best value for your investment..."></textarea>
         }
 
         function editYacht(id) {
+            const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
             const yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
             const yacht = yachts.find(y => y.id === id);
             if (!yacht) return;
             
+            const catOptions = categories.map(c => `${c.id}:${c.name}`).join(', ');
+            const currentType = categories.find(c => c.id === yacht.type)?.name || yacht.type;
+            const type = prompt(`Select category (${catOptions}):`, `${yacht.type}:${currentType}`);
+            
             const name = prompt('Edit yacht name:', yacht.name);
             if (!name) return;
             yacht.name = name;
+            yacht.type = type.split(':')[0];
             yacht.capacity = parseInt(prompt('Edit capacity:', yacht.capacity)) || yacht.capacity;
             yacht.price = parseInt(prompt('Edit price:', yacht.price)) || yacht.price;
             yacht.description = prompt('Edit description:', yacht.description) || yacht.description;
