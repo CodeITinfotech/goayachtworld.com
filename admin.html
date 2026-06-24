@@ -3086,71 +3086,69 @@ Value|Best value for your investment..."></textarea>
 
     </script>
     
-    <!-- Firebase SDK - Load BEFORE sync functions are used -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    <script src="assets/js/firebase-config.js"></script>
+    <!-- Firebase disabled - using localStorage only -->
+    <!-- To enable Firebase, set FIREBASE_CONFIGURED = true in firebase-config.js and add config -->
     
     <script>
-        // Firebase Sync - Save to Firebase when data changes
+        // Firebase Sync - Save to Firebase when data changes (only if Firebase is configured)
         function saveToFirebase(collection, data) {
-            try {
-                if (typeof firebase !== 'undefined' && firebase.database) {
-                    firebase.database().ref(collection).set(data);
+            if (typeof FIREBASE_CONFIGURED !== 'undefined' && FIREBASE_CONFIGURED) {
+                try {
+                    if (typeof firebase !== 'undefined' && firebase.database) {
+                        firebase.database().ref(collection).set(data);
+                    }
+                } catch (error) {
+                    console.log('Firebase sync skipped');
                 }
-                localStorage.setItem(collection, JSON.stringify(data)); // Backup to localStorage
-                return true;
-            } catch (error) {
-                console.error('Firebase sync error:', error);
-                localStorage.setItem(collection, JSON.stringify(data));
-                return false;
             }
+            localStorage.setItem(collection, JSON.stringify(data)); // Always save to localStorage
+            return true;
         }
 
         // Update saveCategoryInline to sync with Firebase
         if (typeof saveCategoryInline === 'function') {
-            const originalSaveCategoryInline = saveCategoryInline;
+            var originalSaveCategoryInline = saveCategoryInline;
             window.saveCategoryInline = function(id) {
                 originalSaveCategoryInline(id);
-                const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
+                var categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
                 saveToFirebase('categories', categories);
             };
         }
 
         // Update saveExtraInline to sync with Firebase
         if (typeof saveExtraInline === 'function') {
-            const originalSaveExtraInline = saveExtraInline;
+            var originalSaveExtraInline = saveExtraInline;
             window.saveExtraInline = function(index) {
                 originalSaveExtraInline(index);
-                const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
+                var extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
                 saveToFirebase('extras', extras);
             };
         }
 
         // Update toggle functions to sync with Firebase
         if (typeof toggleCategoryStatus === 'function') {
-            const originalToggleCategoryStatus = toggleCategoryStatus;
+            var originalToggleCategoryStatus = toggleCategoryStatus;
             window.toggleCategoryStatus = function(id) {
                 originalToggleCategoryStatus(id);
-                const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
+                var categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
                 saveToFirebase('categories', categories);
             };
         }
 
         if (typeof toggleExtraStatus === 'function') {
-            const originalToggleExtraStatus = toggleExtraStatus;
+            var originalToggleExtraStatus = toggleExtraStatus;
             window.toggleExtraStatus = function(index) {
                 originalToggleExtraStatus(index);
-                const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
+                var extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
                 saveToFirebase('extras', extras);
             };
         }
 
         if (typeof toggleReviewStatus === 'function') {
-            const originalToggleReviewStatus = toggleReviewStatus;
+            var originalToggleReviewStatus = toggleReviewStatus;
             window.toggleReviewStatus = function(index) {
                 originalToggleReviewStatus(index);
-                const reviews = JSON.parse(localStorage.getItem('google_reviews') || JSON.stringify(getDefaultReviews()));
+                var reviews = JSON.parse(localStorage.getItem('google_reviews') || JSON.stringify(getDefaultReviews()));
                 saveToFirebase('reviews', reviews);
             };
         }

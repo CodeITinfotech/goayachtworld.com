@@ -1,76 +1,60 @@
 // Firebase Configuration
-// Replace with your Firebase project credentials
-const firebaseConfig = {
-    apiKey: "AIzaSyDEMO-Replace-With-Your-Key",
-    authDomain: "goayachtworld-demo.firebaseapp.com",
-    databaseURL: "https://goayachtworld-demo-default-rtdb.firebaseio.com",
-    projectId: "goayachtworld-demo",
-    storageBucket: "goayachtworld-demo.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abc123def456"
-};
+// Set FIREBASE_CONFIGURED = true and add your config when ready
+const FIREBASE_CONFIGURED = false;
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+let firebaseApp = null;
+let database = null;
 
 // Firebase Service - Handles all data operations
 class FirebaseService {
     constructor() {
-        this.refs = {
-            categories: database.ref('categories'),
-            extras: database.ref('extras'),
-            yachts: database.ref('yachts'),
-            reviews: database.ref('reviews'),
-            questions: database.ref('questions'),
-            settings: database.ref('settings')
-        };
-        
-        // Initialize with defaults if empty
-        this.initDefaults();
+        this.refs = null;
     }
 
-    // Initialize default data if Firebase is empty
-    async initDefaults() {
+    // Initialize Firebase connection
+    init() {
+        if (!FIREBASE_CONFIGURED) return;
+        
         try {
-            const snapshot = await this.refs.yachts.once('value');
-            if (!snapshot.exists()) {
-                // Seed initial data
-                await this.refs.categories.set(DEFAULT_CATEGORIES_JS);
-                await this.refs.extras.set(DEFAULT_EXTRAS.map(e => ({ ...e, active: true })));
-                await this.refs.yachts.set(DEFAULT_YACHTS);
-                await this.refs.reviews.set(DEFAULT_REVIEWS.map(r => ({ ...r, active: true })));
-                await this.refs.questions.set(DEFAULT_QUESTIONS);
-                console.log('Firebase initialized with default data');
-            }
+            firebaseApp = firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+            this.refs = {
+                categories: database.ref('categories'),
+                extras: database.ref('extras'),
+                yachts: database.ref('yachts'),
+                reviews: database.ref('reviews'),
+                questions: database.ref('questions'),
+                settings: database.ref('settings')
+            };
         } catch (error) {
-            console.error('Error initializing Firebase:', error);
+            console.log('Firebase not available');
         }
     }
 
     // ============ CATEGORIES ============
     async getCategories() {
+        if (!FIREBASE_CONFIGURED || !this.refs) return [];
         try {
             const snapshot = await this.refs.categories.once('value');
             const data = snapshot.val();
             return data ? Object.values(data).filter(c => c.active !== false) : [];
         } catch (error) {
-            console.error('Error getting categories:', error);
-            return DEFAULT_CATEGORIES_JS;
+            return [];
         }
     }
 
     async saveCategories(categories) {
+        if (!FIREBASE_CONFIGURED || !this.refs) return false;
         try {
             await this.refs.categories.set(categories);
             return true;
         } catch (error) {
-            console.error('Error saving categories:', error);
             return false;
         }
     }
 
     onCategoriesChange(callback) {
+        if (!FIREBASE_CONFIGURED || !this.refs) return;
         this.refs.categories.on('value', snapshot => {
             const data = snapshot.val();
             callback(data ? Object.values(data).filter(c => c.active !== false) : []);
@@ -79,27 +63,28 @@ class FirebaseService {
 
     // ============ EXTRAS ============
     async getExtras() {
+        if (!FIREBASE_CONFIGURED || !this.refs) return [];
         try {
             const snapshot = await this.refs.extras.once('value');
             const data = snapshot.val();
             return data ? Object.values(data).filter(e => e.active !== false) : [];
         } catch (error) {
-            console.error('Error getting extras:', error);
             return [];
         }
     }
 
     async saveExtras(extras) {
+        if (!FIREBASE_CONFIGURED || !this.refs) return false;
         try {
             await this.refs.extras.set(extras);
             return true;
         } catch (error) {
-            console.error('Error saving extras:', error);
             return false;
         }
     }
 
     onExtrasChange(callback) {
+        if (!FIREBASE_CONFIGURED || !this.refs) return;
         this.refs.extras.on('value', snapshot => {
             const data = snapshot.val();
             callback(data ? Object.values(data).filter(e => e.active !== false) : []);
@@ -108,27 +93,28 @@ class FirebaseService {
 
     // ============ YACHTS ============
     async getYachts() {
+        if (!FIREBASE_CONFIGURED || !this.refs) return [];
         try {
             const snapshot = await this.refs.yachts.once('value');
             const data = snapshot.val();
             return data ? Object.values(data).filter(y => y.disabled !== true) : [];
         } catch (error) {
-            console.error('Error getting yachts:', error);
-            return DEFAULT_YACHTS;
+            return [];
         }
     }
 
     async saveYachts(yachts) {
+        if (!FIREBASE_CONFIGURED || !this.refs) return false;
         try {
             await this.refs.yachts.set(yachts);
             return true;
         } catch (error) {
-            console.error('Error saving yachts:', error);
             return false;
         }
     }
 
     onYachtsChange(callback) {
+        if (!FIREBASE_CONFIGURED || !this.refs) return;
         this.refs.yachts.on('value', snapshot => {
             const data = snapshot.val();
             callback(data ? Object.values(data).filter(y => y.disabled !== true) : []);
@@ -137,27 +123,28 @@ class FirebaseService {
 
     // ============ REVIEWS ============
     async getReviews() {
+        if (!FIREBASE_CONFIGURED || !this.refs) return [];
         try {
             const snapshot = await this.refs.reviews.once('value');
             const data = snapshot.val();
             return data ? Object.values(data).filter(r => r.active !== false) : [];
         } catch (error) {
-            console.error('Error getting reviews:', error);
-            return DEFAULT_REVIEWS;
+            return [];
         }
     }
 
     async saveReviews(reviews) {
+        if (!FIREBASE_CONFIGURED || !this.refs) return false;
         try {
             await this.refs.reviews.set(reviews);
             return true;
         } catch (error) {
-            console.error('Error saving reviews:', error);
             return false;
         }
     }
 
     onReviewsChange(callback) {
+        if (!FIREBASE_CONFIGURED || !this.refs) return;
         this.refs.reviews.on('value', snapshot => {
             const data = snapshot.val();
             callback(data ? Object.values(data).filter(r => r.active !== false) : []);
@@ -166,35 +153,37 @@ class FirebaseService {
 
     // ============ QUESTIONS ============
     async getQuestions() {
+        if (!FIREBASE_CONFIGURED || !this.refs) return [];
         try {
             const snapshot = await this.refs.questions.once('value');
             const data = snapshot.val();
             return data ? Object.values(data) : [];
         } catch (error) {
-            console.error('Error getting questions:', error);
-            return DEFAULT_QUESTIONS;
+            return [];
         }
     }
 
     async saveQuestions(questions) {
+        if (!FIREBASE_CONFIGURED || !this.refs) return false;
         try {
             await this.refs.questions.set(questions);
             return true;
         } catch (error) {
-            console.error('Error saving questions:', error);
             return false;
         }
     }
 
     onQuestionsChange(callback) {
+        if (!FIREBASE_CONFIGURED || !this.refs) return;
         this.refs.questions.on('value', snapshot => {
             const data = snapshot.val();
             callback(data ? Object.values(data) : []);
         });
     }
-
+    
     // ============ CONTACT SUBMISSIONS ============
     async saveContactSubmission(submission) {
+        if (!FIREBASE_CONFIGURED || !this.refs) return false;
         try {
             const contactsRef = database.ref('contacts').push();
             await contactsRef.set({
@@ -203,24 +192,24 @@ class FirebaseService {
             });
             return true;
         } catch (error) {
-            console.error('Error saving contact:', error);
             return false;
         }
     }
 
     async getContacts() {
+        if (!FIREBASE_CONFIGURED || !this.refs) return [];
         try {
             const snapshot = await this.refs.contacts.once('value');
             const data = snapshot.val();
             if (!data) return [];
             return Object.entries(data).map(([id, value]) => ({ id, ...value }));
         } catch (error) {
-            console.error('Error getting contacts:', error);
             return [];
         }
     }
 
     onContactsChange(callback) {
+        if (!FIREBASE_CONFIGURED || !this.refs) return;
         database.ref('contacts').on('value', snapshot => {
             const data = snapshot.val();
             if (!data) {
@@ -235,3 +224,4 @@ class FirebaseService {
 
 // Initialize Firebase Service
 const firebaseService = new FirebaseService();
+firebaseService.init();
