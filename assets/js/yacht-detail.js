@@ -526,12 +526,15 @@ function renderExtras(extras) {
     if (!extrasContainer) return;
     
     extrasContainer.innerHTML = extras.map((extra, index) => {
-        const priceDisplay = extra.price === 0 || extra.price === 'As per requirement' 
-            ? extra.price 
-            : 'upto ₹' + extra.price.toLocaleString('en-IN') + '/-';
+        // Determine if price is numeric or text
+        const isNumericPrice = typeof extra.price === 'number' || !isNaN(parseInt(extra.price));
+        const numericPrice = isNumericPrice ? parseInt(extra.price) : 0;
+        const priceDisplay = !isNumericPrice || numericPrice === 0 
+            ? 'As per requirement' 
+            : 'upto ₹' + numericPrice.toLocaleString('en-IN') + '/-';
         return `
         <label class="extra-checkbox">
-            <input type="checkbox" value="${extra.price}" data-name="${extra.name}" onchange="toggleExtra(this)">
+            <input type="checkbox" value="${numericPrice}" data-price-type="${isNumericPrice ? 'numeric' : 'text'}" data-name="${extra.name}" onchange="toggleExtra(this)">
             <span class="checkmark"></span>
             <span class="extra-name">${extra.name}</span>
             <span class="extra-price">${priceDisplay}</span>
@@ -543,17 +546,26 @@ function renderExtras(extras) {
 function toggleExtra(checkbox) {
     const extrasTotal = document.getElementById('extrasTotal');
     const extrasTotalAmount = document.getElementById('extrasTotalAmount');
-    const price = parseInt(checkbox.value) || 0;
+    const priceType = checkbox.dataset.priceType;
+    let price = 0;
+    
+    if (priceType === 'text') {
+        price = 0; // Don't add to total for "As per requirement"
+    } else {
+        price = parseInt(checkbox.value) || 0;
+    }
+    
     const name = checkbox.dataset.name;
     
     if (checkbox.checked) {
-        window.selectedExtras.push({ name, price });
+        window.selectedExtras.push({ name, price, priceType });
     } else {
         window.selectedExtras = window.selectedExtras.filter(e => e.name !== name);
     }
     
-    // Show/hide extras total
-    if (window.selectedExtras.length > 0) {
+    // Show/hide extras total (only show if there are numeric extras selected)
+    const hasNumericExtras = window.selectedExtras.some(e => e.priceType !== 'text' && e.price > 0);
+    if (hasNumericExtras) {
         extrasTotal.style.display = 'flex';
         const extrasSum = window.selectedExtras.reduce((sum, e) => sum + (e.price || 0), 0);
         extrasTotalAmount.textContent = '₹' + extrasSum.toLocaleString('en-IN');
@@ -568,13 +580,25 @@ function toggleExtra(checkbox) {
 function updateTotalPrice() {
     const totalPriceEl = document.getElementById('totalPrice');
     const bookNowBtn = document.getElementById('bookNowBtn');
+    const extrasTotal = document.getElementById('extrasTotal');
+    const extrasTotalAmount = document.getElementById('extrasTotalAmount');
     
     if (!window.basePrice) return;
     
-    const extrasSum = window.selectedExtras.reduce((sum, e) => sum + (e.price || 0), 0);
+    // Calculate sum of only numeric extras
+    const numericExtras = window.selectedExtras.filter(e => e.priceType !== 'text' && e.price > 0);
+    const extrasSum = numericExtras.reduce((sum, e) => sum + (e.price || 0), 0);
     const total = window.basePrice + extrasSum;
     
     totalPriceEl.textContent = '₹' + total.toLocaleString('en-IN');
+    
+    // Show/hide extras total
+    if (numericExtras.length > 0) {
+        extrasTotal.style.display = 'flex';
+        extrasTotalAmount.textContent = '₹' + extrasSum.toLocaleString('en-IN');
+    } else {
+        extrasTotal.style.display = 'none';
+    }
     
     // Update WhatsApp message with full booking details
     const yachtName = window.currentYachtName || 'a yacht';
@@ -598,7 +622,7 @@ function updateTotalPrice() {
         });
     }
     
-    const extrasTotalDisplay = window.selectedExtras.length > 0 ? `\n*Extras Total:* ₹${extrasSum.toLocaleString('en-IN')}` : '';
+    const extrasTotalDisplay = numericExtras.length > 0 ? `\n*Extras Total:* ₹${extrasSum.toLocaleString('en-IN')}` : '';
     message += `\n━━━━━━━━━━━━━━━━━━\n`;
     message += `*Base Price:* ₹${window.basePrice.toLocaleString('en-IN')}/hour${extrasTotalDisplay}\n`;
     message += `*Estimated Total:* ₹${total.toLocaleString('en-IN')}\n`;
@@ -641,11 +665,23 @@ function getDefaultQuestions() {
     ];
 }
 
-// Get extras from localStorage or yacht data, fallback to defaults
+// Get extras from localStorage (admin managed) or fallback to defaults
 function getExtrasForYacht(yacht) {
+    // First check localStorage for admin-managed extras
+    const adminExtras = localStorage.getItem('yacht_extras');
+    
+    if (adminExtras) {
+        const extras = JSON.parse(adminExtras);
+        // Filter only active extras
+        return extras.filter(e => e.active !== false);
+    }
+    
+    // Fallback to yacht-specific extras if available
     if (yacht.extras && yacht.extras.length > 0) {
         return yacht.extras;
     }
+    
+    // Last fallback to defaults
     return getDefaultExtras();
 }
 
