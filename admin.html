@@ -913,8 +913,15 @@
                                 <div class="form-group">
                                     <label>Banner Photos <span id="bannerCount">0</span>/5</label>
                                     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                                        <input type="text" id="bannerUrlInput" placeholder="Image URL" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                                        <input type="text" id="bannerUrlInput" placeholder="Paste Image URL" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
                                         <button class="btn btn-sm btn-primary" onclick="addBannerPhoto()"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--primary); font-weight: 500;">
+                                            <i class="fas fa-upload"></i> Upload Photo
+                                            <input type="file" id="bannerFileInput" accept="image/*" onchange="handleBannerUpload(this)" style="display: none;">
+                                        </label>
+                                        <span style="font-size: 11px; color: #999;">JPG, PNG, WebP</span>
                                     </div>
                                     <div id="bannerPhotosList" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
                                 </div>
@@ -922,8 +929,15 @@
                                 <div class="form-group">
                                     <label>Gallery Photos <span id="galleryCount">0</span>/15</label>
                                     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                                        <input type="text" id="galleryUrlInput" placeholder="Image URL" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+                                        <input type="text" id="galleryUrlInput" placeholder="Paste Image URL" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
                                         <button class="btn btn-sm btn-primary" onclick="addGalleryPhoto()"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--primary); font-weight: 500;">
+                                            <i class="fas fa-upload"></i> Upload Photo
+                                            <input type="file" id="galleryFileInput" accept="image/*" onchange="handleGalleryUpload(this)" style="display: none;">
+                                        </label>
+                                        <span style="font-size: 11px; color: #999;">JPG, PNG, WebP</span>
                                     </div>
                                     <div id="galleryPhotosList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 8px;"></div>
                                 </div>
@@ -2354,12 +2368,35 @@ Value|Best value for your investment..."></textarea>
             renderBannerPhotos();
         }
 
+        function handleBannerUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            if (currentBannerPhotos.length >= 5) {
+                showAlert('Maximum 5 banner photos allowed', 'error');
+                input.value = '';
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentBannerPhotos.push(e.target.result);
+                renderBannerPhotos();
+                showAlert('Banner photo added!', 'success');
+            };
+            reader.onerror = function() {
+                showAlert('Error reading file', 'error');
+            };
+            reader.readAsDataURL(file);
+            input.value = '';
+        }
+
         function renderBannerPhotos() {
             document.getElementById('bannerCount').textContent = currentBannerPhotos.length;
             document.getElementById('bannerPhotosList').innerHTML = currentBannerPhotos.map((url, i) => `
                 <div style="position: relative; width: 100px; height: 70px;">
-                    <img src="${url}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px;">
-                    <button onclick="removeBannerPhoto(${i})" style="position: absolute; top: -8px; right: -8px; background: #e74c3c; color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer;">×</button>
+                    <img src="${url}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px; border: 2px solid #ddd;">
+                    <button onclick="removeBannerPhoto(${i})" style="position: absolute; top: -8px; right: -8px; background: #e74c3c; color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 14px;">×</button>
                 </div>
             `).join('');
         }
@@ -2421,6 +2458,29 @@ Value|Best value for your investment..."></textarea>
         function removeYachtGalleryPhoto(index) {
             currentGalleryPhotos.splice(index, 1);
             renderYachtGalleryPhotos();
+        }
+
+        function handleGalleryUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            if (currentGalleryPhotos.length >= 15) {
+                showAlert('Maximum 15 gallery photos allowed', 'error');
+                input.value = '';
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentGalleryPhotos.push(e.target.result);
+                renderYachtGalleryPhotos();
+                showAlert('Gallery photo added!', 'success');
+            };
+            reader.onerror = function() {
+                showAlert('Error reading file', 'error');
+            };
+            reader.readAsDataURL(file);
+            input.value = '';
         }
 
         function saveYacht() {
