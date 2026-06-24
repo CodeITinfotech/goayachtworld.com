@@ -1052,6 +1052,8 @@
         }
 
         // Reviews Editor
+        let editingReviewIndex = null;
+
         function loadReviewsEditor() {
             const container = document.getElementById('reviewsEditor');
             if (!container) return;
@@ -1065,36 +1067,98 @@
                         <button class="btn btn-sm btn-primary" onclick="addReview()">+ Add Review</button>
                     </div>
                 </div>
-            ` + reviews.map((r, i) => `
-                <div class="review-edit-card" style="background: var(--bg-light); padding: 20px; border-radius: 12px; margin-top: 15px; border-left: 4px solid var(--primary);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h4 style="margin: 0; color: var(--primary);">Review #${i + 1}</h4>
-                        <button class="btn btn-sm btn-danger" onclick="deleteReview(${i})" ${reviews.length <= 3 ? 'disabled style="opacity:0.5"' : ''}>Delete</button>
-                    </div>
-                    <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" value="${r.name}" onchange="updateReview(${i}, 'name', this.value)">
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div class="form-group">
-                            <label>Date</label>
-                            <input type="text" value="${r.date}" onchange="updateReview(${i}, 'date', this.value)">
+                <div id="reviewsList">
+                    ${reviews.map((r, i) => renderReviewCard(r, i, reviews.length)).join('')}
+                </div>
+            `;
+        }
+
+        function renderReviewCard(r, i, totalReviews) {
+            const isEditing = editingReviewIndex === i;
+            if (isEditing) {
+                return `
+                    <div class="review-edit-card" style="background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%); padding: 25px; border-radius: 16px; margin-top: 15px; border: 2px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px dashed #ddd;">
+                            <h4 style="margin: 0; color: var(--primary); font-size: 1.2rem;"><i class="fas fa-edit"></i> Editing Review #${i + 1}</h4>
                         </div>
                         <div class="form-group">
-                            <label>Rating (1-5)</label>
-                            <input type="number" min="1" max="5" value="${r.rating}" onchange="updateReview(${i}, 'rating', this.value)">
+                            <label><i class="fas fa-user"></i> Name</label>
+                            <input type="text" id="edit-name" value="${r.name}">
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="form-group">
+                                <label><i class="fas fa-calendar"></i> Date</label>
+                                <input type="text" id="edit-date" value="${r.date}">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-star"></i> Rating (1-5)</label>
+                                <input type="number" id="edit-rating" min="1" max="5" value="${r.rating}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-comment"></i> Review Text</label>
+                            <textarea id="edit-text" style="min-height: 100px;">${r.text}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-portrait"></i> Avatar (initials, max 2 chars)</label>
+                            <input type="text" id="edit-avatar" maxlength="2" value="${r.avatar}">
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end;">
+                            <button class="btn btn-outline" onclick="cancelEdit()"><i class="fas fa-times"></i> Cancel</button>
+                            <button class="btn btn-success" onclick="saveEdit(${i})"><i class="fas fa-check"></i> Save Changes</button>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Review Text</label>
-                        <textarea style="min-height: 80px;" onchange="updateReview(${i}, 'text', this.value)">${r.text}</textarea>
+                `;
+            }
+            return `
+                <div class="review-view-card" style="background: var(--bg-light); padding: 20px; border-radius: 12px; margin-top: 15px; border-left: 4px solid var(--primary); transition: all 0.3s;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem;">${r.avatar}</div>
+                            <div>
+                                <h4 style="margin: 0; color: var(--text);">${r.name}</h4>
+                                <span style="color: #888; font-size: 0.85rem;"><i class="fas fa-clock"></i> ${r.date}</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="color: #ffc107;">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Avatar (initials, max 2 chars)</label>
-                        <input type="text" value="${r.avatar}" maxlength="2" onchange="updateReview(${i}, 'avatar', this.value)">
+                    <p style="margin: 0 0 15px 0; color: var(--text-light); line-height: 1.6;">${r.text.length > 150 ? r.text.substring(0, 150) + '...' : r.text}</p>
+                    <div style="display: flex; justify-content: flex-end; gap: 10px; padding-top: 10px; border-top: 1px solid #eee;">
+                        <button class="btn btn-sm btn-primary" onclick="editReview(${i})"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteReview(${i})" ${totalReviews <= 3 ? 'disabled style="opacity:0.5;cursor:not-allowed"' : ''}><i class="fas fa-trash"></i> Delete</button>
                     </div>
                 </div>
-            `).join('');
+            `;
+        }
+
+        function editReview(index) {
+            editingReviewIndex = index;
+            loadReviewsEditor();
+        }
+
+        function cancelEdit() {
+            editingReviewIndex = null;
+            loadReviewsEditor();
+        }
+
+        function saveEdit(index) {
+            const name = document.getElementById('edit-name').value;
+            const date = document.getElementById('edit-date').value;
+            const rating = parseInt(document.getElementById('edit-rating').value);
+            const text = document.getElementById('edit-text').value;
+            const avatar = document.getElementById('edit-avatar').value;
+            
+            if (!name || !date || !text || !avatar) {
+                showAlert('All fields are required!', 'error');
+                return;
+            }
+            
+            updateReview(index, { name, date, rating, text, avatar });
+            editingReviewIndex = null;
+            loadReviewsEditor();
+            showAlert('Review updated successfully!', 'success');
         }
 
         function addReview() {
@@ -1123,7 +1187,11 @@
 
         function updateReview(index, field, value) {
             const reviews = JSON.parse(localStorage.getItem('google_reviews') || JSON.stringify(getDefaultReviews()));
-            reviews[index][field] = value;
+            if (typeof field === 'object') {
+                reviews[index] = field;
+            } else {
+                reviews[index][field] = value;
+            }
             localStorage.setItem('google_reviews', JSON.stringify(reviews));
         }
 
