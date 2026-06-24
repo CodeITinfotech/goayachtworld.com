@@ -1258,6 +1258,16 @@ Value|Best value for your investment..."></textarea>
                             <i class="fas fa-save"></i> Save SEO Settings
                         </button>
                     </div>
+                    
+                    <div style="background: #fff3cd; padding: 20px; border-radius: 12px; margin-top: 20px; border: 1px solid #ffc107;">
+                        <h3 style="margin-top: 0; color: #856404;"><i class="fas fa-database"></i> Reset Data</h3>
+                        <p style="color: #856404; margin-bottom: 15px;">
+                            If yachts are missing, click to reset all data to defaults (includes all 35 yachts).
+                        </p>
+                        <button class="btn btn-warning" onclick="resetAllData()" style="background: #ffc107; color: #000; border: none;">
+                            <i class="fas fa-sync"></i> Reset All Data
+                        </button>
+                    </div>
                 </section>
             </main>
         </div>
@@ -1337,8 +1347,8 @@ Value|Best value for your investment..."></textarea>
                 toggle.checked = heroAutoScroll !== 'false';
             }
             
-            // Initialize default data if not exists
-            if (!localStorage.getItem('yacht_items')) {
+            // Initialize default data if not exists or if incomplete
+            if (!localStorage.getItem('yacht_items') || JSON.parse(localStorage.getItem('yacht_items') || []).length < 35) {
                 localStorage.setItem('yacht_items', JSON.stringify(DEFAULT_YACHTS));
             }
             if (!localStorage.getItem('yacht_categories')) {
@@ -1549,6 +1559,17 @@ Value|Best value for your investment..."></textarea>
             };
             localStorage.setItem('seo_settings', JSON.stringify(settings));
             showAlert('SEO settings saved!', 'success');
+        }
+
+        function resetAllData() {
+            if (!confirm('This will reset ALL data including yachts, categories, extras, questions, and settings. Continue?')) return;
+            
+            localStorage.setItem('yacht_items', JSON.stringify(DEFAULT_YACHTS));
+            localStorage.setItem('yacht_categories', JSON.stringify(DEFAULT_CATEGORIES));
+            localStorage.setItem('yacht_extras', JSON.stringify(DEFAULT_EXTRAS));
+            localStorage.setItem('yacht_questions', JSON.stringify(DEFAULT_QUESTIONS));
+            
+            showAlert('All data reset to defaults! Refresh the page.', 'success');
         }
 
         // About Us Management
