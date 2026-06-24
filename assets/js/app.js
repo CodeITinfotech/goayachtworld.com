@@ -137,34 +137,21 @@ function renderYachts() {
     `).join('');
 }
 
-// Hero Slider
+// Hero Slider with Video on Hover
 function initHeroSlider() {
-    const slides = document.querySelectorAll('.hero-slide');
-    const prevBtn = document.querySelector('.slider-prev');
-    const nextBtn = document.querySelector('.slider-next');
-    let currentSlide = 0;
+    const heroSection = document.querySelector('.hero-slider');
+    const video = document.querySelector('.hero-video');
     
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.remove('active');
-            if (i === index) slide.classList.add('active');
+    if (heroSection && video) {
+        heroSection.addEventListener('mouseenter', function() {
+            video.play().catch(e => console.log('Video autoplay prevented'));
         });
-        currentSlide = index;
+        
+        heroSection.addEventListener('mouseleave', function() {
+            video.pause();
+            video.currentTime = 0;
+        });
     }
-    
-    function nextSlide() {
-        showSlide((currentSlide + 1) % slides.length);
-    }
-    
-    function prevSlide() {
-        showSlide((currentSlide - 1 + slides.length) % slides.length);
-    }
-    
-    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-    
-    // Auto-advance
-    setInterval(nextSlide, 5000);
 }
 
 // WhatsApp

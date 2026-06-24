@@ -31,7 +31,7 @@
     <header class="header">
         <div class="container header-inner">
             <a href="#" class="logo">
-                <img src="https://goayachtworld.com/wp-content/uploads/sites/58/2023/07/logo.svg" alt="Goa Yacht World" class="logo-img">
+                <img src="assets/images/logo.svg" alt="Goa Yacht World" class="logo-img">
             </a>
             <nav class="nav" id="mainNav">
                 <ul class="nav-list">
@@ -63,7 +63,11 @@
     <!-- Hero Slider -->
     <section class="hero-slider" id="home">
         <div class="hero-slides">
-            <div class="hero-slide active" style="background-image: url('https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/hero-slide1.jpg')">
+            <div class="hero-slide active">
+                <div class="hero-bg-image" style="background-image: url('https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/hero-slide1.jpg')"></div>
+                <video class="hero-video" muted loop playsinline data-src="assets/videos/hero.mp4">
+                    <source src="assets/videos/hero.mp4" type="video/mp4">
+                </video>
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
                     <span class="hero-tag">Yacht and boat rental</span>
@@ -72,30 +76,9 @@
                     <a href="#yachts" class="btn btn-primary">Book Now</a>
                 </div>
             </div>
-            <div class="hero-slide" style="background-image: url('https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/hero-slide2.jpg')">
-                <div class="hero-overlay"></div>
-                <div class="hero-content">
-                    <span class="hero-tag">Yacht and boat rental</span>
-                    <h1>Move with us</h1>
-                    <p>Cruise in Comfort, Sail in Style: Your Ultimate Yachting Adventure Awaits</p>
-                    <a href="#yachts" class="btn btn-primary">Explore Fleet</a>
-                </div>
-            </div>
-            <div class="hero-slide" style="background-image: url('https://goayachtworld.com/wp-content/uploads/sites/58/2023/08/hero-slide3.jpg')">
-                <div class="hero-overlay"></div>
-                <div class="hero-content">
-                    <span class="hero-tag">Yacht and boat rental</span>
-                    <h1>Book your yacht</h1>
-                    <p>Delivering Unforgettable Experiences within Your Budget</p>
-                    <a href="#contact" class="btn btn-whatsapp">
-                        <i class="fab fa-whatsapp"></i> Chat Now
-                    </a>
-                </div>
-            </div>
         </div>
-        <div class="slider-nav">
-            <button class="slider-prev"><i class="fas fa-chevron-left"></i> Previous</button>
-            <button class="slider-next">Next <i class="fas fa-chevron-right"></i></button>
+        <div class="hero-hover-hint">
+            <i class="fas fa-play-circle"></i> Hover to play video
         </div>
     </section>
 
