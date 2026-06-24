@@ -865,7 +865,7 @@
                                 </select>
                             </div>
                             <span id="yachtCount" style="color: var(--text-light); font-size: 14px;"></span>
-                            <button class="btn btn-sm btn-primary" onclick="showYachtForm()">
+                            <button class="btn btn-sm btn-primary" onclick="window.showYachtForm()">
                                 <i class="fas fa-plus"></i> Add Yacht
                             </button>
                         </div>
@@ -2434,10 +2434,10 @@ Value|Best value for your investment..."></textarea>
                             </span>
                         </td>
                         <td style="padding: 15px; text-align: center;">
-                            <button class="btn btn-sm btn-primary" onclick="showYachtForm('${yacht.id}')" style="margin-right: 8px;">
+                            <button class="btn btn-sm btn-primary" onclick="window.showYachtForm('${yacht.id}')" style="margin-right: 8px;">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
-                            <button class="btn btn-sm ${isDisabled ? 'btn-success' : 'btn-warning'}" onclick="toggleYachtStatus('${yacht.id}', ${!isDisabled})">
+                            <button class="btn btn-sm ${isDisabled ? 'btn-success' : 'btn-warning'}" onclick="window.toggleYachtStatus('${yacht.id}', ${!isDisabled})">
                                 <i class="fas ${isDisabled ? 'fa-check' : 'fa-ban'}"></i> ${isDisabled ? 'Active' : 'Inactive'}
                             </button>
                         </td>
@@ -2450,7 +2450,8 @@ Value|Best value for your investment..."></textarea>
             loadYachtsEditor();
         }
 
-        function toggleYachtStatus(yachtId, disable) {
+        // Make functions globally available
+        window.toggleYachtStatus = function(yachtId, disable) {
             const yachts = JSON.parse(localStorage.getItem('yachts') || JSON.stringify(DEFAULT_YACHTS));
             const yacht = yachts.find(y => y.id === yachtId);
             if (yacht) {
@@ -2459,7 +2460,8 @@ Value|Best value for your investment..."></textarea>
                 loadYachtsEditor();
                 showAlert(`Yacht ${disable ? 'disabled' : 'enabled'} successfully!`, 'success');
             }
-        }
+        };
+        function toggleYachtStatus(yachtId, disable) { return window.toggleYachtStatus(yachtId, disable); }
 
         function toggleFeatured(yachtId, isFeatured) {
             const yachts = JSON.parse(localStorage.getItem('yachts') || JSON.stringify(DEFAULT_YACHTS));
@@ -2524,7 +2526,9 @@ Value|Best value for your investment..."></textarea>
         let selectedExtras = [];
         let selectedQuestions = [];
 
-        function showYachtForm(yachtId = null) {
+        // Make functions globally available
+        window.showYachtForm = function(yachtId = null) {
+            console.log('showYachtForm called with yachtId:', yachtId);
             const form = document.getElementById('yachtFormSection');
             const title = document.getElementById('yachtFormTitle');
             form.style.display = 'block';
@@ -2539,29 +2543,41 @@ Value|Best value for your investment..."></textarea>
             
             if (yachtId) {
                 // Edit mode
+                console.log('Edit mode for yachtId:', yachtId);
                 title.innerHTML = '<i class="fas fa-edit"></i> Edit Yacht';
                 document.getElementById('editYachtId').value = yachtId;
                 
                 const yachts = JSON.parse(localStorage.getItem('yachts') || JSON.stringify(DEFAULT_YACHTS));
+                console.log('Total yachts:', yachts.length);
                 const yacht = yachts.find(y => y.id === yachtId);
+                console.log('Found yacht:', yacht);
+                
                 if (yacht) {
-                    document.getElementById('yachtName').value = yacht.name;
-                    document.getElementById('yachtCategory').value = yacht.type;
+                    document.getElementById('yachtName').value = yacht.name || '';
+                    document.getElementById('yachtCategory').value = yacht.type || '';
                     document.getElementById('yachtLocation').value = yacht.location || 'Goa, India';
                     document.getElementById('yachtDescription').value = yacht.description || '';
-                    document.getElementById('yachtCapacity').value = yacht.capacity;
-                    document.getElementById('yachtPrice').value = yacht.price;
+                    document.getElementById('yachtCapacity').value = yacht.capacity || 8;
+                    document.getElementById('yachtPrice').value = yacht.price || 15000;
                     document.getElementById('yachtVideo').value = yacht.video || '';
                     document.getElementById('yachtFeatured').checked = yacht.featured || false;
                     document.getElementById('yachtAmenities').value = yacht.amenities || '';
                     
-                    selectedExtras = yacht.extras || [];
-                    selectedQuestions = yacht.questions || [];
-                    currentBannerPhotos = yacht.banner || [yacht.images[0]].filter(Boolean);
+                    // Handle extras - check if it's array of objects or strings
+                    selectedExtras = Array.isArray(yacht.extras) ? yacht.extras.map(e => typeof e === 'object' ? e : e) : [];
+                    // Handle questions - same check
+                    selectedQuestions = Array.isArray(yacht.questions) ? yacht.questions.map(q => typeof q === 'object' ? q.question || q : q) : [];
+                    // Handle photos
+                    currentBannerPhotos = (yacht.banner && yacht.banner.length > 0) ? yacht.banner : 
+                                         (yacht.images && yacht.images.length > 0) ? yacht.images : 
+                                         ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'];
                     currentGalleryPhotos = yacht.gallery || [];
+                    
+                    console.log('Banner photos set to:', currentBannerPhotos);
                 }
             } else {
                 // Add mode
+                console.log('Add mode - clearing form');
                 title.innerHTML = '<i class="fas fa-plus-circle"></i> Add New Yacht';
                 document.getElementById('editYachtId').value = '';
                 document.getElementById('yachtName').value = '';
@@ -2584,7 +2600,9 @@ Value|Best value for your investment..."></textarea>
             renderQuestionsCheckboxes();
             renderBannerPhotos();
             renderYachtGalleryPhotos();
-        }
+        };
+        // Also keep the old function name as alias
+        function showYachtForm(yachtId) { return window.showYachtForm(yachtId); }
 
         function renderExtrasCheckboxes() {
             const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
