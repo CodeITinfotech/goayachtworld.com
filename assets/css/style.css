@@ -109,7 +109,7 @@ img {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(rgba(0,30,60,0.7), rgba(0,30,60,0.85)), url('../images/hero-slide1.jpg') center/cover no-repeat;
+    background: linear-gradient(rgba(0,30,60,0.6), rgba(0,30,60,0.75));
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -121,16 +121,17 @@ img {
     overflow: hidden;
 }
 
-.hero::before {
-    content: '';
+.hero video {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/></svg>');
-    background-size: 200px;
-    opacity: 0.5;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    object-fit: cover;
 }
 
 .hero-content {
