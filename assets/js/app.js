@@ -168,38 +168,46 @@ class YachtDatabase {
         return this.getActiveYachts().filter(y => y.featured);
     }
 
-    // Categories from Firebase
+    // Categories from localStorage (Firebase disabled)
     async loadCategories() {
-        try {
-            if (typeof firebase !== 'undefined' && firebase.database) {
-                const snapshot = await firebase.database().ref('categories').once('value');
-                const data = snapshot.val();
-                if (data && Array.isArray(data)) {
-                    this.categoriesCache = data;
-                    localStorage.setItem('yacht_categories', JSON.stringify(data));
-                    return this.categoriesCache.filter(c => c.active !== false);
-                }
-            }
-        } catch (error) {
-            console.log('Firebase not available for categories');
-        }
-        // Fallback
         const stored = localStorage.getItem('yacht_categories');
-        this.categoriesCache = stored ? JSON.parse(stored) : DEFAULT_CATEGORIES_JS;
+        if (stored) {
+            try {
+                this.categoriesCache = JSON.parse(stored);
+            } catch (e) {
+                this.categoriesCache = DEFAULT_CATEGORIES_JS;
+            }
+        } else {
+            this.categoriesCache = DEFAULT_CATEGORIES_JS;
+        }
         return this.categoriesCache.filter(c => c.active !== false);
     }
 
     listenToCategories(callback) {
-        if (typeof firebase !== 'undefined' && firebase.database) {
-            firebase.database().ref('categories').on('value', snapshot => {
-                const data = snapshot.val();
-                if (data && Array.isArray(data)) {
-                    this.categoriesCache = data;
-                    localStorage.setItem('yacht_categories', JSON.stringify(data));
+        // Listen to storage events for real-time updates
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'yacht_categories') {
+                try {
+                    this.categoriesCache = JSON.parse(e.newValue || '[]');
                     callback(this.categoriesCache.filter(c => c.active !== false));
-                }
-            });
-        }
+                } catch (err) {}
+            }
+        });
+        
+        // Also check localStorage on same page periodically
+        setInterval(() => {
+            const stored = localStorage.getItem('yacht_categories');
+            if (stored) {
+                try {
+                    const newData = JSON.parse(stored);
+                    const currentStr = JSON.stringify(this.categoriesCache);
+                    if (JSON.stringify(newData) !== currentStr) {
+                        this.categoriesCache = newData;
+                        callback(this.categoriesCache.filter(c => c.active !== false));
+                    }
+                } catch (e) {}
+            }
+        }, 1000);
     }
 
     getCategories() {
@@ -485,6 +493,9 @@ const DEFAULT_CATEGORIES_JS = [
     { id: 'speedboat', name: 'Speed Boat Booking', icon: 'fa-bolt', order: 4 }
 ];
 
+// Track current categories for change detection
+let currentCategoriesStr = '';
+
 // Load services menu from admin categories
 function loadServicesMenu() {
     const menu = document.getElementById('servicesMenu');
@@ -494,6 +505,11 @@ function loadServicesMenu() {
     // Get categories from localStorage or use defaults
     const storedCategories = localStorage.getItem('yacht_categories');
     const categories = storedCategories ? JSON.parse(storedCategories) : DEFAULT_CATEGORIES_JS;
+    const categoriesStr = JSON.stringify(categories);
+    
+    // Skip if no change
+    if (categoriesStr === currentCategoriesStr) return;
+    currentCategoriesStr = categoriesStr;
     
     if (categories && categories.length > 0) {
         const sortedCategories = categories.sort((a, b) => a.order - b.order);
@@ -517,6 +533,14 @@ function loadServicesMenu() {
     }
 }
 
+// Listen for localStorage changes from admin panel
+function initCategoryListener() {
+    // Poll for changes every second (for same-page updates from admin)
+    setInterval(() => {
+        loadServicesMenu();
+    }, 1000);
+}
+
 // Load dashboard stats from localStorage
 function loadDashboardStats() {
     const settings = JSON.parse(localStorage.getItem('dashboard_stats') || '{}');
@@ -530,7 +554,7 @@ function loadDashboardStats() {
 
 // Initialize on DOM load
 document.addEventListener('DOMContentLoaded', async function() {
-    // Load data from Firebase first, then render
+    // Load data from localStorage
     await Promise.all([
         db.loadYachts(),
         db.loadCategories(),
@@ -545,8 +569,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     initMobileMenu();
     loadServicesMenu();
     loadDashboardStats();
+    initCategoryListener();
     
-    // Listen for real-time updates from Firebase
+    // Listen for real-time updates
     db.listenToYachts((yachts) => {
         if (document.getElementById('yachtsGrid') || document.getElementById('featuredGrid')) {
             renderFeaturedYachts();
@@ -555,9 +580,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
     
     db.listenToCategories((categories) => {
-        if (document.querySelector('.services-dropdown')) {
-            loadServicesMenu();
-        }
+        loadServicesMenu();
     });
     
     listenToReviews((reviews) => {
