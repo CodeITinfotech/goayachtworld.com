@@ -196,6 +196,86 @@
     border-bottom: none;
 }
 
+/* Extra Checkbox Styles */
+.extra-checkbox {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text);
+    border-bottom: 1px solid #eee;
+    transition: background 0.2s;
+}
+
+.extra-checkbox:hover {
+    background: rgba(0,184,148,0.05);
+}
+
+.extra-checkbox:last-child {
+    border-bottom: none;
+}
+
+.extra-checkbox input {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.extra-checkbox .extra-name {
+    flex: 1;
+}
+
+.extra-checkbox .extra-price {
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 13px;
+}
+
+.extra-checkbox input:checked + .extra-price {
+    color: var(--secondary);
+}
+
+.extras-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.extras-total strong {
+    font-size: 16px;
+}
+
+.booking-card-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: var(--bg-light);
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.booking-card-total strong {
+    font-size: 20px;
+    color: var(--primary);
+}
+
+.booking-card-total small {
+    font-weight: 400;
+    color: var(--text-light);
+}
+
 .btn-block {
     display: block;
     width: 100%;

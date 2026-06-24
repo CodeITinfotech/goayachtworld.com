@@ -90,14 +90,20 @@
                         <h4>Amenities</h4>
                         <p id="yachtAmenities"></p>
                     </div>
-                    <div class="booking-card-extras">
+                    <div class="booking-card-extras" id="extrasSection">
                         <h4>Extra Services (Chargable)</h4>
-                        <ul id="yachtExtras">
-                            <li>Decorations: upto ₹4,000/-</li>
-                            <li>Snacks & Beverages: As per requirement</li>
-                            <li>DSLR Photographer: upto ₹6,000/-</li>
-                            <li>Drone Videographer: upto ₹5,000/-</li>
-                        </ul>
+                        <div id="yachtExtras">
+                            <!-- Loaded via JS -->
+                        </div>
+                        <div class="extras-total" id="extrasTotal" style="display: none;">
+                            <span>Extras Total:</span>
+                            <strong id="extrasTotalAmount">₹0</strong>
+                        </div>
+                    </div>
+                    <div class="booking-card-total">
+                        <span>Total Price:</span>
+                        <strong id="totalPrice">₹0</strong>
+                        <small>/hour</small>
                     </div>
                     <a href="#" class="btn btn-whatsapp btn-block" id="bookNowBtn">
                         <i class="fab fa-whatsapp"></i> Book Now

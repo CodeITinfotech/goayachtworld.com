@@ -429,6 +429,9 @@ function loadYachtDetails() {
         yacht = { id: 'yacht-005', ...YACHT_DETAILS['yacht-005'] };
     }
     
+    // Store current yacht name for WhatsApp message
+    window.currentYachtName = yacht.name;
+    
     // Update page title
     document.getElementById('pageTitle').textContent = yacht.name + ' | Goa Yacht World';
     document.getElementById('pageDesc').content = 'Book ' + yacht.name + ' yacht in Goa. ' + yacht.capacity + ' guests capacity. ' + yacht.amenities + '.';
@@ -442,13 +445,15 @@ function loadYachtDetails() {
     document.getElementById('yachtPrice').innerHTML = formatPrice(yacht.price) + ' <small>/hour</small>';
     document.getElementById('yachtAmenities').textContent = yacht.amenities;
     
-    // Book now button
-    document.getElementById('bookNowBtn').href = 'https://wa.me/918446275985?text=Hi,%20I%20want%20to%20book%20' + encodeURIComponent(yacht.name);
+    // Store base price for calculation
+    window.basePrice = yacht.price;
+    window.selectedExtras = [];
     
-    // Extras
-    document.getElementById('yachtExtras').innerHTML = yacht.extras.map(e => 
-        '<li>' + e.name + ': <strong>' + e.price + '</strong></li>'
-    ).join('');
+    // Render extras as checkboxes
+    renderExtras(yacht.extras);
+    
+    // Update total price display
+    updateTotalPrice();
     
     // Main image
     document.getElementById('mainImage').src = yacht.images[0];
@@ -479,6 +484,73 @@ function loadYachtDetails() {
             thumb.classList.add('active');
         });
     });
+}
+
+// Render extras as checkboxes
+function renderExtras(extras) {
+    const extrasContainer = document.getElementById('yachtExtras');
+    if (!extrasContainer) return;
+    
+    extrasContainer.innerHTML = extras.map((extra, index) => {
+        const priceDisplay = extra.price === 0 || extra.price === 'As per requirement' 
+            ? extra.price 
+            : 'upto ₹' + extra.price.toLocaleString('en-IN') + '/-';
+        return `
+        <label class="extra-checkbox">
+            <input type="checkbox" value="${extra.price}" data-name="${extra.name}" onchange="toggleExtra(this)">
+            <span class="checkmark"></span>
+            <span class="extra-name">${extra.name}</span>
+            <span class="extra-price">${priceDisplay}</span>
+        </label>
+    `}).join('');
+}
+
+// Toggle extra service
+function toggleExtra(checkbox) {
+    const extrasTotal = document.getElementById('extrasTotal');
+    const extrasTotalAmount = document.getElementById('extrasTotalAmount');
+    const price = parseInt(checkbox.value) || 0;
+    const name = checkbox.dataset.name;
+    
+    if (checkbox.checked) {
+        window.selectedExtras.push({ name, price });
+    } else {
+        window.selectedExtras = window.selectedExtras.filter(e => e.name !== name);
+    }
+    
+    // Show/hide extras total
+    if (window.selectedExtras.length > 0) {
+        extrasTotal.style.display = 'flex';
+        const extrasSum = window.selectedExtras.reduce((sum, e) => sum + (e.price || 0), 0);
+        extrasTotalAmount.textContent = '₹' + extrasSum.toLocaleString('en-IN');
+    } else {
+        extrasTotal.style.display = 'none';
+    }
+    
+    updateTotalPrice();
+}
+
+// Update total price
+function updateTotalPrice() {
+    const totalPriceEl = document.getElementById('totalPrice');
+    const bookNowBtn = document.getElementById('bookNowBtn');
+    
+    if (!window.basePrice) return;
+    
+    const extrasSum = window.selectedExtras.reduce((sum, e) => sum + (e.price || 0), 0);
+    const total = window.basePrice + extrasSum;
+    
+    totalPriceEl.textContent = '₹' + total.toLocaleString('en-IN');
+    
+    // Update WhatsApp message with selected extras
+    let message = 'Hi, I want to book ' + (window.currentYachtName || 'a yacht');
+    if (window.selectedExtras.length > 0) {
+        const extrasList = window.selectedExtras.map(e => e.name).join(', ');
+        message += '\nExtra services: ' + extrasList;
+    }
+    if (bookNowBtn) {
+        bookNowBtn.href = 'https://wa.me/918446275985?text=' + encodeURIComponent(message);
+    }
 }
 
 // FAQ accordion

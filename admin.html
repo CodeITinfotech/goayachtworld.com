@@ -652,6 +652,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="#" onclick="showSection('about')">
+                            <i class="fas fa-info-circle"></i> About Us
+                        </a>
+                    </li>
+                    <li>
                         <a href="#" onclick="showSection('policies')">
                             <i class="fas fa-file-alt"></i> Policies
                         </a>
@@ -826,6 +831,58 @@
                             <div id="refundPreviewContent"></div>
                         </div>
                     </div>
+                </section>
+
+                <!-- About Us Section -->
+                <section id="section-about" class="admin-section" style="display: none;">
+                    <h2><i class="fas fa-info-circle"></i> About Us Content</h2>
+                    <p style="color: var(--text-light); margin-bottom: 20px;">
+                        Manage About Us page content. Changes will reflect on the website.
+                    </p>
+                    
+                    <div class="alert" id="aboutAlert"></div>
+                    
+                    <div style="background: var(--bg-light); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                        <h3 style="margin-top: 0;"><i class="fas fa-heading"></i> Main Sections</h3>
+                        
+                        <div class="form-group">
+                            <label>About Title</label>
+                            <input type="text" id="aboutTitle" placeholder="About Goa Yacht World">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>About Intro (Lead Paragraph)</label>
+                            <textarea id="aboutIntro" style="min-height: 100px;" placeholder="Introductory text about your company..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Mission Text</label>
+                            <textarea id="aboutMission" style="min-height: 100px;" placeholder="Your mission statement..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Mission Image URL</label>
+                            <input type="text" id="aboutMissionImage" placeholder="https://example.com/image.jpg">
+                        </div>
+                    </div>
+                    
+                    <div style="background: var(--bg-light); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                        <h3 style="margin-top: 0;"><i class="fas fa-star"></i> Features (One per line, format: Title|Description)</h3>
+                        <div class="form-group">
+                            <textarea id="aboutFeatures" style="min-height: 150px;" placeholder="Quality|Experience the epitome of luxury...
+Safety|Your safety is our priority...
+Expertise|Years of experience in yacht services...
+Support|24/7 customer support available...
+Value|Best value for your investment..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-success" onclick="saveAboutUs()">
+                        <i class="fas fa-save"></i> Save About Us
+                    </button>
+                    <button class="btn btn-danger" onclick="resetAboutUs()">
+                        <i class="fas fa-undo"></i> Reset to Default
+                    </button>
                 </section>
 
                 <!-- Gallery Section -->
@@ -1071,6 +1128,62 @@
             if (typeof loadReviewsEditor === 'function') loadReviewsEditor();
             if (typeof loadGalleryEditor === 'function') loadGalleryEditor();
             if (typeof loadYachtsEditor === 'function') loadYachtsEditor();
+            if (typeof loadAboutUsEditor === 'function') loadAboutUsEditor();
+        }
+
+        // About Us Management
+        const DEFAULT_ABOUT_US = {
+            title: 'About Goa Yacht World',
+            intro: 'We pride ourselves on being the premier destination for luxury yacht experiences. Established with a passion for the sea and a commitment to unparalleled service, we offer a range of exceptional yachting services tailored to exceed the expectations of even the most discerning clientele.',
+            mission: 'Our mission is simple: to provide our guests with unparalleled access to the world\'s most breathtaking yachting destinations, accompanied by unparalleled service and attention to detail. Whether you\'re seeking a relaxing getaway, an adventurous expedition, or a memorable event at sea, we are dedicated to crafting bespoke experiences that exceed your every expectation.',
+            missionImage: 'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/about-video-poster.jpg',
+            features: [
+                { title: 'Quality', desc: 'Experience the epitome of luxury on the seas where quality and elegance define every booking.' },
+                { title: 'Safety', desc: 'Your safety is our top priority. All our yachts are equipped with the latest safety equipment.' },
+                { title: 'Expertise', desc: 'Years of experience in providing luxury yacht services in Goa.' },
+                { title: 'Support', desc: '24/7 customer support available to assist you with any queries.' },
+                { title: 'Value', desc: 'Best value for your investment with competitive pricing and premium services.' }
+            ]
+        };
+
+        function loadAboutUsEditor() {
+            const about = JSON.parse(localStorage.getItem('about_us') || JSON.stringify(DEFAULT_ABOUT_US));
+            
+            document.getElementById('aboutTitle').value = about.title || '';
+            document.getElementById('aboutIntro').value = about.intro || '';
+            document.getElementById('aboutMission').value = about.mission || '';
+            document.getElementById('aboutMissionImage').value = about.missionImage || '';
+            
+            const featuresText = (about.features || []).map(f => `${f.title}|${f.desc}`).join('\n');
+            document.getElementById('aboutFeatures').value = featuresText;
+        }
+
+        function saveAboutUs() {
+            const features = document.getElementById('aboutFeatures').value.split('\n')
+                .filter(line => line.includes('|'))
+                .map(line => {
+                    const [title, desc] = line.split('|').map(s => s.trim());
+                    return { title, desc };
+                });
+            
+            const about = {
+                title: document.getElementById('aboutTitle').value,
+                intro: document.getElementById('aboutIntro').value,
+                mission: document.getElementById('aboutMission').value,
+                missionImage: document.getElementById('aboutMissionImage').value,
+                features
+            };
+            
+            localStorage.setItem('about_us', JSON.stringify(about));
+            showAlert('About Us saved successfully!', 'success');
+        }
+
+        function resetAboutUs() {
+            if (confirm('Reset About Us to default content?')) {
+                localStorage.removeItem('about_us');
+                loadAboutUsEditor();
+                showAlert('About Us reset to default!', 'success');
+            }
         }
 
         // Save Hero Settings
@@ -1411,9 +1524,24 @@
         ];
 
         const DEFAULT_YACHTS = [
-            { id: 'aqua-queen', name: 'Aqua Queen', type: 'yacht', capacity: 8, price: 15000, location: 'Goa, India', featured: true, description: 'The Aqua Queen Yacht offers an unparalleled luxury experience.', amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck', images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'], video: '' },
-            { id: 'white-sea', name: 'White Sea', type: 'yacht', capacity: 12, price: 18000, location: 'Goa, India', featured: true, description: 'The White Sea Yacht is a magnificent vessel for larger groups.', amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck, Cockpit Area', images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-6.jpg'], video: '' },
-            { id: 'amaze', name: 'Amaze', type: 'yacht', capacity: 13, price: 20000, location: 'Goa, India', featured: true, description: 'Experience the thrill of sailing on the Amaze yacht.', amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck', images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-1.jpg'], video: '' }
+            { id: 'aqua-queen', name: 'Aqua Queen', type: 'yacht', capacity: 8, price: 15000, location: 'Goa, India', featured: true, description: 'The Aqua Queen Yacht offers an unparalleled luxury experience.', amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck', images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'], video: '', extras: [
+                { name: 'Decorations', price: 4000 },
+                { name: 'Snacks & Beverages', price: 0 },
+                { name: 'DSLR Photographer', price: 6000 },
+                { name: 'Drone Videographer', price: 5000 }
+            ]},
+            { id: 'white-sea', name: 'White Sea', type: 'yacht', capacity: 12, price: 18000, location: 'Goa, India', featured: true, description: 'The White Sea Yacht is a magnificent vessel for larger groups.', amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck, Cockpit Area', images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-6.jpg'], video: '', extras: [
+                { name: 'Decorations', price: 4000 },
+                { name: 'Snacks & Beverages', price: 0 },
+                { name: 'DSLR Photographer', price: 6000 },
+                { name: 'Drone Videographer', price: 5000 }
+            ]},
+            { id: 'amaze', name: 'Amaze', type: 'yacht', capacity: 13, price: 20000, location: 'Goa, India', featured: true, description: 'Experience the thrill of sailing on the Amaze yacht.', amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck', images: ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-1.jpg'], video: '', extras: [
+                { name: 'Decorations', price: 4000 },
+                { name: 'Snacks & Beverages', price: 0 },
+                { name: 'DSLR Photographer', price: 6000 },
+                { name: 'Drone Videographer', price: 5000 }
+            ]}
         ];
 
         function loadYachtsEditor() {
@@ -1506,6 +1634,12 @@
             const description = prompt('Enter description:', 'Luxury yacht experience.');
             const image = prompt('Enter image URL:', 'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg');
             const video = prompt('Enter video URL (optional):', '');
+            const extrasStr = prompt('Enter extras (format: Name:Price, Name:Price)\nExample: Decorations:4000, DSLR Photographer:6000', 'Decorations:4000, DSLR Photographer:6000, Drone Videographer:5000');
+            
+            const extras = extrasStr ? extrasStr.split(',').map(e => {
+                const [name, price] = e.split(':').map(s => s.trim());
+                return { name, price: parseInt(price) || 0 };
+            }) : [];
             
             const yachts = JSON.parse(localStorage.getItem('yacht_items') || JSON.stringify(DEFAULT_YACHTS));
             const newId = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
@@ -1514,7 +1648,8 @@
                 location: 'Goa, India', featured: false, 
                 description, amenities: 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck',
                 images: [image || 'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'],
-                video: video || ''
+                video: video || '',
+                extras: extras
             });
             localStorage.setItem('yacht_items', JSON.stringify(yachts));
             loadYachtsEditor();
@@ -1534,6 +1669,15 @@
             yacht.description = prompt('Edit description:', yacht.description) || yacht.description;
             yacht.video = prompt('Edit video URL (optional):', yacht.video || '') || '';
             yacht.images = [prompt('Edit image URL:', yacht.images[0]) || yacht.images[0]];
+            
+            const extrasStr = prompt('Edit extras (format: Name:Price, Name:Price)\nExample: Decorations:4000, DSLR Photographer:6000', 
+                (yacht.extras || []).map(e => `${e.name}:${e.price}`).join(', '));
+            if (extrasStr) {
+                yacht.extras = extrasStr.split(',').map(e => {
+                    const [name, price] = e.split(':').map(s => s.trim());
+                    return { name, price: parseInt(price) || 0 };
+                });
+            }
             
             localStorage.setItem('yacht_items', JSON.stringify(yachts));
             loadYachtsEditor();

@@ -16,6 +16,10 @@
     
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚤</text></svg>">
+    
+    <style>
+        .feature-card .feature-icon img { width: 64px; height: 64px; }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -63,17 +67,17 @@
     <section class="section about-content-section">
         <div class="container">
             <div class="about-intro">
-                <h2>About Goa Yacht World</h2>
-                <p class="lead">We pride ourselves on being the premier destination for luxury yacht experiences. Established with a passion for the sea and a commitment to unparalleled service, we offer a range of exceptional yachting services tailored to exceed the expectations of even the most discerning clientele.</p>
+                <h2 id="aboutTitleDisplay">About Goa Yacht World</h2>
+                <p class="lead" id="aboutIntroDisplay">We pride ourselves on being the premier destination for luxury yacht experiences.</p>
             </div>
             
             <div class="about-mission">
                 <div class="about-mission-content">
                     <h3>Our Mission</h3>
-                    <p>Our mission is simple: to provide our guests with unparalleled access to the world's most breathtaking yachting destinations, accompanied by unparalleled service and attention to detail. Whether you're seeking a relaxing getaway, an adventurous expedition, or a memorable event at sea, we are dedicated to crafting bespoke experiences that exceed your every expectation.</p>
+                    <p id="aboutMissionDisplay">Our mission is simple: to provide our guests with unparalleled access to the world's most breathtaking yachting destinations.</p>
                 </div>
                 <div class="about-mission-image">
-                    <img src="https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/about-video-poster.jpg" alt="Goa Yacht World Experience">
+                    <img id="aboutMissionImageDisplay" src="https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/about-video-poster.jpg" alt="Goa Yacht World Experience">
                 </div>
             </div>
         </div>
@@ -83,9 +87,9 @@
     <section class="section features-section">
         <div class="container">
             <div class="section-title">
-                <h2>Features Goa Yacht World</h2>
+                <h2>Why Choose Goa Yacht World</h2>
             </div>
-            <div class="features-grid">
+            <div class="features-grid" id="featuresGridDisplay">
                 <div class="feature-card">
                     <div class="feature-icon">
                         <img src="https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/icon-quality-blue.svg" alt="Quality">
@@ -208,5 +212,62 @@
     <!-- Scripts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="assets/js/app.js"></script>
+    <script>
+        // Load About Us content from admin
+        const DEFAULT_ABOUT = {
+            title: 'About Goa Yacht World',
+            intro: 'We pride ourselves on being the premier destination for luxury yacht experiences. Established with a passion for the sea and a commitment to unparalleled service, we offer a range of exceptional yachting services tailored to exceed the expectations of even the most discerning clientele.',
+            mission: 'Our mission is simple: to provide our guests with unparalleled access to the world\'s most breathtaking yachting destinations, accompanied by unparalleled service and attention to detail. Whether you\'re seeking a relaxing getaway, an adventurous expedition, or a memorable event at sea, we are dedicated to crafting bespoke experiences that exceed your every expectation.',
+            missionImage: 'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/about-video-poster.jpg',
+            features: [
+                { title: 'Quality', desc: 'Experience the epitome of luxury on the seas where quality and elegance define every booking.' },
+                { title: 'Safety', desc: 'Your safety is our top priority. All our yachts are equipped with the latest safety equipment.' },
+                { title: 'Expertise', desc: 'Years of experience in providing luxury yacht services in Goa.' },
+                { title: 'Support', desc: '24/7 customer support available to assist you with any queries.' },
+                { title: 'Value', desc: 'Best value for your investment with competitive pricing and premium services.' }
+            ]
+        };
+        
+        function loadAboutUs() {
+            const about = JSON.parse(localStorage.getItem('about_us') || JSON.stringify(DEFAULT_ABOUT));
+            
+            if (document.getElementById('aboutTitleDisplay')) {
+                document.getElementById('aboutTitleDisplay').textContent = about.title;
+            }
+            if (document.getElementById('aboutIntroDisplay')) {
+                document.getElementById('aboutIntroDisplay').textContent = about.intro;
+            }
+            if (document.getElementById('aboutMissionDisplay')) {
+                document.getElementById('aboutMissionDisplay').textContent = about.mission;
+            }
+            if (document.getElementById('aboutMissionImageDisplay')) {
+                document.getElementById('aboutMissionImageDisplay').src = about.missionImage;
+            }
+            
+            // Load features
+            const featuresGrid = document.getElementById('featuresGridDisplay');
+            if (featuresGrid && about.features) {
+                const icons = [
+                    'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/icon-quality-blue.svg',
+                    'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/icon-safety-blue.svg',
+                    'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/icon-expertise-blue.svg',
+                    'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/icon-support-blue.svg',
+                    'https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/icon-value-blue.svg'
+                ];
+                
+                featuresGrid.innerHTML = about.features.map((f, i) => `
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <img src="${icons[i] || icons[0]}" alt="${f.title}">
+                        </div>
+                        <h3>${f.title}</h3>
+                        <p>${f.desc}</p>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadAboutUs);
+    </script>
 </body>
 </html>
