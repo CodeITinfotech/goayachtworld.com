@@ -117,13 +117,14 @@ export default function YachtsAdminPage() {
                 </button>
               </div>
               
-              {/* Featured Badge */}
+              {/* Featured Badge - 5 Stars */}
               {yacht.featured && (
-                <div className="absolute top-3 left-3">
-                  <span className="bg-luxury-gold text-black text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
-                    <Star className="w-3 h-3 fill-current" />
-                    Featured
-                  </span>
+                <div className="absolute top-3 left-3 flex gap-0.5">
+                  <Star className="w-4 h-4 fill-luxury-gold text-luxury-gold" />
+                  <Star className="w-4 h-4 fill-luxury-gold text-luxury-gold" />
+                  <Star className="w-4 h-4 fill-luxury-gold text-luxury-gold" />
+                  <Star className="w-4 h-4 fill-luxury-gold text-luxury-gold" />
+                  <Star className="w-4 h-4 fill-luxury-gold text-luxury-gold" />
                 </div>
               )}
             </div>

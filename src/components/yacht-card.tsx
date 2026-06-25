@@ -33,10 +33,14 @@ export function YachtCard({ yacht }: YachtCardProps) {
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
-        {/* Featured Badge */}
+        {/* Featured Badge - 5 Stars */}
         {yacht.featured && (
-          <div className="absolute top-4 left-4 bg-luxury-gold text-black text-xs font-bold px-3 py-1 rounded-full">
-            FEATURED
+          <div className="absolute top-4 left-4 flex gap-0.5">
+            <Star className="w-4 h-4 fill-luxury-gold text-luxury-gold" />
+            <Star className="w-4 h-4 fill-luxury-gold text-luxury-gold" />
+            <Star className="w-4 h-4 fill-luxury-gold text-luxury-gold" />
+            <Star className="w-4 h-4 fill-luxury-gold text-luxury-gold" />
+            <Star className="w-4 h-4 fill-luxury-gold text-luxury-gold" />
           </div>
         )}
         
