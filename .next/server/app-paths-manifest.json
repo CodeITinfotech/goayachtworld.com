@@ -1,0 +1,12 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/yachts/route": "app/api/yachts/route.js",
+  "/api/bookings/route": "app/api/bookings/route.js",
+  "/book/page": "app/book/page.js",
+  "/page": "app/page.js",
+  "/yachts/[slug]/page": "app/yachts/[slug]/page.js",
+  "/yachts/page": "app/yachts/page.js",
+  "/admin/bookings/page": "app/admin/bookings/page.js",
+  "/admin/dashboard/page": "app/admin/dashboard/page.js",
+  "/admin/yachts/page": "app/admin/yachts/page.js"
+}

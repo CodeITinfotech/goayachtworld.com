@@ -1,0 +1,106 @@
+{
+  "pages": {
+    "/_not-found/page": [
+      "static/chunks/webpack-fc7bb918f90b5c08.js",
+      "static/chunks/fd9d1056-e66c992b03ecf25a.js",
+      "static/chunks/117-199d24af9d55cd69.js",
+      "static/chunks/main-app-d23a88459e389126.js",
+      "static/chunks/app/_not-found/page-bd3828bfc1057df6.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-fc7bb918f90b5c08.js",
+      "static/chunks/fd9d1056-e66c992b03ecf25a.js",
+      "static/chunks/117-199d24af9d55cd69.js",
+      "static/chunks/main-app-d23a88459e389126.js",
+      "static/css/d5f9a77e1ffdac79.css",
+      "static/chunks/590-327aa342f83fb4a3.js",
+      "static/chunks/597-c620134efde25ae2.js",
+      "static/chunks/app/layout-b620be2268b14170.js"
+    ],
+    "/book/page": [
+      "static/chunks/webpack-fc7bb918f90b5c08.js",
+      "static/chunks/fd9d1056-e66c992b03ecf25a.js",
+      "static/chunks/117-199d24af9d55cd69.js",
+      "static/chunks/main-app-d23a88459e389126.js",
+      "static/chunks/590-327aa342f83fb4a3.js",
+      "static/chunks/648-1268eb4f597b5218.js",
+      "static/chunks/351-7d06a389fac9a341.js",
+      "static/chunks/622-8eb053b2a855c45d.js",
+      "static/chunks/887-f308e9c12ec4cabb.js",
+      "static/chunks/app/book/page-879c18217b089d6d.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-fc7bb918f90b5c08.js",
+      "static/chunks/fd9d1056-e66c992b03ecf25a.js",
+      "static/chunks/117-199d24af9d55cd69.js",
+      "static/chunks/main-app-d23a88459e389126.js",
+      "static/chunks/590-327aa342f83fb4a3.js",
+      "static/chunks/648-1268eb4f597b5218.js",
+      "static/chunks/351-7d06a389fac9a341.js",
+      "static/chunks/622-8eb053b2a855c45d.js",
+      "static/chunks/app/page-6fe107ef96ad1487.js"
+    ],
+    "/yachts/[slug]/page": [
+      "static/chunks/webpack-fc7bb918f90b5c08.js",
+      "static/chunks/fd9d1056-e66c992b03ecf25a.js",
+      "static/chunks/117-199d24af9d55cd69.js",
+      "static/chunks/main-app-d23a88459e389126.js",
+      "static/chunks/590-327aa342f83fb4a3.js",
+      "static/chunks/648-1268eb4f597b5218.js",
+      "static/chunks/351-7d06a389fac9a341.js",
+      "static/chunks/622-8eb053b2a855c45d.js",
+      "static/chunks/887-f308e9c12ec4cabb.js",
+      "static/chunks/app/yachts/[slug]/page-c46708b027fac71f.js"
+    ],
+    "/yachts/page": [
+      "static/chunks/webpack-fc7bb918f90b5c08.js",
+      "static/chunks/fd9d1056-e66c992b03ecf25a.js",
+      "static/chunks/117-199d24af9d55cd69.js",
+      "static/chunks/main-app-d23a88459e389126.js",
+      "static/chunks/590-327aa342f83fb4a3.js",
+      "static/chunks/648-1268eb4f597b5218.js",
+      "static/chunks/351-7d06a389fac9a341.js",
+      "static/chunks/622-8eb053b2a855c45d.js",
+      "static/chunks/887-f308e9c12ec4cabb.js",
+      "static/chunks/app/yachts/page-dff80ff861ba5d75.js"
+    ],
+    "/admin/bookings/page": [
+      "static/chunks/webpack-fc7bb918f90b5c08.js",
+      "static/chunks/fd9d1056-e66c992b03ecf25a.js",
+      "static/chunks/117-199d24af9d55cd69.js",
+      "static/chunks/main-app-d23a88459e389126.js",
+      "static/chunks/590-327aa342f83fb4a3.js",
+      "static/chunks/648-1268eb4f597b5218.js",
+      "static/chunks/app/admin/bookings/page-9edb2f4823f18d25.js"
+    ],
+    "/admin/layout": [
+      "static/chunks/webpack-fc7bb918f90b5c08.js",
+      "static/chunks/fd9d1056-e66c992b03ecf25a.js",
+      "static/chunks/117-199d24af9d55cd69.js",
+      "static/chunks/main-app-d23a88459e389126.js",
+      "static/chunks/590-327aa342f83fb4a3.js",
+      "static/chunks/648-1268eb4f597b5218.js",
+      "static/chunks/app/admin/layout-db694852f7418d96.js"
+    ],
+    "/admin/dashboard/page": [
+      "static/chunks/webpack-fc7bb918f90b5c08.js",
+      "static/chunks/fd9d1056-e66c992b03ecf25a.js",
+      "static/chunks/117-199d24af9d55cd69.js",
+      "static/chunks/main-app-d23a88459e389126.js",
+      "static/chunks/590-327aa342f83fb4a3.js",
+      "static/chunks/648-1268eb4f597b5218.js",
+      "static/chunks/app/admin/dashboard/page-32f2fb5b55edd42a.js"
+    ],
+    "/admin/yachts/page": [
+      "static/chunks/webpack-fc7bb918f90b5c08.js",
+      "static/chunks/fd9d1056-e66c992b03ecf25a.js",
+      "static/chunks/117-199d24af9d55cd69.js",
+      "static/chunks/main-app-d23a88459e389126.js",
+      "static/chunks/590-327aa342f83fb4a3.js",
+      "static/chunks/648-1268eb4f597b5218.js",
+      "static/chunks/351-7d06a389fac9a341.js",
+      "static/chunks/622-8eb053b2a855c45d.js",
+      "static/chunks/app/admin/yachts/page-916d3b576d405a4c.js"
+    ]
+  }
+}
