@@ -14,7 +14,8 @@ import {
   Users,
   DollarSign,
   ToggleLeft,
-  ToggleRight
+  ToggleRight,
+  Ship
 } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import { getYachts } from "@/lib/data";
