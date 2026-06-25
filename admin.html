@@ -2577,78 +2577,234 @@ Value|Best value for your investment..."></textarea>
             console.log('showYachtForm called with yachtId:', yachtId);
             const overlay = document.getElementById('yachtModalOverlay');
             const content = document.getElementById('yachtModalContent');
-            const formSection = document.getElementById('yachtFormSection');
             
-            // Copy form HTML to modal
-            content.innerHTML = formSection.outerHTML;
-            
-            // Get references from modal content
-            const catSelect = content.querySelector('#yachtCategory');
-            const title = content.querySelector('#yachtFormTitle');
-            
-            // Populate category dropdown
+            // Get categories
             const categories = JSON.parse(localStorage.getItem('yacht_categories') || JSON.stringify(DEFAULT_CATEGORIES));
-            catSelect.innerHTML = '<option value="">Select Category</option>' + 
+            const categoryOptions = '<option value="">Select Category</option>' + 
                 categories.sort((a, b) => a.order - b.order).map(c => 
                     `<option value="${c.id}">${c.name}</option>`
                 ).join('');
             
+            let yachtData = null;
             if (yachtId) {
-                // Edit mode
-                title.innerHTML = '<i class="fas fa-edit"></i> Edit Yacht';
-                content.querySelector('#editYachtId').value = yachtId;
-                
                 const allYachts = JSON.parse(localStorage.getItem('yachts') || JSON.stringify(DEFAULT_YACHTS));
-                const yacht = allYachts.find(y => y.id === yachtId);
-                
-                if (yacht) {
-                    content.querySelector('#yachtName').value = yacht.name || '';
-                    content.querySelector('#yachtCategory').value = yacht.type || '';
-                    content.querySelector('#yachtLocation').value = yacht.location || 'Goa, India';
-                    content.querySelector('#yachtDescription').value = yacht.description || '';
-                    content.querySelector('#yachtCapacity').value = yacht.capacity || 8;
-                    content.querySelector('#yachtPrice').value = yacht.price || 15000;
-                    content.querySelector('#yachtVideo').value = yacht.video || '';
-                    content.querySelector('#yachtFeatured').checked = yacht.featured || false;
-                    content.querySelector('#yachtAmenities').value = yacht.amenities || '';
-                    
-                    selectedExtras = Array.isArray(yacht.extras) ? yacht.extras.map(e => typeof e === 'object' ? e.name || e : e) : [];
-                    selectedQuestions = Array.isArray(yacht.questions) ? yacht.questions.map(q => typeof q === 'object' ? q.question || q : q) : [];
-                    currentBannerPhotos = (yacht.banner && yacht.banner.length > 0) ? yacht.banner : 
-                                         (yacht.images && yacht.images.length > 0) ? yacht.images : 
-                                         ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'];
-                    currentGalleryPhotos = yacht.gallery || [];
-                }
+                yachtData = allYachts.find(y => y.id === yachtId);
+            }
+            
+            const isEdit = !!yachtData;
+            const name = yachtData?.name || '';
+            const type = yachtData?.type || '';
+            const location = yachtData?.location || 'Goa, India';
+            const description = yachtData?.description || '';
+            const capacity = yachtData?.capacity || 8;
+            const price = yachtData?.price || 15000;
+            const video = yachtData?.video || '';
+            const featured = yachtData?.featured || false;
+            const amenities = yachtData?.amenities || 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck';
+            
+            if (yachtData) {
+                selectedExtras = Array.isArray(yachtData.extras) ? yachtData.extras.map(e => typeof e === 'object' ? e.name || e : e) : [];
+                selectedQuestions = Array.isArray(yachtData.questions) ? yachtData.questions.map(q => typeof q === 'object' ? q.question || q : q) : [];
+                currentBannerPhotos = (yachtData.banner && yachtData.banner.length > 0) ? yachtData.banner : 
+                                     (yachtData.images && yachtData.images.length > 0) ? yachtData.images : 
+                                     ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'];
+                currentGalleryPhotos = yachtData.gallery || [];
             } else {
-                // Add mode
-                title.innerHTML = '<i class="fas fa-plus-circle"></i> Add New Yacht';
-                content.querySelector('#editYachtId').value = '';
-                content.querySelector('#yachtName').value = '';
-                content.querySelector('#yachtCategory').value = '';
-                content.querySelector('#yachtLocation').value = 'Goa, India';
-                content.querySelector('#yachtDescription').value = '';
-                content.querySelector('#yachtCapacity').value = '8';
-                content.querySelector('#yachtPrice').value = '15000';
-                content.querySelector('#yachtVideo').value = '';
-                content.querySelector('#yachtFeatured').checked = false;
-                content.querySelector('#yachtAmenities').value = 'Welcome Drink, Water-bottle, Ice, Music System, Sun Deck';
-                
                 selectedExtras = [];
                 selectedQuestions = [];
                 currentBannerPhotos = [];
                 currentGalleryPhotos = [];
             }
             
+            content.innerHTML = `
+                <div style="padding: 25px; background: var(--bg-light); border-radius: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="margin: 0;"><i class="fas ${isEdit ? 'fa-edit' : 'fa-plus-circle'}"></i> ${isEdit ? 'Edit Yacht' : 'Add New Yacht'}</h3>
+                    </div>
+                    <input type="hidden" id="modalYachtId" value="${yachtId || ''}">
+                    
+                    <div style="background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary);"><i class="fas fa-info-circle"></i> Basic Information</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                            <div class="form-group">
+                                <label>Yacht Name *</label>
+                                <input type="text" id="modalYachtName" value="${name}" placeholder="Enter yacht name" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                            </div>
+                            <div class="form-group">
+                                <label>Category *</label>
+                                <select id="modalYachtCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                                    ${categoryOptions}
+                                    <script>document.getElementById('modalYachtCategory').value = '${type}';</script>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" id="modalYachtLocation" value="${location}" placeholder="e.g., Panjim, Old Goa" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Description</label>
+                            <textarea id="modalYachtDescription" rows="2" placeholder="Enter yacht description" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">${description}</textarea>
+                        </div>
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Amenities</label>
+                            <input type="text" id="modalYachtAmenities" value="${amenities}" placeholder="Welcome Drink, Water-bottle, Ice, Music System, Sun Deck" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                        </div>
+                    </div>
+                    
+                    <div style="background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary);"><i class="fas fa-rupee-sign"></i> Pricing & Details</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                            <div class="form-group">
+                                <label>Capacity (guests)</label>
+                                <input type="number" id="modalYachtCapacity" value="${capacity}" placeholder="8" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                            </div>
+                            <div class="form-group">
+                                <label>Price (₹/hour)</label>
+                                <input type="number" id="modalYachtPrice" value="${price}" placeholder="15000" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                            </div>
+                            <div class="form-group">
+                                <label>Video URL</label>
+                                <input type="text" id="modalYachtVideo" value="${video}" placeholder="YouTube or video URL" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label style="display: flex; align-items: center; gap: 10px;">
+                                <input type="checkbox" id="modalYachtFeatured" ${featured ? 'checked' : ''}>
+                                <span><strong>Featured</strong></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <h4 style="margin: 0 0 15px 0; color: var(--primary);"><i class="fas fa-list"></i> Extras & FAQ</h4>
+                        <div class="form-group">
+                            <label>Select Extras</label>
+                            <div id="modalYachtExtras" style="display: flex; flex-wrap: wrap; gap: 10px; padding: 10px 0;"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Select FAQ Questions</label>
+                            <div id="modalYachtQuestions" style="display: flex; flex-direction: column; gap: 8px; padding: 10px 0; max-height: 150px; overflow-y: auto;"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button class="btn btn-outline" onclick="closeYachtModal();">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button class="btn btn-success" onclick="saveYachtFromModal();">
+                            <i class="fas fa-save"></i> Save Yacht
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Set category value after render
+            setTimeout(() => {
+                const catEl = document.getElementById('modalYachtCategory');
+                if (catEl && type) catEl.value = type;
+            }, 0);
+            
             // Render extras and questions
-            renderExtrasCheckboxes();
-            renderQuestionsCheckboxes();
-            renderBannerPhotos();
-            renderYachtGalleryPhotos();
+            renderExtrasCheckboxesToModal();
+            renderQuestionsCheckboxesToModal();
             
             // Show modal
             overlay.style.display = 'block';
             document.body.style.overflow = 'hidden';
         };
+        
+        function renderExtrasCheckboxesToModal() {
+            const extras = JSON.parse(localStorage.getItem('yacht_extras') || JSON.stringify(DEFAULT_EXTRAS));
+            const container = document.getElementById('modalYachtExtras');
+            if (!container) return;
+            
+            container.innerHTML = extras.map((extra, i) => `
+                <label style="display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer;">
+                    <input type="checkbox" id="modalExtra_${i}" onchange="toggleExtraSelectionById('modalExtra_${i}', '${extra.name}')" ${selectedExtras.includes(extra.name) ? 'checked' : ''}>
+                    ${extra.name} ${extra.price > 0 ? '(₹' + extra.price.toLocaleString('en-IN') + ')' : ''}
+                </label>
+            `).join('');
+        }
+        
+        function renderQuestionsCheckboxesToModal() {
+            const questions = JSON.parse(localStorage.getItem('faq_questions') || JSON.stringify(DEFAULT_FAQ_QUESTIONS));
+            const container = document.getElementById('modalYachtQuestions');
+            if (!container) return;
+            
+            container.innerHTML = questions.map((q, i) => `
+                <label style="display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer;">
+                    <input type="checkbox" id="modalQuestion_${i}" onchange="toggleQuestionSelectionById('modalQuestion_${i}', '${q.question.replace(/'/g, "\\'")}')" ${selectedQuestions.includes(q.question) ? 'checked' : ''}>
+                    ${q.question}
+                </label>
+            `).join('');
+        }
+        
+        function toggleExtraSelectionById(checkboxId, extraName) {
+            const checkbox = document.getElementById(checkboxId);
+            if (checkbox.checked) {
+                if (!selectedExtras.includes(extraName)) selectedExtras.push(extraName);
+            } else {
+                selectedExtras = selectedExtras.filter(e => e !== extraName);
+            }
+        }
+        
+        function toggleQuestionSelectionById(checkboxId, question) {
+            const checkbox = document.getElementById(checkboxId);
+            if (checkbox.checked) {
+                if (!selectedQuestions.includes(question)) selectedQuestions.push(question);
+            } else {
+                selectedQuestions = selectedQuestions.filter(q => q !== question);
+            }
+        }
+        
+        function saveYachtFromModal() {
+            const name = document.getElementById('modalYachtName').value.trim();
+            const type = document.getElementById('modalYachtCategory').value;
+            const location = document.getElementById('modalYachtLocation').value.trim() || 'Goa, India';
+            const description = document.getElementById('modalYachtDescription').value.trim();
+            const capacity = parseInt(document.getElementById('modalYachtCapacity').value) || 8;
+            const price = parseInt(document.getElementById('modalYachtPrice').value) || 15000;
+            const video = document.getElementById('modalYachtVideo').value.trim();
+            const featured = document.getElementById('modalYachtFeatured').checked;
+            const amenities = document.getElementById('modalYachtAmenities').value.trim();
+            const editId = document.getElementById('modalYachtId').value;
+            
+            if (!name) {
+                showAlert('Yacht name is required', 'error');
+                return;
+            }
+            if (!type) {
+                showAlert('Please select a category', 'error');
+                return;
+            }
+            
+            const yachts = JSON.parse(localStorage.getItem('yachts') || JSON.stringify(DEFAULT_YACHTS));
+            
+            const yachtData = {
+                name, type, location, description, capacity, price, video, featured, amenities,
+                extras: [...selectedExtras],
+                questions: [...selectedQuestions],
+                banner: currentBannerPhotos.length > 0 ? [...currentBannerPhotos] : ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg'],
+                gallery: [...currentGalleryPhotos],
+                images: currentBannerPhotos.length > 0 ? [...currentBannerPhotos] : ['https://goayachtworld.com/wp-content/uploads/sites/58/2023/06/service-yacht-2.jpg']
+            };
+            
+            if (editId) {
+                const index = yachts.findIndex(y => y.id === editId);
+                if (index !== -1) {
+                    yachts[index] = { ...yachts[index], ...yachtData, id: editId };
+                }
+            } else {
+                yachtData.id = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
+                yachts.push(yachtData);
+            }
+            
+            localStorage.setItem('yachts', JSON.stringify(yachts));
+            closeYachtModal();
+            loadYachtsEditor();
+            showAlert('Yacht saved successfully!', 'success');
+        }
         
         function closeYachtModal() {
             document.getElementById('yachtModalOverlay').style.display = 'none';
