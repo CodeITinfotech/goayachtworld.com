@@ -1685,6 +1685,14 @@ Value|Best value for your investment..."></textarea>
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('adminPassword');
             const icon = document.getElementById('passwordToggleIcon');
+            console.log('togglePasswordVisibility called');
+            console.log('passwordInput:', passwordInput);
+            console.log('icon:', icon);
+            if (!passwordInput || !icon) {
+                console.error('Elements not found');
+                return;
+            }
+            console.log('Initial type:', passwordInput.type);
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 icon.className = 'fas fa-eye-slash';
@@ -1692,6 +1700,7 @@ Value|Best value for your investment..."></textarea>
                 passwordInput.type = 'password';
                 icon.className = 'fas fa-eye';
             }
+            console.log('Final type:', passwordInput.type);
         }
         
         // Toast notification
