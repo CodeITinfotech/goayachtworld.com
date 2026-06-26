@@ -636,7 +636,7 @@
     </div>
 
     <!-- Admin Dashboard -->
-    <div class="admin-dashboard" id="adminDashboard">
+    <div class="admin-dashboard" id="adminDashboard" style="display: none;">
         <header class="admin-header">
             <div class="header-inner">
                 <div class="brand">
@@ -1470,7 +1470,7 @@ Value|Best value for your investment..."></textarea>
                 
                 const password = passwordInput.value;
                 
-                if (password === savedPassword) {
+                if (password.trim() === savedPassword) {
                     sessionStorage.setItem('adminLoggedIn', 'true');
                     showDashboard();
                 } else {
