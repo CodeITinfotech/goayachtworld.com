@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { 
@@ -19,7 +19,7 @@ import { getYachts, getCategories } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import type { Yacht, YachtCategory } from "@/types";
 
-export default function YachtsPage() {
+function YachtsContent() {
   const searchParams = useSearchParams();
   const categorySlug = searchParams.get("category");
   
@@ -254,5 +254,13 @@ export default function YachtsPage() {
       <Footer />
       <WhatsAppFloat />
     </main>
+  );
+}
+
+export default function YachtsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div></div>}>
+      <YachtsContent />
+    </Suspense>
   );
 }

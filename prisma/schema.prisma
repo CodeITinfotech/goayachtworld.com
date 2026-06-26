@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -14,7 +14,7 @@ model User {
   password      String
   name          String?
   phone         String?
-  role          Role      @default(USER)
+  role          String      @default("USER")
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   bookings      Booking[]
@@ -23,11 +23,6 @@ model User {
   @@map("users")
 }
 
-enum Role {
-  USER
-  ADMIN
-  SUPER_ADMIN
-}
 
 // Yacht Categories
 model YachtCategory {
@@ -54,7 +49,7 @@ model Yacht {
   description    String
   shortDescription String?
   capacity       Int
-  price          Decimal  @db.Decimal(10, 2)
+  price          Decimal  
   categoryId     String
   category       YachtCategory @relation(fields: [categoryId], references: [id])
   location       String?
@@ -69,7 +64,7 @@ model Yacht {
   enableAddons        Boolean @default(true)
   
   // Pricing
-  pricePerHour        Decimal?  @db.Decimal(10, 2)
+  pricePerHour        Decimal?  
   minimumBookingHours  Int      @default(2)
   
   // Timestamps
@@ -124,7 +119,7 @@ model TimeSlot {
   name      String   // e.g., "8AM - 10AM"
   startTime String  // e.g., "08:00"
   endTime   String  // e.g., "10:00"
-  price     Decimal  @db.Decimal(10, 2)
+  price     Decimal  
   isActive  Boolean  @default(true)
   sortOrder Int      @default(0)
 
@@ -136,7 +131,7 @@ model ExtraHour {
   yachtId   String
   yacht     Yacht    @relation(fields: [yachtId], references: [id], onDelete: Cascade)
   hours     Int
-  price     Decimal  @db.Decimal(10, 2)
+  price     Decimal  
   isActive  Boolean  @default(true)
 
   @@map("extra_hours")
@@ -148,7 +143,7 @@ model YachtAddon {
   yacht       Yacht    @relation(fields: [yachtId], references: [id], onDelete: Cascade)
   name        String
   description String?
-  price       Decimal  @db.Decimal(10, 2)
+  price       Decimal  
   image       String?
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
@@ -199,15 +194,15 @@ model Booking {
   guests        Int
   
   // Pricing
-  basePrice     Decimal       @db.Decimal(10, 2)
-  extraHours     Decimal       @default(0) @db.Decimal(10, 2)
-  addonsTotal    Decimal       @default(0) @db.Decimal(10, 2)
-  discount       Decimal       @default(0) @db.Decimal(10, 2)
-  taxAmount      Decimal       @default(0) @db.Decimal(10, 2)
-  totalAmount   Decimal       @db.Decimal(10, 2)
+  basePrice     Decimal       
+  extraHours     Decimal       @default(0) 
+  addonsTotal    Decimal       @default(0) 
+  discount       Decimal       @default(0) 
+  taxAmount      Decimal       @default(0) 
+  totalAmount   Decimal       
   
   // Status
-  status        BookingStatus @default(PENDING)
+  status        String @default("PENDING")
   
   // Customer Info
   customerName  String?
@@ -218,7 +213,7 @@ model Booking {
   couponId      String?
   coupon        Coupon?       @relation(fields: [couponId], references: [id])
   paymentId     String?
-  paymentStatus PaymentStatus @default(PENDING)
+  paymentStatus String @default("PENDING")
   
   // Notes
   specialRequests String?
@@ -232,19 +227,7 @@ model Booking {
   @@map("bookings")
 }
 
-enum BookingStatus {
-  PENDING
-  CONFIRMED
-  COMPLETED
-  CANCELLED
-}
 
-enum PaymentStatus {
-  PENDING
-  PAID
-  REFUNDED
-  FAILED
-}
 
 model BookingItem {
   id          String   @id @default(cuid())
@@ -252,7 +235,7 @@ model BookingItem {
   booking     Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
   addonId     String?
   addonName   String?
-  addonPrice  Decimal? @db.Decimal(10, 2)
+  addonPrice  Decimal? 
   quantity    Int      @default(1)
   
   @@map("booking_items")
@@ -262,10 +245,10 @@ model BookingItem {
 model Coupon {
   id            String       @id @default(cuid())
   code          String       @unique
-  type          CouponType
-  value         Decimal      @db.Decimal(10, 2)
-  minAmount     Decimal?     @db.Decimal(10, 2)
-  maxDiscount   Decimal?     @db.Decimal(10, 2)
+  type          String
+  value         Decimal      
+  minAmount     Decimal?     
+  maxDiscount   Decimal?     
   usageLimit    Int?
   usedCount     Int          @default(0)
   startsAt      DateTime
@@ -278,10 +261,6 @@ model Coupon {
   @@map("coupons")
 }
 
-enum CouponType {
-  PERCENTAGE
-  FIXED
-}
 
 // Reviews
 model Review {
@@ -304,7 +283,7 @@ model Review {
 model WebsiteSetting {
   id        String   @id @default(cuid())
   key       String   @unique
-  value     String   @db.Text
+  value     String   
   category  String   @default("general")
   updatedAt DateTime @updatedAt
 
@@ -319,7 +298,7 @@ model HomepageSetting {
   heroSubheading  String?
   heroCtaText     String?
   heroCtaLink     String?
-  featuredYachtIds String[]
+  featuredYachtIds String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
@@ -331,7 +310,7 @@ model CMSPage {
   id              String   @id @default(cuid())
   title           String
   slug            String   @unique
-  content         String   @db.Text
+  content         String   
   metaTitle       String?
   metaDescription String?
   isActive        Boolean  @default(true)
@@ -347,11 +326,108 @@ model Testimonial {
   name        String
   location    String?
   avatar      String?
-  content     String   @db.Text
+  content     String
   rating      Int      @default(5)
   isActive    Boolean  @default(true)
   sortOrder   Int      @default(0)
   createdAt   DateTime @default(now())
 
   @@map("testimonials")
+}
+
+// Admin Settings (replaces localStorage admin settings)
+model AdminSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admin_settings")
+}
+
+// Gallery Items (Photos, Reels, Shorts)
+model GalleryItem {
+  id        String   @id @default(cuid())
+  type      String   // 'photos', 'reels', 'shorts'
+  url       String
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@map("gallery_items")
+}
+
+// Extra Services
+model ExtraService {
+  id        String   @id @default(cuid())
+  name      String
+  price     Decimal  @default(0)
+  isActive  Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("extra_services")
+}
+
+// FAQ Questions
+model FAQQuestion {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("faq_questions")
+}
+
+// Contact Submissions
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contact_submissions")
+}
+
+// About Us Content
+model AboutUs {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("about_us")
+}
+
+// Policy Pages
+model Policy {
+  id        String   @id @default(cuid())
+  type      String   @unique // 'privacy', 'cancellation', 'refund'
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("policies")
+}
+
+// Unlock Tokens for admin account recovery
+model UnlockToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@map("unlock_tokens")
 }
