@@ -189,6 +189,126 @@
             margin-top: 15px;
             display: none;
         }
+        
+        /* Password visibility toggle */
+        .password-group {
+            position: relative;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+            font-size: 18px;
+            z-index: 10;
+        }
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+        
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            z-index: 10002;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 350px;
+        }
+        .toast.success { background: #27ae60; }
+        .toast.error { background: #e74c3c; }
+        .toast.warning { background: #f39c12; }
+        .toast.info { background: #3498db; }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        .toast.hiding {
+            animation: slideOut 0.3s ease-out forwards;
+        }
+        
+        /* Locked account overlay */
+        .locked-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+        }
+        .locked-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            max-width: 450px;
+            text-align: center;
+        }
+        .locked-card h2 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+        }
+        .locked-card p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .unlock-form button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .unlock-form button:hover {
+            background: var(--secondary);
+        }
+        .unlock-link-display {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+        }
+        .reset-form {
+            margin-top: 20px;
+        }
+        .reset-form input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        .btn-reset {
+            background: #27ae60 !important;
+        }
+        .btn-reset:hover {
+            background: #219a52 !important;
+        }
 
         /* Admin Dashboard */
         .admin-dashboard {
@@ -659,8 +779,11 @@
             <h1>Goa Yacht World</h1>
             <p>Admin Panel</p>
             
-            <div class="form-group">
+            <div class="form-group password-group">
                 <input type="password" id="adminPassword" placeholder="Enter Admin Password" autocomplete="current-password">
+                <span class="password-toggle" onclick="togglePasswordVisibility()">
+                    <i class="fas fa-eye" id="passwordToggleIcon"></i>
+                </span>
             </div>
             
             <button class="btn-login" onclick="adminLogin()">
@@ -1496,6 +1619,14 @@ Value|Best value for your investment..."></textarea>
         // Admin Login
         function adminLogin() {
             try {
+                // Check if account is locked
+                const lockData = JSON.parse(localStorage.getItem('adminLockData') || 'null');
+                if (lockData && lockData.lockedUntil && Date.now() < lockData.lockedUntil) {
+                    const remainingMinutes = Math.ceil((lockData.lockedUntil - Date.now()) / 60000);
+                    showToast(`Account locked. Try again in ${remainingMinutes} minute(s).`, 'error');
+                    return;
+                }
+
                 const passwordInput = document.getElementById('adminPassword');
                 const errorMsg = document.getElementById('loginError');
                 const savedPassword = localStorage.getItem('adminPassword') || DEFAULT_PASSWORD;
@@ -1508,19 +1639,219 @@ Value|Best value for your investment..."></textarea>
                 const password = passwordInput.value;
                 
                 if (password.trim() === savedPassword) {
+                    // Success - reset failed attempts
+                    localStorage.removeItem('adminFailedAttempts');
+                    localStorage.removeItem('adminLockData');
                     if (errorMsg) errorMsg.style.display = 'none';
                     sessionStorage.setItem('adminLoggedIn', 'true');
+                    showToast('Login successful!', 'success');
                     showDashboard();
                 } else {
-                    if (errorMsg) {
-                        errorMsg.style.display = 'block';
+                    // Track failed attempts
+                    let failedAttempts = parseInt(localStorage.getItem('adminFailedAttempts') || '0') + 1;
+                    localStorage.setItem('adminFailedAttempts', failedAttempts.toString());
+                    
+                    if (failedAttempts >= 3) {
+                        // Lock account for 15 minutes after 3 failed attempts
+                        const lockData = {
+                            lockedUntil: Date.now() + (15 * 60 * 1000),
+                            attempts: failedAttempts,
+                            email: 'goayachtworld@gmail.com'
+                        };
+                        localStorage.setItem('adminLockData', JSON.stringify(lockData));
+                        showToast('Account locked due to too many failed attempts!', 'error');
+                        showLockedOverlay();
+                    } else {
+                        const remaining = 3 - failedAttempts;
+                        showToast(`Incorrect password! ${remaining} attempt(s) remaining.`, 'error');
+                        if (errorMsg) {
+                            errorMsg.style.display = 'block';
+                            errorMsg.textContent = `Incorrect password. ${remaining} attempt(s) remaining.`;
+                        }
+                        passwordInput.value = '';
+                        passwordInput.focus();
                     }
-                    passwordInput.value = '';
-                    passwordInput.focus();
                 }
             } catch (e) {
                 console.error('Login error:', e);
+                showToast('An error occurred. Please try again.', 'error');
             }
+        }
+        
+        // Password visibility toggle
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('adminPassword');
+            const icon = document.getElementById('passwordToggleIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+        
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const existingToasts = document.querySelectorAll('.toast');
+            existingToasts.forEach(t => t.remove());
+            
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+        
+        // Show locked account overlay
+        function showLockedOverlay() {
+            const overlay = document.createElement('div');
+            overlay.className = 'locked-overlay';
+            overlay.id = 'lockedOverlay';
+            
+            overlay.innerHTML = `
+                <div class="locked-card">
+                    <h2><i class="fas fa-lock"></i> Account Locked</h2>
+                    <p>Your account has been locked due to multiple failed login attempts.</p>
+                    <p><strong>Unlock Instructions:</strong></p>
+                    <p style="font-size: 13px;">An unlock link has been sent to <strong>goayachtworld@gmail.com</strong></p>
+                    <p style="font-size: 12px; color: #888;">(For demo: Click the button below or use the unlock token)</p>
+                    
+                    <div class="unlock-form" id="unlockFormButtons">
+                        <button onclick="sendUnlockLink()">
+                            <i class="fas fa-paper-plane"></i> Simulate Send Unlock Link
+                        </button>
+                        <button onclick="showResetPasswordForm()" style="background: #3498db;">
+                            <i class="fas fa-key"></i> Reset Password Instead
+                        </button>
+                    </div>
+                    
+                    <div id="unlockTokenDisplay" style="display: none;">
+                        <p><strong>Unlock Token:</strong></p>
+                        <div class="unlock-link-display" id="tokenDisplay"></div>
+                        <p style="font-size: 11px; color: #888;">Copy this token and click the link when emailed</p>
+                        <button onclick="unlockWithToken()" style="background: #27ae60; margin-top: 10px;">
+                            <i class="fas fa-unlock"></i> Use Token to Unlock
+                        </button>
+                    </div>
+                    
+                    <div class="reset-form" id="resetPasswordForm" style="display: none;">
+                        <p><strong>Reset Password:</strong></p>
+                        <input type="password" id="newPasswordInput" placeholder="Enter new password (min 4 chars)">
+                        <input type="password" id="confirmPasswordInput" placeholder="Confirm new password">
+                        <button class="btn-reset" onclick="resetAdminPassword()">
+                            <i class="fas fa-save"></i> Reset Password
+                        </button>
+                        <button onclick="hideResetForm()" style="background: #95a5a6; margin-top: 5px;">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+        }
+        
+        // Generate and display unlock token
+        function sendUnlockLink() {
+            const lockData = JSON.parse(localStorage.getItem('adminLockData') || '{}');
+            const token = 'unlock_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            lockData.unlockToken = token;
+            lockData.tokenGenerated = Date.now();
+            localStorage.setItem('adminLockData', JSON.stringify(lockData));
+            
+            const baseUrl = window.location.origin + window.location.pathname;
+            const unlockUrl = `${baseUrl}?admin=true&unlock=${token}`;
+            
+            document.getElementById('unlockTokenDisplay').style.display = 'block';
+            document.getElementById('tokenDisplay').textContent = unlockUrl;
+            
+            showToast('Unlock link generated! (Simulated email sent)', 'success');
+        }
+        
+        // Unlock with token
+        function unlockWithToken() {
+            const lockData = JSON.parse(localStorage.getItem('adminLockData') || 'null');
+            if (lockData && lockData.unlockToken) {
+                localStorage.removeItem('adminLockData');
+                localStorage.removeItem('adminFailedAttempts');
+                showToast('Account unlocked! You can now login.', 'success');
+                
+                const overlay = document.getElementById('lockedOverlay');
+                if (overlay) overlay.remove();
+            }
+        }
+        
+        // Show reset password form
+        function showResetPasswordForm() {
+            document.getElementById('unlockTokenDisplay').style.display = 'none';
+            document.getElementById('unlockFormButtons').style.display = 'none';
+            document.getElementById('resetPasswordForm').style.display = 'block';
+        }
+        
+        // Hide reset form
+        function hideResetForm() {
+            document.getElementById('resetPasswordForm').style.display = 'none';
+            document.getElementById('unlockFormButtons').style.display = 'block';
+        }
+        
+        // Reset admin password
+        function resetAdminPassword() {
+            const newPass = document.getElementById('newPasswordInput').value;
+            const confirmPass = document.getElementById('confirmPasswordInput').value;
+            
+            if (newPass.length < 4) {
+                showToast('Password must be at least 4 characters', 'error');
+                return;
+            }
+            if (newPass !== confirmPass) {
+                showToast('Passwords do not match', 'error');
+                return;
+            }
+            
+            localStorage.setItem('adminPassword', newPass);
+            localStorage.removeItem('adminFailedAttempts');
+            localStorage.removeItem('adminLockData');
+            
+            showToast('Password reset successfully! You can now login.', 'success');
+            
+            const overlay = document.getElementById('lockedOverlay');
+            if (overlay) overlay.remove();
+            
+            const passwordInput = document.getElementById('adminPassword');
+            if (passwordInput) passwordInput.value = '';
+        }
+        
+        // Check for unlock token on page load
+        function checkUnlockToken() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('unlock');
+            
+            if (token) {
+                const lockData = JSON.parse(localStorage.getItem('adminLockData') || 'null');
+                
+                if (!lockData) {
+                    showToast('No locked account found or already unlocked.', 'info');
+                    return;
+                }
+                
+                if (lockData.unlockToken === token) {
+                    localStorage.removeItem('adminLockData');
+                    localStorage.removeItem('adminFailedAttempts');
+                    showToast('Account unlocked! You can now login.', 'success');
+                    
+                    const cleanUrl = window.location.pathname + '?admin=true';
+                    window.history.replaceState({}, '', cleanUrl);
+                } else {
+                    showToast('Invalid unlock token.', 'error');
+                }
+            }
+        }
+        
         // Show Dashboard
         function showDashboard() {
             document.body.classList.add('logged-in');
@@ -3377,6 +3708,7 @@ Value|Best value for your investment..."></textarea>
 
         // Initialize
         checkAuth();
+        checkUnlockToken();
 
         // Contact Submissions
         function loadContactsEditor() {
