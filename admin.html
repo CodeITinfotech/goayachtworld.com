@@ -40,6 +40,32 @@
         }
 
         /* Login Screen */
+        body:not(.logged-in) .admin-dashboard {
+            display: none !important;
+        }
+        
+        body.logged-in .login-screen {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+        
+        body.logged-in .admin-dashboard {
+            display: block !important;
+        }
+        
+        /* Force hide yacht modal/form unless logged in */
+        #yachtModalOverlay,
+        #yachtFormSection {
+            display: none !important;
+        }
+        
+        body.logged-in #yachtModalOverlay,
+        body.logged-in #yachtFormSection {
+            display: block !important;
+        }
+        
         .login-screen {
             display: flex !important;
             align-items: center;
@@ -1513,6 +1539,8 @@ Value|Best value for your investment..."></textarea>
                 adminDashboard.style.display = 'block';
                 adminDashboard.style.visibility = 'visible';
             }
+            
+            document.body.classList.add('logged-in');
             
             // Load hero settings
             const heroAutoScroll = localStorage.getItem('heroAutoScroll');
@@ -3549,5 +3577,13 @@ Value|Best value for your investment..."></textarea>
             console.log('Page loaded, modal status:', modal?.style.display, formSection?.style.display);
         })();
     </script>
-</body>
+<script>
+            (function() {
+                var overlay = document.getElementById('yachtModalOverlay');
+                var form = document.getElementById('yachtFormSection');
+                if (overlay) overlay.style.display = 'none';
+                if (form) form.style.display = 'none';
+            })();
+        </script>
+    </body>
 </html>
