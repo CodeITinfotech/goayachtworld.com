@@ -46,14 +46,24 @@
             justify-content: center;
             min-height: 100vh;
             background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
         }
 
         body.logged-in .login-screen {
             display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
         }
 
         body.logged-in .admin-dashboard {
             display: block !important;
+            visibility: visible !important;
         }
 
         .login-box {
@@ -1473,17 +1483,24 @@ Value|Best value for your investment..."></textarea>
             } catch (e) {
                 console.error('Login error:', e);
             }
-        }
-
         // Show Dashboard
         function showDashboard() {
             document.body.classList.add('logged-in');
             
             const loginScreen = document.getElementById('loginScreen');
             const adminDashboard = document.getElementById('adminDashboard');
-            
-            if (loginScreen) loginScreen.style.display = 'none';
-            if (adminDashboard) adminDashboard.classList.add('active');
+
+            if (loginScreen) {
+                loginScreen.style.display = 'none';
+                loginScreen.style.visibility = 'hidden';
+                loginScreen.style.opacity = '0';
+                loginScreen.style.pointerEvents = 'none';
+            }
+            if (adminDashboard) {
+                adminDashboard.classList.add('active');
+                adminDashboard.style.display = 'block';
+                adminDashboard.style.visibility = 'visible';
+            }
             
             // Load hero settings
             const heroAutoScroll = localStorage.getItem('heroAutoScroll');
