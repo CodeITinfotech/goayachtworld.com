@@ -1685,14 +1685,9 @@ Value|Best value for your investment..."></textarea>
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('adminPassword');
             const icon = document.getElementById('passwordToggleIcon');
-            console.log('togglePasswordVisibility called');
-            console.log('passwordInput:', passwordInput);
-            console.log('icon:', icon);
             if (!passwordInput || !icon) {
-                console.error('Elements not found');
-                return;
+                    return;
             }
-            console.log('Initial type:', passwordInput.type);
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 icon.className = 'fas fa-eye-slash';
@@ -1700,7 +1695,6 @@ Value|Best value for your investment..."></textarea>
                 passwordInput.type = 'password';
                 icon.className = 'fas fa-eye';
             }
-            console.log('Final type:', passwordInput.type);
         }
         
         // Toast notification
@@ -2975,7 +2969,6 @@ Value|Best value for your investment..."></textarea>
 
         // Make functions globally available
         window.showYachtForm = function(yachtId = null) {
-            console.log('showYachtForm called with yachtId:', yachtId);
             const overlay = document.getElementById('yachtModalOverlay');
             const content = document.getElementById('yachtModalContent');
             
@@ -3812,7 +3805,6 @@ Value|Best value for your investment..."></textarea>
                         firebase.database().ref(collection).set(data);
                     }
                 } catch (error) {
-                    console.log('Firebase sync skipped');
                 }
             }
             localStorage.setItem(collection, JSON.stringify(data)); // Always save to localStorage
@@ -3919,7 +3911,6 @@ Value|Best value for your investment..."></textarea>
             var modalContent = document.getElementById('yachtModalContent');
             if (modalContent) modalContent.innerHTML = '';
             // Debug
-            console.log('Page loaded, modal status:', modal?.style.display, formSection?.style.display);
         })();
     </script>
     </body>
