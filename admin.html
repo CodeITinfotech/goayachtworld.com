@@ -1508,6 +1508,7 @@ Value|Best value for your investment..."></textarea>
                 const password = passwordInput.value;
                 
                 if (password.trim() === savedPassword) {
+                    if (errorMsg) errorMsg.style.display = 'none';
                     sessionStorage.setItem('adminLoggedIn', 'true');
                     showDashboard();
                 } else {
