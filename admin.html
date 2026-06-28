@@ -1631,6 +1631,7 @@ Value|Best value for your investment..."></textarea>
 
         // Admin Login
         function adminLogin() {
+            alert('adminLogin() called!');
             try {
                 // Check if account is locked
                 const lockData = JSON.parse(localStorage.getItem('adminLockData') || 'null');
