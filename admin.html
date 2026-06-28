@@ -788,14 +788,14 @@
                 </button>
             </div>
             
-            <form id="loginForm" onsubmit="console.log('Form submitted!');adminLogin(); return false;">
-                <button type="submit" class="btn-login">
+            <form id="loginForm" onsubmit="event.preventDefault(); console.log('Form submitted!');adminLogin();">
+                <button type="submit" class="btn-login" id="loginBtn">
                     <i class="fas fa-lock"></i> Login
                 </button>
             </form>
             
             <!-- Test button -->
-            <button id="testBtn" onclick="alert('Test button clicked!'); return false;">TEST</button>
+            <button id="testBtn" onclick="document.getElementById('loginBtn').click();">TEST</button>
             
             <p class="forgot-hint">Default password: <strong>admin123</strong></p>
             <p class="error-msg" id="loginError">Incorrect password. Please try again.</p>
@@ -3735,7 +3735,7 @@ Value|Best value for your investment..."></textarea>
         
         // Fallback click handler for login button
         setTimeout(function() {
-            const loginBtn = document.querySelector('.btn-login');
+            const loginBtn = document.getElementById('loginBtn');
             if (loginBtn) {
                 loginBtn.addEventListener('click', function(e) {
                     console.log('Login button clicked via event listener');
