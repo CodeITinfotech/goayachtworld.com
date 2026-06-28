@@ -3033,9 +3033,8 @@ Value|Best value for your investment..."></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Category *</label>
-                                <select id="modalYachtCategory" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                                <select id="modalYachtCategory" data-yacht-type="${type}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
                                     ${categoryOptions}
-                                    <script>document.getElementById('modalYachtCategory').value = '${type}';</script>
                                 </select>
                             </div>
                             <div class="form-group">
