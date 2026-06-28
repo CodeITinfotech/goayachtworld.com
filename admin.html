@@ -53,6 +53,7 @@
         
         body.logged-in .admin-dashboard {
             display: block !important;
+            position: relative !important;
             z-index: 10000 !important;
         }
         
@@ -95,17 +96,6 @@
         body.logged-in .admin-dashboard {
             display: block !important;
             visibility: visible !important;
-        }
-
-        /* Force hide yacht modal/form unless logged in */
-        #yachtModalOverlay,
-        #yachtFormSection {
-            display: none !important;
-        }
-        
-        body.logged-in #yachtModalOverlay,
-        body.logged-in #yachtFormSection {
-            display: block !important;
         }
 
         .login-box {
