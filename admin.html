@@ -782,7 +782,7 @@
             <p>Admin Panel</p>
             
             <div class="form-group password-group">
-                <input type="password" id="adminPassword" placeholder="Enter Admin Password" autocomplete="current-password">
+                <input type="password" id="adminPassword" placeholder="Enter Admin Password" autocomplete="current-password" onkeypress="if(event.key==='Enter'){adminLogin();}">
                 <button type="button" class="password-toggle" onclick="togglePasswordVisibility(); return false;">
                     <i class="fas fa-eye" id="passwordToggleIcon"></i>
                 </button>
