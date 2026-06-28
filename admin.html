@@ -3726,6 +3726,17 @@ Value|Best value for your investment..."></textarea>
         // Initialize
         checkAuth();
         checkUnlockToken();
+        
+        // Fallback click handler for login button
+        setTimeout(function() {
+            const loginBtn = document.querySelector('.btn-login');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function(e) {
+                    console.log('Login button clicked via event listener');
+                    adminLogin();
+                });
+            }
+        }, 100);
 
         // Contact Submissions
         function loadContactsEditor() {
