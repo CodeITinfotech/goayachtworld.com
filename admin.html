@@ -1880,15 +1880,15 @@ Value|Best value for your investment..."></textarea>
             document.body.classList.add('logged-in');
 
             if (loginScreen) {
-                loginScreen.style.display = 'none';
-                loginScreen.style.visibility = 'hidden';
-                loginScreen.style.opacity = '0';
-                loginScreen.style.pointerEvents = 'none';
+                loginScreen.style.setProperty('display', 'none', 'important');
+                loginScreen.style.setProperty('visibility', 'hidden', 'important');
+                loginScreen.style.setProperty('opacity', '0', 'important');
+                loginScreen.style.setProperty('pointer-events', 'none', 'important');
             }
             if (adminDashboard) {
                 adminDashboard.classList.add('active');
-                adminDashboard.style.display = 'block';
-                adminDashboard.style.visibility = 'visible';
+                adminDashboard.style.setProperty('display', 'block', 'important');
+                adminDashboard.style.setProperty('visibility', 'visible', 'important');
             }
             
             document.body.classList.add('logged-in');
