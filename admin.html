@@ -77,7 +77,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            z-index: 9999;
+            z-index: 9999 !important;
         }
 
         body.logged-in .login-screen {
@@ -316,10 +316,14 @@
         /* Admin Dashboard */
         .admin-dashboard {
             display: none;
+            position: relative;
+            z-index: 1;
         }
 
         .admin-dashboard.active {
             display: block;
+            position: relative;
+            z-index: 1;
         }
 
         .admin-header {
