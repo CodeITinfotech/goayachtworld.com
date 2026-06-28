@@ -788,9 +788,11 @@
                 </button>
             </div>
             
-            <button class="btn-login" onclick="adminLogin(); return false;">
-                <i class="fas fa-lock"></i> Login
-            </button>
+            <form id="loginForm" onsubmit="adminLogin(); return false;">
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-lock"></i> Login
+                </button>
+            </form>
             
             <p class="forgot-hint">Default password: <strong>admin123</strong></p>
             <p class="error-msg" id="loginError">Incorrect password. Please try again.</p>
