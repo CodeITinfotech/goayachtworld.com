@@ -53,6 +53,14 @@
             z-index: -1 !important;
         }
         
+        body.logged-in .login-box {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            z-index: -1 !important;
+        }
+        
         body.logged-in .admin-dashboard {
             display: block !important;
             position: relative !important;
@@ -1645,8 +1653,9 @@ Value|Best value for your investment..."></textarea>
                     sessionStorage.setItem('adminLoggedIn', 'true');
                     showToast('Login successful!', 'success');
                     
-                    // Force hide login screen via JavaScript
+                    // Force hide login screen and box via JavaScript
                     const loginScreen = document.getElementById('loginScreen');
+                    const loginBox = document.querySelector('.login-box');
                     if (loginScreen) {
                         loginScreen.style.display = 'none';
                         loginScreen.style.visibility = 'hidden';
@@ -1654,6 +1663,13 @@ Value|Best value for your investment..."></textarea>
                         loginScreen.style.pointerEvents = 'none';
                         loginScreen.style.position = 'absolute';
                         loginScreen.style.zIndex = '-1';
+                    }
+                    if (loginBox) {
+                        loginBox.style.display = 'none';
+                        loginBox.style.visibility = 'hidden';
+                        loginBox.style.opacity = '0';
+                        loginBox.style.pointerEvents = 'none';
+                        loginBox.style.zIndex = '-1';
                     }
                     
                     showDashboard();
