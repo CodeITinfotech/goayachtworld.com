@@ -1624,8 +1624,10 @@ Value|Best value for your investment..."></textarea>
             if (!checkAdminAccess()) return;
             
             const isLoggedIn = sessionStorage.getItem('adminLoggedIn');
+            console.log('checkAuth: isLoggedIn =', isLoggedIn);
             if (isLoggedIn === 'true') {
                 document.body.classList.add('logged-in');
+                console.log('checkAuth: added logged-in class, body.className =', document.body.className);
                 showDashboard();
             }
         }
