@@ -788,14 +788,11 @@
                 </button>
             </div>
             
-            <form id="loginForm" onsubmit="event.preventDefault(); console.log('Form submitted!');adminLogin();">
-                <button type="submit" class="btn-login" id="loginBtn" onclick="console.log('Button onclick!');adminLogin();">
+            <form id="loginForm" onsubmit="event.preventDefault(); adminLogin();">
+                <button type="submit" class="btn-login" id="loginBtn">
                     <i class="fas fa-lock"></i> Login
                 </button>
             </form>
-            
-            <!-- Test button -->
-            <button id="testBtn" onclick="document.getElementById('loginBtn').click();">TEST</button>
             
             <p class="forgot-hint">Default password: <strong>admin123</strong></p>
             <p class="error-msg" id="loginError">Incorrect password. Please try again.</p>
@@ -1616,19 +1613,13 @@ Value|Best value for your investment..."></textarea>
         function checkAuth() {
             if (!checkAdminAccess()) return;
             
-            const isLoggedIn = sessionStorage.getItem('adminLoggedIn');
-            console.log('checkAuth: isLoggedIn =', isLoggedIn);
             if (isLoggedIn === 'true') {
-                document.body.classList.add('logged-in');
-                console.log('checkAuth: added logged-in class, body.className =', document.body.className);
                 showDashboard();
             }
         }
 
         // Admin Login
         function adminLogin() {
-            console.log('adminLogin function START');
-            window.adminLoginCalled = true;
             try {
                 // Check if account is locked
                 const lockData = JSON.parse(localStorage.getItem('adminLockData') || 'null');
@@ -1649,11 +1640,9 @@ Value|Best value for your investment..."></textarea>
                 }
                 
                 const password = passwordInput.value;
-                console.log('DEBUG login:', {password, savedPassword, match: password.trim() === savedPassword});
                 
                 if (password.trim() === savedPassword) {
                     // Success - reset failed attempts
-                    console.log('PASSWORD MATCH - SUCCESS!');
                     localStorage.removeItem('adminFailedAttempts');
                     localStorage.removeItem('adminLockData');
                     if (errorMsg) errorMsg.style.display = 'none';
@@ -3733,18 +3722,6 @@ Value|Best value for your investment..."></textarea>
         checkAuth();
         checkUnlockToken();
         
-        // Fallback click handler for login button
-        setTimeout(function() {
-            const loginBtn = document.getElementById('loginBtn');
-            if (loginBtn) {
-                loginBtn.addEventListener('click', function(e) {
-                    console.log('Login button clicked via event listener');
-                    adminLogin();
-                });
-            }
-        }, 100);
-
-        // Contact Submissions
         function loadContactsEditor() {
             const container = document.getElementById('contactsList');
             if (!container) return;
