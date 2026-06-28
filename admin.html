@@ -1644,6 +1644,18 @@ Value|Best value for your investment..."></textarea>
                     if (errorMsg) errorMsg.style.display = 'none';
                     sessionStorage.setItem('adminLoggedIn', 'true');
                     showToast('Login successful!', 'success');
+                    
+                    // Force hide login screen via JavaScript
+                    const loginScreen = document.getElementById('loginScreen');
+                    if (loginScreen) {
+                        loginScreen.style.display = 'none';
+                        loginScreen.style.visibility = 'hidden';
+                        loginScreen.style.opacity = '0';
+                        loginScreen.style.pointerEvents = 'none';
+                        loginScreen.style.position = 'absolute';
+                        loginScreen.style.zIndex = '-1';
+                    }
+                    
                     showDashboard();
                 } else {
                     // Track failed attempts
