@@ -1646,10 +1646,12 @@ Value|Best value for your investment..."></textarea>
                 
                 if (!passwordInput) {
                     console.error('Password input not found');
+                    alert('Error: Password input not found');
                     return;
                 }
                 
                 const password = passwordInput.value;
+                console.log('DEBUG login:', {password, savedPassword, match: password.trim() === savedPassword});
                 
                 if (password.trim() === savedPassword) {
                     // Success - reset failed attempts
