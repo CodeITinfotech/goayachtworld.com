@@ -789,7 +789,7 @@
             </div>
             
             <form id="loginForm" onsubmit="event.preventDefault(); console.log('Form submitted!');adminLogin();">
-                <button type="submit" class="btn-login" id="loginBtn">
+                <button type="submit" class="btn-login" id="loginBtn" onclick="console.log('Button onclick!');adminLogin();">
                     <i class="fas fa-lock"></i> Login
                 </button>
             </form>
